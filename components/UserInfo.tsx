@@ -1,3 +1,4 @@
+"use client"
 import {
   
     LogOut,
@@ -17,6 +18,7 @@ import {
   
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
+import { logout } from "@/lib/serveractions/actions"
   
   export function UserInfo({label,userName,}:{label:string,userName:string}) {
     return (
@@ -32,7 +34,8 @@ import {
           <DropdownMenuSeparator />
                    <DropdownMenuItem>
             <LogOut />
-            <span>Çıkış Yap</span>
+            
+            <span onClick={() => logout()}>Çıkış Yap</span>
             
           </DropdownMenuItem>
         </DropdownMenuContent>

@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { ExportAsExcel, ExportAsPdf } from "react-export-table";
+import { ExportAsExcel } from "react-export-table";
 
 import {
   ColumnDef,
@@ -77,7 +77,9 @@ export function DataTable<TData, TValue>({
     }, {});
 
   // Visible kolonlara göre filtrelenmiş data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const visibleData = data.map((row: any, index: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const filteredRow: any = {};
     Object.keys(visibleHeaders).forEach((columnId) => {
       // index kolonu için özel işlem
@@ -120,6 +122,7 @@ export function DataTable<TData, TValue>({
                   className="capitalize"
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  onSelect={(e) => e.preventDefault()}
                 >
                   {typeof column.columnDef.header === "string"
                     ? column.columnDef.header
@@ -179,6 +182,14 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      
+      <div className="flex items-center justify-between py-2 text-sm text-gray-500">
+        <div>
+          Toplam {data.length} kayıttan{" "}
+          {table.getRowModel().rows.length} kayıt gösteriliyor
+        </div>
+      </div>
+
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
@@ -186,7 +197,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          Önceki
         </Button>
         <Button
           variant="outline"
@@ -194,7 +205,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          Sonraki
         </Button>
       </div>
     </div>

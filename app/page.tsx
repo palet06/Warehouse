@@ -48,7 +48,7 @@ const Home = async () => {
             
 
            
-            <UserInfo label={data.message} userName={data.message} />
+            <UserInfo label="Hesabım" userName="murat" />
 
            
          
