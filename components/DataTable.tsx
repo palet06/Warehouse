@@ -114,29 +114,40 @@ export function DataTable<TData, TValue>({
 						Alanları Göster/Gizle
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end">
-					{table
+				<DropdownMenuContent  align="start">
+					<div className="flex flex-col  h-80 !overflow-y-scroll">
+						<ul>
+							{table
 						.getAllColumns()
 						.filter((column) => column.getCanHide())
 						.map((column) => {
 							return (
-								<DropdownMenuCheckboxItem
-									key={column.id}
-									className="capitalize"
+								<li key={column.id}>
+									<DropdownMenuCheckboxItem 
+								    
+									
+									
 									checked={column.getIsVisible()}
 									onCheckedChange={(value) => column.toggleVisibility(!!value)}
 									onSelect={(e) => e.preventDefault()}
+
 								>
 									{typeof column.columnDef.header === "string"
 										? column.columnDef.header
 										: column.id}
 								</DropdownMenuCheckboxItem>
+								</li>
+								
 							);
 						})}
+						</ul>
+						
+					</div>
+					
 				</DropdownMenuContent>
 			</DropdownMenu>
-			<div className="rounded-md border">
-				<Table>
+			<div className="rounded-md border ">
+				<Table className="table-bordered">
 					<TableHeader>
 						{table?.getHeaderGroups()?.map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
@@ -164,7 +175,7 @@ export function DataTable<TData, TValue>({
 									data-state={row.getIsSelected() && "selected"}
 								>
 									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id} >
+										<TableCell key={cell.id} className="table-cell-bordered">
 
 											{flexRender(
 												cell.column.columnDef.cell,
@@ -178,7 +189,7 @@ export function DataTable<TData, TValue>({
 							<TableRow>
 								<TableCell
 									colSpan={columns.length}
-									className="h-24 text-center"
+									className="h-24 text-center table-cell-bordered"
 								>
 									Bir sonuç bulunamadı
 								</TableCell>

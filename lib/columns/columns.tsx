@@ -9,54 +9,102 @@ import { ArrowUpDown } from "lucide-react"
 // You can use a Zod schema here if you want.
 
 
+
+
 export const columns: ColumnDef<ContentItem>[] = [
-
-
-	{
-		accessorKey: "id",
-		header: "Başvuru No",
-
-		enableSorting: true,
-
-	},
-	{
-		accessorKey: "name",
-		header: "İsim",
-
-		enableSorting: true,
-
-	},
-	{
-		accessorKey: "surname",
-		header: "Soyisim",
-
-		enableSorting: true,
-
-	},
-	{
-		accessorKey: "age",
-		header: "Yaş",
-
-		enableSorting: true,
-
-	},
-	{
-		accessorKey: "email",
-		header: ({ column }) => {
-			return (
-				<Button
-					variant="ghost"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-				>
-					E-Posta
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</Button>
-			)
-		},
-
-		enableSorting: true,
-
-	},
-
-
-]
+	{ accessorKey: "basvuruNo", header: "Başvuru No", enableSorting: true },
+	{ accessorKey: "sonDegisiklikZamani", header: "Son Değişiklik Zamanı", enableSorting: true },
+	{ accessorKey: "olusturulmaZamani", header: "Oluşturulma Zamanı", enableSorting: true },
+	{ accessorKey: "basvuruTarihi", header: "Başvuru Tarihi", enableSorting: true },
+	{ accessorKey: "basvuruKararTarihi", header: "Başvuru Karar Tarihi", enableSorting: true },
+	{ accessorKey: "reddeItirazKararTarihi", header: "Redde İtiraz Karar Tarihi", enableSorting: true },
+	{ accessorKey: "reddeItirazTarihi", header: "Redde İtiraz Tarihi", enableSorting: true },
+	{ accessorKey: "basvuruTuru", header: "Başvuru Türü", enableSorting: true },
+	{ accessorKey: "basvuruTipi", header: "Başvuru Tipi", enableSorting: true },
+	{ accessorKey: "uzatmaBasvurusununYapildigiBasvuruNo", header: "Uzatma Başvurusu No", enableSorting: true },
+	{ accessorKey: "talepEdilenIzinBaslangicTarihi", header: "Talep Edilen İzin Başlangıç Tarihi", enableSorting: true },
+	{ accessorKey: "talepEdilenIzinBitisTarihi", header: "Talep Edilen İzin Bitiş Tarihi", enableSorting: true },
+	{ accessorKey: "retAciklamasi", header: "Ret Açıklaması", enableSorting: true },
+	{ accessorKey: "serhler", header: "Şerhler", enableSorting: true },
+	{ accessorKey: "islemAciklamasi", header: "İşlem Açıklaması", enableSorting: true },
+	{ accessorKey: "islemTipi", header: "İşlem Tipi", enableSorting: true },
+	{ accessorKey: "islemTarihi", header: "İşlem Tarihi", enableSorting: true },
+	{ accessorKey: "aylikBrutUcret", header: "Aylık Brüt Ücret", enableSorting: true },
+	{ accessorKey: "paraBirimi", header: "Para Birimi", enableSorting: true },
+	{ accessorKey: "meslekTanim", header: "Meslek Tanımı", enableSorting: true },
+	{ accessorKey: "meslekIskurKodu", header: "Meslek İŞKUR Kodu", enableSorting: true },
+	{ accessorKey: "isvereniVarMi", header: "İşvereni Var mı?", enableSorting: true },
+	{ accessorKey: "isyeriSgkTescilNumarasi", header: "İşyeri SGK Tescil No", enableSorting: true },
+	{ accessorKey: "isyeriIl", header: "İşyeri İl", enableSorting: true },
+	{ accessorKey: "isyeriIlce", header: "İşyeri İlçe", enableSorting: true },
+	{ accessorKey: "isyeriIlceKodu", header: "İşyeri İlçe Kodu", enableSorting: true },
+	{ accessorKey: "isyeriMeskenId", header: "İşyeri Mesken ID", enableSorting: true },
+	{ accessorKey: "isyeriAdresi", header: "İşyeri Adresi", enableSorting: true },
+	{ accessorKey: "isyeriUnvan", header: "İşyeri Unvanı", enableSorting: true },
+	{ accessorKey: "isyeriNaceKodu", header: "İşyeri NACE Kodu", enableSorting: true },
+	{ accessorKey: "isyeriSermayeYapisi", header: "İşyeri Sermaye Yapısı", enableSorting: true },
+	{ accessorKey: "isyeriFirmaTipi", header: "İşyeri Firma Tipi", enableSorting: true },
+	{ accessorKey: "isyeriVergiNumarasi", header: "İşyeri Vergi No", enableSorting: true },
+	{ accessorKey: "calisacagiIl", header: "Çalışacağı İl", enableSorting: true },
+	{ accessorKey: "calisacagiIlKodu", header: "Çalışacağı İl Kodu", enableSorting: true },
+	{ accessorKey: "calisacagiIlce", header: "Çalışacağı İlçe", enableSorting: true },
+	{ accessorKey: "calisacagiIlceKodu", header: "Çalışacağı İlçe Kodu", enableSorting: true },
+	{ accessorKey: "calisacagiMeskenId", header: "Çalışacağı Mesken ID", enableSorting: true },
+	{ accessorKey: "calisacagiAdres", header: "Çalışacağı Adres", enableSorting: true },
+	{ accessorKey: "onayVerilenBaslangicTarihi", header: "Onay Verilen Başlangıç Tarihi", enableSorting: true },
+	{ accessorKey: "onayVerilenBitisTarihi", header: "Onay Verilen Bitiş Tarihi", enableSorting: true },
+	{ accessorKey: "aktiflesmeTarihi", header: "Aktifleşme Tarihi", enableSorting: true },
+	{ accessorKey: "onayTebligTarihi", header: "Onay Tebliğ Tarihi", enableSorting: true },
+	{ accessorKey: "iptalSonlandirmaTarihi", header: "İptal Sonlandırma Tarihi", enableSorting: true },
+	{ accessorKey: "iptalSonlandirmaGerekcesi", header: "İptal Sonlandırma Gerekçesi", enableSorting: true },
+	{ accessorKey: "izinVerilenIl", header: "İzin Verilen İl", enableSorting: true },
+	{ accessorKey: "izinAktifMi", header: "İzin Aktif Mi?", enableSorting: true },
+	{ accessorKey: "izinDurumu", header: "İzin Durumu", enableSorting: true },
+	{ accessorKey: "calismaIzniTuru", header: "Çalışma İzni Türü", enableSorting: true },
+	{ accessorKey: "adi", header: "Adı", enableSorting: true },
+	{ accessorKey: "soyadi", header: "Soyadı", enableSorting: true },
+	{ accessorKey: "babaAdi", header: "Baba Adı", enableSorting: true },
+	{ accessorKey: "anaAdi", header: "Ana Adı", enableSorting: true },
+	{ accessorKey: "cinsiyeti", header: "Cinsiyeti", enableSorting: true },
+	{ accessorKey: "dogumYeri", header: "Doğum Yeri", enableSorting: true },
+	{ accessorKey: "dogumYeriKodu", header: "Doğum Yeri Kodu", enableSorting: true },
+	{ accessorKey: "dogumTarihi", header: "Doğum Tarihi", enableSorting: true },
+	{ accessorKey: "medeniHali", header: "Medeni Hali", enableSorting: true },
+	{ accessorKey: "ikametIlKodu", header: "İkamet İl Kodu", enableSorting: true },
+	{ accessorKey: "ikametIl", header: "İkamet İl", enableSorting: true },
+	{ accessorKey: "ikametVerilisAmaci", header: "İkamet Veriliş Amacı", enableSorting: true },
+	{ accessorKey: "uyruk", header: "Uyruk", enableSorting: true },
+	{ accessorKey: "uyrukKodu", header: "Uyruk Kodu", enableSorting: true },
+	{ accessorKey: "uyrukDiger", header: "Uyruk Diğer", enableSorting: true },
+	{ accessorKey: "esininAdi", header: "Eşinin Adı", enableSorting: true },
+	{ accessorKey: "esininSoyadi", header: "Eşinin Soyadı", enableSorting: true },
+	{ accessorKey: "esTckn", header: "Eş TCKN", enableSorting: true },
+	{ accessorKey: "geciciKorumaStatusu", header: "Geçici Koruma Statüsü", enableSorting: true },
+	{ accessorKey: "esUyruk", header: "Eş Uyruk", enableSorting: true },
+	{ accessorKey: "esUyrukKodu", header: "Eş Uyruk Kodu", enableSorting: true },
+	{ accessorKey: "eposta", header: "E-posta", enableSorting: true },
+	{ accessorKey: "eposta2", header: "E-posta 2", enableSorting: true },
+	{ accessorKey: "telefon", header: "Telefon", enableSorting: true },
+	{ accessorKey: "telefon2", header: "Telefon 2", enableSorting: true },
+	{ accessorKey: "telefonKodu", header: "Telefon Kodu", enableSorting: true },
+	{ accessorKey: "telefon2Kodu", header: "Telefon 2 Kodu", enableSorting: true },
+	{ accessorKey: "adres", header: "Adres", enableSorting: true },
+	{ accessorKey: "disIsleriReferansNumarasi", header: "Dışişleri Referans No", enableSorting: true },
+	{ accessorKey: "yabanciKimlikNumarasi", header: "Yabancı Kimlik No", enableSorting: true },
+	{ accessorKey: "pasaportNumarasi", header: "Pasaport No", enableSorting: true },
+	{ accessorKey: "pasaportSonGecerlilikTarihi", header: "Pasaport Son Geçerlilik Tarihi", enableSorting: true },
+	{ accessorKey: "passportType", header: "Pasaport Türü", enableSorting: true },
+	{ accessorKey: "anadil", header: "Ana Dil", enableSorting: true },
+	{ accessorKey: "bilinenDiller", header: "Bilinen Diller", enableSorting: true },
+	{ accessorKey: "turkceSeviyesi", header: "Türkçe Seviyesi", enableSorting: true },
+	{ accessorKey: "egitimSeviyesi", header: "Eğitim Seviyesi", enableSorting: true },
+	{ accessorKey: "liseOkul", header: "Lise Okul", enableSorting: true },
+	{ accessorKey: "universiteOkul", header: "Üniversite Okul", enableSorting: true },
+	{ accessorKey: "universiteBolum", header: "Üniversite Bölüm", enableSorting: true },
+	{ accessorKey: "universiteBaslangicTarihi", header: "Üniversite Başlangıç Tarihi", enableSorting: true },
+	{ accessorKey: "universiteMezuniyetTarihi", header: "Üniversite Mezuniyet Tarihi", enableSorting: true },
+	{ accessorKey: "yuksekogretimOkul", header: "Yükseköğretim Okul", enableSorting: true },
+	{ accessorKey: "yuksekogretimBolum", header: "Yükseköğretim Bölüm", enableSorting: true },
+	{ accessorKey: "yuksekogretimBaslangicTarihi", header: "Yükseköğretim Başlangıç Tarihi", enableSorting: true },
+	{ accessorKey: "yuksekogretimMezuniyetTarihi", header: "Yükseköğretim Mezuniyet Tarihi", enableSorting: true }
+  ];
