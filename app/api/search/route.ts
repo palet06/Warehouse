@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 import { getdata2, getdataAll } from '@/lib/serveractions/actions'
 
-export async function GET(request: Request) {
-	const { searchParams } = new URL(request.url)
-	const basvuruNo = searchParams.get('basvuruNo')
+export async function GET() {
+	
+
 
 
 	try {
@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
 	const { searchParams } = new URL(request.url)
 	const basvuruNo = searchParams.get('basvuruNo')
-	console.log("burası çalışacaktı ama")
+
 	
 
 	try {

@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/DataTable";
 import { columns } from "@/lib/columns/columns";
 import Image from "next/image";
+import { useToast } from "@/hooks/use-toast";
+
 
 
 // interface SearchableDataTableProps {
@@ -14,6 +16,7 @@ import Image from "next/image";
 // }
 
 export function SearchableDataTable({userEmail}:{userEmail:string}) {
+  const { toast } = useToast()
   const [basvuruNo, setBasvuruNo] = useState("");
   const [tableData, setTableData] = useState();
 
@@ -30,13 +33,28 @@ export function SearchableDataTable({userEmail}:{userEmail:string}) {
 			  method: "POST",
 			}); // API route'u oluşturmanız gerekecek
 			const data = await response.json();
-			if (data) {
+      
+			if (data.content.length>0) {
 			  setTableData(data.content);
-			} else {
+        toast({
+          title:"Başarılı",
+          description:`Sorgulama başarılı oldu ${data.content.length} kayıt döndü`,
+          variant:"success"
+          
+        })
+			} else if (data.content.length == 0) {
 			  setTableData(undefined);
-			}
+        toast({
+          title:"Kayıt Yok",
+          description:`Herhangi bir kayıt bulunamadı`,
+          variant:"destructive"
+        })
+			} else {
+        setTableData(undefined);
+      }
 		  } catch (error) {
-			console.error("Sorgulama hatası:", error);
+		
+      console.log(error)
 		  }
       } else {
         try {
@@ -44,9 +62,23 @@ export function SearchableDataTable({userEmail}:{userEmail:string}) {
             method: "POST",
           }); // API route'u oluşturmanız gerekecek
           const data = await response.json();
-          if (data) {
+          if (data.content.length>0) {
             setTableData(data.content);
-          } else {
+            toast({
+              title:"Başarılı",
+              description:`Sorgulama başarılı oldu ${data.content.length} kayıt döndü`,
+              variant:"success"
+              
+            })
+          }else if (data.content.length==0) {
+            setTableData(undefined);
+            toast({
+              title:"Kayıt Yok",
+              description:`Herhangi bir kayıt bulunamadı`,
+              variant:"destructive"
+            })
+          }
+           else {
             setTableData(undefined);
           }
         } catch (error) {
