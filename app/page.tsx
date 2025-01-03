@@ -1,10 +1,17 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { UserInfo } from "@/components/UserInfo";
+import {cookies} from "next/headers"
+import { decrypt } from "@/lib/session";
 
 import { SearchableDataTable } from "@/components/SearchableDataTable";
 
 const Home = async () => {
+	const cookie =  (await cookies()).get("session")?.value;
+   const session = await decrypt(cookie);
+   
+   
+   
 
 
 	return (
@@ -30,10 +37,10 @@ const Home = async () => {
             </Breadcrumb> */}
 					</div>
 
+					
 
 
-
-					<UserInfo label="Hesabım" userName="murat" />
+					<UserInfo label="Hesabım" userName={session?.userId as string} />
 
 
 
@@ -41,7 +48,7 @@ const Home = async () => {
 
 				<div className="flex flex-1 flex-col gap-4 p-4">
 					<div className="grid auto-rows-min">
-						<SearchableDataTable />
+						<SearchableDataTable userEmail={session?.userId} />
 						<div className="aspect-video rounded-xl bg-muted/50" />
 						<div className="aspect-video rounded-xl bg-muted/50" />
 						<div className="aspect-video rounded-xl bg-muted/50" />

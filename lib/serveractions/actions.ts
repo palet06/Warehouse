@@ -233,11 +233,11 @@ export const getdataAll = async (): Promise<ApiResponseType> => {
       ApiKey: "d8994824-a876-458c-bae6-44g58c357aa9",
       "Content-Type": "application/json",
     },
-	body:JSON.stringify({
-		"pageSize": 100,
-    "pageNumber": 1,
-    "allHistories": false,
-	})
+    body: JSON.stringify({
+      pageSize: 100,
+      pageNumber: 1,
+      allHistories: false,
+    }),
   })
     .then((resp) => resp.json())
     .catch(function (error) {
@@ -248,25 +248,39 @@ export const getdataAll = async (): Promise<ApiResponseType> => {
 };
 
 export const getdata2 = async (basvuruNo: string): Promise<ApiResponseType> => {
-  const response: ApiResponseType = await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        message: `${basvuruNo} numaralı başvuru verileri başarıyla getirildi`,
-        data: {
-          content: [
-            {
-              id: basvuruNo,
-              name: "Murat",
-              surname: "Hayaloğlu",
-              age: 30,
-              email: "murat.hayaloglu@csgb.gov.tr",
-            },
-          ],
-        },
-      });
-    }, 1000);
-  });
+  let kriter
+  if (basvuruNo.length == 11) {
+      kriter = JSON.stringify({
+      pageSize: 100,
+      pageNumber: 1,
+      allHistories: false,
+      yabanciKimlikNo:basvuruNo
+      
+    })
+  } else {
+    kriter = JSON.stringify({
+      pageSize: 100,
+      pageNumber: 1,
+      allHistories: false,
+      inBasvuruNoList:[...basvuruNo.split(" ")]
+    })
+
+  }
+  const url =
+    "https://services.csgb.gov.tr/workpernet/get-filtered-work-permit-data";
+  const response = fetch(url, {
+    method: "POST",
+
+    headers: {
+      ApiKey: "d8994824-a876-458c-bae6-44g58c357aa9",
+      "Content-Type": "application/json",
+    },    
+    body:kriter
+  })
+    .then((resp) => resp.json())
+    .catch(function (error) {
+      console.log(error);
+    });
 
   return response;
 };
@@ -305,7 +319,7 @@ export async function login(prevState: any, formData: FormData) {
     };
   }
 
-  await createSession(testUser.id);
+  await createSession(testUser.email);
 
   redirect("/");
 }

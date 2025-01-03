@@ -1,6 +1,8 @@
 "use client";
 import * as React from "react";
+import { format } from "date-fns"
 import { ExportAsExcel } from "react-export-table";
+
 
 import {
 	ColumnDef,
@@ -29,15 +31,18 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	userEmail:any;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
+	userEmail
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnVisibility, setColumnVisibility] =
@@ -65,6 +70,10 @@ export function DataTable<TData, TValue>({
 			columnVisibility,
 		},
 	});
+
+	// Sıralama değiştiğinde Sn sütununu güncelle
+	
+	
 
 	const visibleHeaders = table
 		.getHeaderGroups()[0]
@@ -95,22 +104,36 @@ export function DataTable<TData, TValue>({
 
 		return filteredRow;
 	});
+	const newDate = new Date(Date.now())
+	
+	const filenameDate =format(newDate, "dd.MM.yyyy HH:mm")
+	
+	 
 
 	return (
 		<div>
-			<ExportAsExcel data={visibleData} headers={Object.values(visibleHeaders)} fileName={new Date(Date.now()).toString()} name="Sorgu Listesi">
+			<div className="flex  w-52 items-center justify-start gap-7 pb-2" >
+
+		
+				
+			<ExportAsExcel  data={visibleData} headers={Object.values(visibleHeaders)} fileName={`${userEmail} ${filenameDate.toString()}`} name="Sorgu Listesi">
+							
 				{({ onClick }) => (
-					<Button variant="outline" onClick={onClick}>
+					<Button className="p-5" variant="outline" onClick={onClick}>
+						<Image src="/excel.svg" alt="logo" width={100} height={100} />
 						Excele Aktar
 					</Button>
 				)}
-			</ExportAsExcel>
+			</ExportAsExcel>	
+			
+			
 
 
 
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button variant="outline" className="ml-auto">
+					<Button variant="outline" className="ml-auto p-5">
+					<Image src="/show.png" alt="logo" width={100} height={100} />
 						Alanları Göster/Gizle
 					</Button>
 				</DropdownMenuTrigger>
@@ -146,21 +169,25 @@ export function DataTable<TData, TValue>({
 					
 				</DropdownMenuContent>
 			</DropdownMenu>
-			<div className="rounded-md border ">
-				<Table className="table-bordered">
+			</div>
+			<div className="rounded-md border max-w-screen-2xl overflow-x-auto relative">
+				<Table className="table-bordered w-full max-w-screen-2xl overflow-x-auto whitespace-nowrap">
 					<TableHeader>
 						{table?.getHeaderGroups()?.map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => {
 									return (
-										<TableHead key={header.id} style={{ width: `${header.getSize()}px` }}
+										<TableHead 
+											key={header.id} 
+											style={{ width: `${header.getSize()}px` }}
+											className="text-center"
 										>
 											{header.isPlaceholder
 												? null
 												: flexRender(
 													header.column.columnDef.header,
-													header.getContext()
-												)}
+														header.getContext()
+													)}
 										</TableHead>
 									);
 								})}
@@ -175,8 +202,10 @@ export function DataTable<TData, TValue>({
 									data-state={row.getIsSelected() && "selected"}
 								>
 									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id} className="table-cell-bordered">
-
+										<TableCell 
+											key={cell.id} 
+											className="table-cell-bordered text-center"
+										>
 											{flexRender(
 												cell.column.columnDef.cell,
 												cell.getContext()
