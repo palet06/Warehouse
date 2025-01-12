@@ -1,15 +1,10 @@
 "use server";
-import {
-  ApiResponseType,
-  ContentItem 
-} from "@/app/types/data-types/dataTypes";
-
+import { ApiResponseType, ContentItem } from "@/app/types/data-types/dataTypes";
 
 import { z } from "zod";
 import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { dummyData } from "../dummy";
-
 
 export const GetAllDataFromWarehouse = async (): Promise<ApiResponseType> => {
   const url =
@@ -77,8 +72,6 @@ export const GetAllDataFromWarehouse = async (): Promise<ApiResponseType> => {
 export const GetSpesificDataFromWarehouse = async (
   basvuruNo: string
 ): Promise<ContentItem[]> => {
-  
-
   return Promise.resolve(dummyData);
 };
 
@@ -116,7 +109,7 @@ export async function login(prevState: any, formData: FormData) {
     };
   }
 
-  await createSession(testUser.id);
+  await createSession(testUser.email);
 
   redirect("/");
 }

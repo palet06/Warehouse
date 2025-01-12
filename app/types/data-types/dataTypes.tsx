@@ -201,9 +201,6 @@ export interface ApiRequestType {
   notInTurkceSeviyesiList: string[] | null;
 }
 
-
-
-
 export const WareHouseColDefs: ColDef<ContentItem>[] = [
   {
     headerName: "Başvuru No",
