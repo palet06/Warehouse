@@ -1,21 +1,48 @@
 import { format } from "date-fns";
-const filterParams = {
-  comparator: function (filterLocalDateAtMidnight: string, cellValue: string) {
-    if (cellValue == null) {
-      return 0;
-    }
-    const varOlan = new Date(cellValue).toLocaleDateString();
-    const elleGirilen = new Date(
-      filterLocalDateAtMidnight
-    ).toLocaleDateString();
+import { ColDef, IDateFilterParams } from "ag-grid-community";
+import { Check, X } from "lucide-react";
 
-    if (varOlan < elleGirilen) {
-      return -1;
-    } else if (varOlan > elleGirilen) {
-      return 1;
+const filterParams: IDateFilterParams = {
+  comparator: (filterLocalDateAtMidnight: Date, cellValue: string) => {
+    const dateAsString = cellValue;
+    if (dateAsString == null) return -1;
+
+    let dateParts;
+    let cellDate;
+    if (dateAsString.includes("T")) {
+      const tempPart = dateAsString.split("T");
+
+      dateParts = tempPart[0].split("-");
+
+      cellDate = new Date(
+        Number(dateParts[0]),
+        Number(dateParts[1]) - 1,
+        Number(dateParts[2])
+      );
     } else {
+      dateParts = dateAsString.split("-");
+      cellDate = new Date(
+        Number(dateParts[0]),
+        Number(dateParts[1]) - 1,
+        Number(dateParts[2])
+      );
+    }
+
+    const formattedFilterDate = format(filterLocalDateAtMidnight, "dd.MM.yyyy");
+    const formattedCellDate = format(cellDate, "dd.MM.yyyy");
+
+    if (formattedFilterDate === formattedCellDate) {
       return 0;
     }
+
+    if (cellDate < filterLocalDateAtMidnight) {
+      return -1;
+    }
+
+    if (cellDate > filterLocalDateAtMidnight) {
+      return 1;
+    }
+    return 0;
   },
 };
 
@@ -174,8 +201,8 @@ export interface ApiRequestType {
   notInTurkceSeviyesiList: string[] | null;
 }
 
-import { ColDef } from "ag-grid-community";
-import { Check, X } from "lucide-react";
+
+
 
 export const WareHouseColDefs: ColDef<ContentItem>[] = [
   {
@@ -236,13 +263,33 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [
   {
     headerName: "Başvuru Tarihi",
     field: "basvuruTarihi",
-
-    filter: "agDateColumnFilter",
-
-    filterParams: filterParams,
-
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
+
+    filter: "agDateColumnFilter",
+    filterParams: filterParams,
+
+    //   { comparator: function(filterLocalDate, cellValue) {
+    //     filterLocalDate = new Date(format(filterLocalDate,"dd.MM.yyyy"));
+    //     const cellDate = new Date(cellValue.slice(0,-1));
+    //     const filterBy = filterLocalDate.getTime();
+    //     const filterMe = cellDate.getTime();
+    //     if (filterBy === filterMe) {
+    //       return 0;
+    //     }
+
+    //     if (filterMe < filterBy) {
+    //       return -1;
+    //     }
+
+    //     if (filterMe > filterBy) {
+    //       return 1;
+    //     }
+    //   },
+    // }
+
+    // valueFormatter: (params: { value?: string }) =>
+    //   params.value ? format(params.value, "dd.MM.yyyy") : "",
   },
 
   {

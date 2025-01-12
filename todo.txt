@@ -1,0 +1,2 @@
+1- "/" taki layout ile /login deki layout u birbirinden ayır.
+2- /api/search ü kaldır. onun yerine server actions iş yapsın

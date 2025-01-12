@@ -1,25 +1,27 @@
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
-import { decrypt } from "@/lib/session";
+// import { cookies } from "next/headers";
+// import { NextRequest, NextResponse } from "next/server";
+// import { decrypt } from "@/lib/session";
 
-const protectedRoutes = ["/login"];
-const publicRoutes = ["/"];
+// const protectedRoutes = ["/login"];
+// const publicRoutes = ["/"];
+import { NextRequest } from "next/server";
+
 
 export default async function middleware(req: NextRequest) {
-  const path = req.nextUrl.pathname;
-  const isProtectedRoute = protectedRoutes.includes(path);
-  const isPublicRoute = publicRoutes.includes(path);
+//   const path = req.nextUrl.pathname;
+//   const isProtectedRoute = protectedRoutes.includes(path);
+//   const isPublicRoute = publicRoutes.includes(path);
 
-  const cookie =  (await cookies()).get("session")?.value;
-  const session = await decrypt(cookie);
+//   const cookie =  (await cookies()).get("session")?.value;
+//   const session = await decrypt(cookie);
 
-  if (isProtectedRoute && !session?.userId) {
-    return NextResponse.redirect(new URL("/login", req.nextUrl));
-  }
+//   if (isProtectedRoute && !session?.userId) {
+//     return NextResponse.redirect(new URL("/login", req.nextUrl));
+//   }
 
-  if (isPublicRoute && session?.userId) {
-    return NextResponse.redirect(new URL("/", req.nextUrl));
-  }
+//   if (isPublicRoute && session?.userId) {
+//     return NextResponse.redirect(new URL("/", req.nextUrl));
+//   }
 
-  return NextResponse.next();
+//   return NextResponse.next();
 }
