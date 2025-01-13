@@ -49,9 +49,7 @@ export function SearchableDataTable() {
           variant: "destructive",
         });
       }
-    } else {
-      // Handle case when basvuruNo is empty
-    }
+    } 
   };
 
   return (
