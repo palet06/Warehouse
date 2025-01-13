@@ -37,12 +37,7 @@ export function LoginFormClient({
         <div className="grid gap-2">
           <div className="flex items-center">
             <Label htmlFor="password">Şifre</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Şifrenizi mi unuttunuz?
-            </a>
+            
           </div>
           <Input id="password" name="password" defaultValue="123456789"  type="password" required />
           {state?.errors?.password && (
@@ -54,12 +49,7 @@ export function LoginFormClient({
         
        
       </div>
-      <div className="text-center text-sm">
-        Hesabınız yok mu?{" "}
-        <a href="#" className="underline underline-offset-4">
-          Kayıt olun
-        </a>
-      </div>
+      
     </form>
   )
 }
