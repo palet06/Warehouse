@@ -16,6 +16,7 @@ import { AgChartsEnterpriseModule } from "ag-charts-enterprise";
 import { ModuleRegistry, DateFilterModule } from "ag-grid-community";
 import { ContentItem } from "@/app/types/data-types/dataTypes";
 import MenuItem from "./menuItem";
+import LoadingCsgb from "./LoadingCsgb";
 
 ModuleRegistry.registerModules([AllEnterpriseModule, DateFilterModule,ClientSideRowModelModule,
   IntegratedChartsModule.with(AgChartsEnterpriseModule),
@@ -28,9 +29,10 @@ LicenseManager.setLicenseKey(
 
 export interface AgTableProps {
   data: ContentItem[];
+  loading:boolean;
 }
 
-const AgTable = ({ data }: AgTableProps) => {
+const AgTable = ({ data,loading }: AgTableProps) => {
   const localeText = AG_GRID_LOCALE_TR;
 
   const paginationPageSizeSelector = useMemo<number[] | boolean>(() => {
@@ -95,6 +97,8 @@ const AgTable = ({ data }: AgTableProps) => {
       paginationPageSize={10}
       paginationPageSizeSelector={paginationPageSizeSelector}
       sideBar
+      loading={loading}
+      loadingOverlayComponent={LoadingCsgb}
       cellSelection={true}         
       enableCharts={true}
 

@@ -72,6 +72,7 @@ export const GetAllDataFromWarehouse = async (): Promise<ApiResponseType> => {
 export const GetSpesificDataFromWarehouse = async (
   basvuruNo: string
 ): Promise<ContentItem[]> => {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
   return Promise.resolve(dummyData);
 };
 
