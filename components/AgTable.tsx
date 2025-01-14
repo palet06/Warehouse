@@ -1,27 +1,38 @@
 "use client";
 import React, { useCallback, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
-import { ColDef, GetContextMenuItemsParams } from "ag-grid-community";
+import { ColDef, GetContextMenuItemsParams, ClientSideRowModelModule} from "ag-grid-community";
 import { AG_GRID_LOCALE_TR } from "@ag-grid-community/locale";
 import { WareHouseColDefs } from "@/app/types/data-types/dataTypes";
 import { themeQuartz } from "ag-grid-community";
 
-import { AllEnterpriseModule, LicenseManager } from "ag-grid-enterprise";
+import { AllEnterpriseModule, LicenseManager,IntegratedChartsModule,ColumnMenuModule,
+  ContextMenuModule,
+  
+  RowGroupingModule } from "ag-grid-enterprise";
+import { AgChartsEnterpriseModule } from "ag-charts-enterprise";
+
 
 import { ModuleRegistry, DateFilterModule } from "ag-grid-community";
 import { ContentItem } from "@/app/types/data-types/dataTypes";
 import MenuItem from "./menuItem";
+import LoadingCsgb from "./LoadingCsgb";
 
-ModuleRegistry.registerModules([AllEnterpriseModule, DateFilterModule]);
+ModuleRegistry.registerModules([AllEnterpriseModule, DateFilterModule,ClientSideRowModelModule,
+  IntegratedChartsModule.with(AgChartsEnterpriseModule),
+  ColumnMenuModule,
+  ContextMenuModule,
+  RowGroupingModule]);
 LicenseManager.setLicenseKey(
   "ag-Grid_Evaluation_License_Not_for_Production_100Devs30_August_2037__MjU4ODczMzg3NzkyMg==9e93ed5f03b0620b142770f2594a23a2"
 );
 
 export interface AgTableProps {
   data: ContentItem[];
+  loading:boolean;
 }
 
-const AgTable = ({ data }: AgTableProps) => {
+const AgTable = ({ data,loading }: AgTableProps) => {
   const localeText = AG_GRID_LOCALE_TR;
 
   const paginationPageSizeSelector = useMemo<number[] | boolean>(() => {
@@ -30,6 +41,10 @@ const AgTable = ({ data }: AgTableProps) => {
 
   const getContextMenuItems = useCallback(
     (params: GetContextMenuItemsParams) => {
+      if (!params.node) {
+        return []; // boşuğa tıklanınca menü açılmasını engelliyoruz.
+      }
+
       return [
         ...(params.defaultItems || []),
 
@@ -42,6 +57,7 @@ const AgTable = ({ data }: AgTableProps) => {
             name: "Yurda Giriş / Çıkış Bilgileri",
           },
         },
+        
         {
           name: "YTB",
           suppressCloseOnSelect: true,
@@ -51,6 +67,7 @@ const AgTable = ({ data }: AgTableProps) => {
             name: "YTB Burs Var Mı?",
           },
         },
+        
       ];
     },
     []
@@ -63,6 +80,9 @@ const AgTable = ({ data }: AgTableProps) => {
     enableValue: true,
     enableRowGroup: true,
     enablePivot: true,
+
+
+    
   };
 
   return (
@@ -77,6 +97,15 @@ const AgTable = ({ data }: AgTableProps) => {
       paginationPageSize={10}
       paginationPageSizeSelector={paginationPageSizeSelector}
       sideBar
+      loading={loading}
+      loadingOverlayComponent={LoadingCsgb}
+      cellSelection={true}         
+      enableCharts={true}
+
+
+      
+         
+          
     />
   );
 };

@@ -10,6 +10,7 @@ import { GetSpesificDataFromWarehouse } from "@/lib/serveractions/actions";
 export function SearchableDataTable() {
   const [basvuruNo, setBasvuruNo] = useState("");
   const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async () => {
     if (basvuruNo.length > 0) {
@@ -24,6 +25,7 @@ export function SearchableDataTable() {
         return;
       }
       
+      setLoading(true);
       try {
         const data = await GetSpesificDataFromWarehouse(basvuruNo);
         if (data.empty) {
@@ -48,10 +50,10 @@ export function SearchableDataTable() {
           description: `Veri getirilirken hata oluştu. ${error} `,
           variant: "destructive",
         });
+      } finally {
+        setLoading(false);
       }
-    } else {
-      // Handle case when basvuruNo is empty
-    }
+    } 
   };
 
   return (
@@ -63,14 +65,13 @@ export function SearchableDataTable() {
           onChange={(e) => setBasvuruNo(e.target.value)}          
           placeholder="Başvuru / YKN giriniz"
           className="max-w-xs"
-          
-         />
+        />
         <Button variant="csgb" onClick={handleSearch}>
           Sorgula
         </Button>
         <p>Çoklu sorgu için başvuru numaraları arasına boşluk bırakın</p>
       </div>
-      {tableData && <AgTable data={tableData} />}
+      {tableData && <AgTable data={tableData} loading={loading} />}
     </>
   );
 }
