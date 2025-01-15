@@ -146,6 +146,7 @@ export interface ContentItem {
 
 export interface DataContent {
   content: ContentItem[];
+  empty:boolean |null;
 }
 
 export interface ApiResponseType {

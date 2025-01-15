@@ -7,12 +7,18 @@ import AgTable from "./AgTable";
 import { toast } from "@/hooks/use-toast";
 import { GetSpesificDataFromWarehouse } from "@/lib/serveractions/actions";
 
+import { DialogProvider } from "./DialogContext";
+import { ContentItem } from "@/app/types/data-types/dataTypes";
+
+
 export function SearchableDataTable() {
   const [basvuruNo, setBasvuruNo] = useState("");
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(false);
+  
 
   const handleSearch = async () => {
+     
     if (basvuruNo.length > 0) {
       const isValid = /^[0-9\s]+$/.test(basvuruNo);
       
@@ -28,7 +34,7 @@ export function SearchableDataTable() {
       setLoading(true);
       try {
         const data = await GetSpesificDataFromWarehouse(basvuruNo);
-        if (data.empty) {
+        if (data.data.empty) {
           setTableData([]);
           toast({
             title: "Kayıt Yok",
@@ -36,10 +42,10 @@ export function SearchableDataTable() {
             variant: "destructive",
           });           
         } else {
-          setTableData(data);
+          setTableData(data.data.content);
           toast({
             title: "Başarılı",
-            description: `Veriler başarıyla getirildi\n ${data.length} kayıt\n`,
+            description: `Veriler başarıyla getirildi\n ${data.data.content.length} kayıt\n`,
             variant: "success",
           });
         } 
@@ -57,7 +63,11 @@ export function SearchableDataTable() {
   };
 
   return (
+    <DialogProvider>
+
+    
     <>
+    
       <div className="flex items-center flex-row gap-4 mb-4">
         <Input
           type="text"
@@ -65,13 +75,16 @@ export function SearchableDataTable() {
           onChange={(e) => setBasvuruNo(e.target.value)}          
           placeholder="Başvuru / YKN giriniz"
           className="max-w-xs"
-        />
+        /> 
         <Button variant="csgb" onClick={handleSearch}>
           Sorgula
         </Button>
         <p>Çoklu sorgu için başvuru numaraları arasına boşluk bırakın</p>
       </div>
       {tableData && <AgTable data={tableData} loading={loading} />}
+      
     </>
+   
+    </DialogProvider>
   );
 }

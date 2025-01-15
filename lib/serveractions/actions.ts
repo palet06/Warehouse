@@ -1,55 +1,12 @@
 "use server";
-import { ApiResponseType, ContentItem } from "@/app/types/data-types/dataTypes";
+import { ApiResponseType } from "@/app/types/data-types/dataTypes";
 
 import { z } from "zod";
 import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
-import { dummyData } from "../dummy";
+//import { dummyData } from "../dummy";
 
-export const GetAllDataFromWarehouse = async (): Promise<ApiResponseType> => {
-  const url =
-    "https://services.csgb.gov.tr/workpernet/get-filtered-work-permit-data";
-  const response = fetch(url, {
-    method: "POST",
-
-    headers: {
-      ApiKey: "d8994824-a876-458c-bae6-44g58c357aa9",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      pageSize: 300,
-      pageNumber: 1,
-      allHistories: false,
-    }),
-  })
-    .then((resp) => resp.json())
-    .catch(function (error) {
-      console.log(error);
-    });
-
-  return response;
-};
-
-// export const GetSpesificDataFromWarehouse = async (basvuruNo: string): Promise<ApiResponseType> => {
-
-// 	let kriter
-//   if (basvuruNo.length == 11) {
-//       kriter = JSON.stringify({
-//       pageSize: 1000,
-//       pageNumber: 1,
-//       allHistories: false,
-//       yabanciKimlikNo:basvuruNo
-
-//     })
-//   } else {
-//     kriter = JSON.stringify({
-//       pageSize: 1000,
-//       pageNumber: 1,
-//       allHistories: false,
-//       inBasvuruNoList:[...basvuruNo.split(" ")]
-//     })
-
-//   }
+// export const GetAllDataFromWarehouse = async (): Promise<ApiResponseType> => {
 //   const url =
 //     "https://services.csgb.gov.tr/workpernet/get-filtered-work-permit-data";
 //   const response = fetch(url, {
@@ -59,7 +16,11 @@ export const GetAllDataFromWarehouse = async (): Promise<ApiResponseType> => {
 //       ApiKey: "d8994824-a876-458c-bae6-44g58c357aa9",
 //       "Content-Type": "application/json",
 //     },
-//     body:kriter
+//     body: JSON.stringify({
+//       pageSize: 300,
+//       pageNumber: 1,
+//       allHistories: false,
+//     }),
 //   })
 //     .then((resp) => resp.json())
 //     .catch(function (error) {
@@ -69,12 +30,51 @@ export const GetAllDataFromWarehouse = async (): Promise<ApiResponseType> => {
 //   return response;
 // };
 
-export const GetSpesificDataFromWarehouse = async (
-  basvuruNo: string
-): Promise<ContentItem[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-  return Promise.resolve(dummyData);
+export const GetSpesificDataFromWarehouse = async (basvuruNo: string): Promise<ApiResponseType> => {
+
+	let kriter
+  if (basvuruNo.length == 11) {
+      kriter = JSON.stringify({
+      pageSize: 1000,
+      pageNumber: 1,
+      allHistories: false,
+      yabanciKimlikNo:basvuruNo
+
+    })
+  } else {
+    kriter = JSON.stringify({
+      pageSize: 1000,
+      pageNumber: 1,
+      allHistories: false,
+      inBasvuruNoList:[...basvuruNo.split(" ")]
+    })
+
+  }
+  const url =
+    "https://services.csgb.gov.tr/workpernet/get-filtered-work-permit-data";
+  const response = fetch(url, {
+    method: "POST",
+
+    headers: {
+      ApiKey: "d8994824-a876-458c-bae6-44g58c357aa9",
+      "Content-Type": "application/json",
+    },
+    body:kriter
+  })
+    .then((resp) => resp.json())
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  return response;
 };
+
+// export const GetSpesificDataFromWarehouse = async (
+//   basvuruNo: string
+// ): Promise<ContentItem[]> => {
+//   await new Promise((resolve) => setTimeout(resolve, 5000));
+//   return Promise.resolve(dummyData);
+// };
 
 const testUser = {
   id: "1",

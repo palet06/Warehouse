@@ -1,7 +1,10 @@
+"use client"
 import React from "react";
 
 import type { CustomMenuItemProps } from "ag-grid-react";
 import { useGridMenuItem } from "ag-grid-react";
+import { useDialog } from "./DialogContext";
+
 
 export interface ButtonCustomMenuItemProps extends CustomMenuItemProps {
   buttonValue: string;
@@ -11,8 +14,9 @@ const MenuItem = ({ name, subMenu, buttonValue }: ButtonCustomMenuItemProps) => 
   useGridMenuItem({
     configureDefaults: () => true,
   });
+  const { openDialog } = useDialog();
 
-  const onClick = () => alert(`${name} clicked`);
+  const onClick = () => openDialog();
 
   return (
     <div>
@@ -33,7 +37,10 @@ const MenuItem = ({ name, subMenu, buttonValue }: ButtonCustomMenuItemProps) => 
           ></span>
         )}
       </span>
+      
     </div>
+    
+
   );
 };
 
