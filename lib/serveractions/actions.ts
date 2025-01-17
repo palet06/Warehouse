@@ -77,12 +77,10 @@ export const GetBorderInfoFromEgm = async (
   console.log(countryCode, passportNo);
 
   if (!countryCode || !passportNo) {
-    toast({
-      title: "Hata",
-      description: "Ülke kodu ve pasaport numarası olmayan kayıt sorgulanamaz",
-      variant: "destructive",
-    });
+    throw Error ("ülke kodu ya da pasaport numarası boş")
   }
+  const myBody = JSON.stringify({egmCountryCode:countryCode, passportNo:passportNo})
+  console.log("mybody",myBody)
 
   const url =
     "http://gate.apps.ocp.csgb.gov.tr/egm-service/egm/query-border-information";
@@ -93,13 +91,13 @@ export const GetBorderInfoFromEgm = async (
       ApiKey: "r89bgtws-t4l6-25ot-sz844-9833ne684527",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ countryCode, passportNo }),
+    body: myBody,
   })
     .then((resp) => resp.json())
     .catch(function (error) {
       console.log(error);
     });
-  console.log(response);
+ 
 
   return response;
 };

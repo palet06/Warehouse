@@ -73,17 +73,7 @@ const AgTable = ({ data, loading }: AgTableProps) => {
             rowData: selectedRowData ? selectedRowData : null,
           },
         },
-        {
-          name: "YTB",
-          suppressCloseOnSelect: false,          
-          menuItem: MenuItem,
-          menuItemParams: {
-            buttonValue: "Sorgula",
-            name: "YTB Burs Var Mı?",
-            type: sorguType.EGM,
-            rowData: selectedRowData ? selectedRowData : null,
-          },
-        },
+        
       ];
     },
     [openDialog]
