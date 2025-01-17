@@ -201,16 +201,24 @@ const ulkeKodlari = [
 ]
 
 
-const ulkeObj = Object.fromEntries(ulkeKodlari.map(([ulke, kod]) => [ulke.toLowerCase(), kod]));
 
 
-export async function ulkeKodunuAl(anahtarKelime:string|undefined|null):Promise<string|null> {
+
+export async function ulkeKodunuAl(anahtarKelime:string|undefined|null) {
+    const ulkeObj = Object.fromEntries(ulkeKodlari.map(([ulke, kod]) => [ulke.toLowerCase(), kod]));
+        
     
+
     for (const [ulke, kod] of Object.entries(ulkeObj)) {
+        
         if (ulke.includes(anahtarKelime!.toLowerCase())) {
-    
-            return Promise.resolve(kod);
+           
+            console.log("kod değişkeni",kod)
+            return kod;
+        } else{
+
+            return null;
         }
     }
-    return Promise.resolve(null);
+    
 }

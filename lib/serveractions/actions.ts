@@ -4,6 +4,8 @@ import { ApiResponseType } from "@/app/types/data-types/dataTypes";
 import { z } from "zod";
 import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
+import { EgmDataTypes } from "@/app/types/data-types/EgmDataTypes";
 //import { dummyData } from "../dummy";
 
 // export const GetAllDataFromWarehouse = async (): Promise<ApiResponseType> => {
@@ -30,25 +32,24 @@ import { redirect } from "next/navigation";
 //   return response;
 // };
 
-export const GetSpesificDataFromWarehouse = async (basvuruNo: string): Promise<ApiResponseType> => {
-
-	let kriter
+export const GetSpesificDataFromWarehouse = async (
+  basvuruNo: string
+): Promise<ApiResponseType> => {
+  let kriter;
   if (basvuruNo.length == 11) {
-      kriter = JSON.stringify({
+    kriter = JSON.stringify({
       pageSize: 1000,
       pageNumber: 1,
       allHistories: false,
-      yabanciKimlikNo:basvuruNo
-
-    })
+      yabanciKimlikNo: basvuruNo,
+    });
   } else {
     kriter = JSON.stringify({
       pageSize: 1000,
       pageNumber: 1,
       allHistories: false,
-      inBasvuruNoList:[...basvuruNo.split(" ")]
-    })
-
+      inBasvuruNoList: [...basvuruNo.split(" ")],
+    });
   }
   const url =
     "https://services.csgb.gov.tr/workpernet/get-filtered-work-permit-data";
@@ -59,12 +60,46 @@ export const GetSpesificDataFromWarehouse = async (basvuruNo: string): Promise<A
       ApiKey: "d8994824-a876-458c-bae6-44g58c357aa9",
       "Content-Type": "application/json",
     },
-    body:kriter
+    body: kriter,
   })
     .then((resp) => resp.json())
     .catch(function (error) {
       console.log(error);
     });
+
+  return response;
+};
+
+export const GetBorderInfoFromEgm = async (
+  countryCode: string,
+  passportNo: string
+): Promise<EgmDataTypes> => {
+  console.log(countryCode, passportNo);
+
+  if (!countryCode || !passportNo) {
+    toast({
+      title: "Hata",
+      description: "Ülke kodu ve pasaport numarası olmayan kayıt sorgulanamaz",
+      variant: "destructive",
+    });
+  }
+
+  const url =
+    "http://gate.apps.ocp.csgb.gov.tr/egm-service/egm/query-border-information";
+  const response = fetch(url, {
+    method: "POST",
+
+    headers: {
+      ApiKey: "r89bgtws-t4l6-25ot-sz844-9833ne684527",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ countryCode, passportNo }),
+  })
+    .then((resp) => resp.json())
+    .catch(function (error) {
+      console.log(error);
+    });
+  console.log(response);
 
   return response;
 };

@@ -24,8 +24,8 @@ import { ModuleRegistry, DateFilterModule } from "ag-grid-community";
 import { ContentItem } from "@/app/types/data-types/dataTypes";
 import MenuItem from "./menuItem";
 import LoadingCsgb from "./LoadingCsgb";
+import CustomPopupDialog, { sorguType } from "./CustomPopupDialog";
 import { useDialog } from "./DialogContext";
-import EgmDialog from "./EgmDialog";
 
 ModuleRegistry.registerModules([
   AllEnterpriseModule,
@@ -46,8 +46,8 @@ export interface AgTableProps {
 }
 
 const AgTable = ({ data, loading }: AgTableProps) => {
- const {isDialogOpen,closeDialog} = useDialog()
- 
+  const { openDialog,rowData } = useDialog();
+
   const localeText = AG_GRID_LOCALE_TR;
 
   const paginationPageSizeSelector = useMemo<number[] | boolean>(() => {
@@ -56,35 +56,37 @@ const AgTable = ({ data, loading }: AgTableProps) => {
 
   const getContextMenuItems = useCallback(
     (params: GetContextMenuItemsParams) => {
+      const selectedRowData = params?.node?.data as ContentItem;
       if (!params.node) {
         return []; // boşuğa tıklanınca menü açılmasını engelliyoruz.
       }
 
       return [
         ...(params.defaultItems || []),
-
         {
           name: "EGM",
-          suppressCloseOnSelect: true,
+          suppressCloseOnSelect: false,
           menuItem: MenuItem,
           menuItemParams: {
             buttonValue: "Sorgula",
-            name: "Yurda Giriş / Çıkış Bilgileri",
+            name: "Yurda Giriş / Çıkış Bilgileri",            
+            rowData: selectedRowData ? selectedRowData : null,
           },
         },
-
         {
           name: "YTB",
-          suppressCloseOnSelect: true,
+          suppressCloseOnSelect: false,          
           menuItem: MenuItem,
           menuItemParams: {
             buttonValue: "Sorgula",
             name: "YTB Burs Var Mı?",
+            type: sorguType.EGM,
+            rowData: selectedRowData ? selectedRowData : null,
           },
         },
       ];
     },
-    []
+    [openDialog]
   );
 
   const defaultColDef: ColDef<ContentItem> = {
@@ -96,12 +98,11 @@ const AgTable = ({ data, loading }: AgTableProps) => {
     enablePivot: true,
   };
 
+
+  
+
   return (
     <>
-    <EgmDialog
-        isDialogOpenProp={isDialogOpen}
-        closeDialogProp={closeDialog}
-      />
       <AgGridReact
         theme={themeQuartz}
         rowData={data}
@@ -120,6 +121,8 @@ const AgTable = ({ data, loading }: AgTableProps) => {
       />
 
       
+
+      <CustomPopupDialog type={sorguType.EGM} rowData={rowData}  />
     </>
   );
 };

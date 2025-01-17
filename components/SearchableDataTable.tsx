@@ -10,19 +10,16 @@ import { GetSpesificDataFromWarehouse } from "@/lib/serveractions/actions";
 import { DialogProvider } from "./DialogContext";
 import { ContentItem } from "@/app/types/data-types/dataTypes";
 
-
 export function SearchableDataTable() {
   const [basvuruNo, setBasvuruNo] = useState("");
   const [tableData, setTableData] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(false);
-  
 
   const handleSearch = async () => {
-     
     if (basvuruNo.length > 0) {
       const isValid = /^[0-9\s]+$/.test(basvuruNo);
-      
-      if (!isValid) {
+
+      if (!isValid || basvuruNo.startsWith(" ")) {
         toast({
           title: "Geçersiz Karakter",
           description: "Başvuru No sadece 0-9 ve boşluk içerebilir.",
@@ -30,7 +27,7 @@ export function SearchableDataTable() {
         });
         return;
       }
-      
+
       setLoading(true);
       try {
         const data = await GetSpesificDataFromWarehouse(basvuruNo);
@@ -40,7 +37,7 @@ export function SearchableDataTable() {
             title: "Kayıt Yok",
             description: `Herhangi bir kayıt bulunamadı`,
             variant: "destructive",
-          });           
+          });
         } else {
           setTableData(data.data.content);
           toast({
@@ -48,9 +45,9 @@ export function SearchableDataTable() {
             description: `Veriler başarıyla getirildi\n ${data.data.content.length} kayıt\n`,
             variant: "success",
           });
-        } 
-      } catch (error) {     
-        setTableData([]);   
+        }
+      } catch (error) {
+        setTableData([]);
         toast({
           title: "Hata",
           description: `Veri getirilirken hata oluştu. ${error} `,
@@ -59,32 +56,28 @@ export function SearchableDataTable() {
       } finally {
         setLoading(false);
       }
-    } 
+    }
   };
 
   return (
     <DialogProvider>
+      <>
+        <div className="flex items-center flex-row gap-4 mb-4">
+          <Input
+            type="text"
+            value={basvuruNo}
+            onChange={(e) => setBasvuruNo(e.target.value)}
+            placeholder="Başvuru / YKN giriniz"
+            className="max-w-xs"
+          />
+          <Button variant="csgb" onClick={handleSearch}>
+            Sorgula
+          </Button>
+          <p>Çoklu sorgu için başvuru numaraları arasına boşluk bırakın</p>
+        </div>
 
-    
-    <>
-    
-      <div className="flex items-center flex-row gap-4 mb-4">
-        <Input
-          type="text"
-          value={basvuruNo}
-          onChange={(e) => setBasvuruNo(e.target.value)}          
-          placeholder="Başvuru / YKN giriniz"
-          className="max-w-xs"
-        /> 
-        <Button variant="csgb" onClick={handleSearch}>
-          Sorgula
-        </Button>
-        <p>Çoklu sorgu için başvuru numaraları arasına boşluk bırakın</p>
-      </div>
-      {tableData && <AgTable data={tableData} loading={loading} />}
-      
-    </>
-   
+        {tableData && <AgTable data={tableData} loading={loading} />}
+      </>
     </DialogProvider>
   );
 }
