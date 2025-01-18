@@ -108,6 +108,7 @@ const AgTable = ({ data, loading }: AgTableProps) => {
         loadingOverlayComponent={LoadingCsgb}
         cellSelection={true}
         enableCharts={true}
+       
       />
 
       

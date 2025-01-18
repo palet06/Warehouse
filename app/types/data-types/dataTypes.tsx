@@ -267,27 +267,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [
     filter: "agDateColumnFilter",
     filterParams: filterParams,
 
-    //   { comparator: function(filterLocalDate, cellValue) {
-    //     filterLocalDate = new Date(format(filterLocalDate,"dd.MM.yyyy"));
-    //     const cellDate = new Date(cellValue.slice(0,-1));
-    //     const filterBy = filterLocalDate.getTime();
-    //     const filterMe = cellDate.getTime();
-    //     if (filterBy === filterMe) {
-    //       return 0;
-    //     }
-
-    //     if (filterMe < filterBy) {
-    //       return -1;
-    //     }
-
-    //     if (filterMe > filterBy) {
-    //       return 1;
-    //     }
-    //   },
-    // }
-
-    // valueFormatter: (params: { value?: string }) =>
-    //   params.value ? format(params.value, "dd.MM.yyyy") : "",
+    
   },
 
   {
