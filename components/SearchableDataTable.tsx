@@ -8,7 +8,7 @@ import { toast } from "@/hooks/use-toast";
 import { GetSpesificDataFromWarehouse } from "@/lib/serveractions/actions";
 
 import { DialogProvider } from "./DialogContext";
-import { ContentItem } from "@/app/types/data-types/dataTypes";
+import { ContentItem } from "@/app/types/WhApiDataTypes";
 
 export function SearchableDataTable() {
   const [basvuruNo, setBasvuruNo] = useState("");

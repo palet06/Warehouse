@@ -4,7 +4,7 @@ import React from "react";
 import type { CustomMenuItemProps } from "ag-grid-react";
 import { useGridMenuItem } from "ag-grid-react";
 import { useDialog } from "./DialogContext";
-import { ContentItem } from "@/app/types/data-types/dataTypes";
+import { ContentItem } from "@/app/types/WhApiDataTypes";
 import { MessageCircleQuestion } from "lucide-react";
 
 

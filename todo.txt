@@ -1,2 +1,4 @@
-1- "/" taki layout ile /login deki layout u birbirinden ayır.
-2- /api/search ü kaldır. onun yerine server actions iş yapsın
+1- login olurken e-izin üzerinden token alsın 
+2- bu token i saklayalım
+3- sorgulama ekranları
+4- fontları düzelt

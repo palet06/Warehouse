@@ -7,7 +7,7 @@ import {
   ClientSideRowModelModule,
 } from "ag-grid-community";
 import { AG_GRID_LOCALE_TR } from "@ag-grid-community/locale";
-import { WareHouseColDefs } from "@/app/types/data-types/dataTypes";
+import { WareHouseColDefs } from "@/app/types/WhApiDataTypes";
 import { themeQuartz } from "ag-grid-community";
 
 import {
@@ -21,7 +21,7 @@ import {
 import { AgChartsEnterpriseModule } from "ag-charts-enterprise";
 
 import { ModuleRegistry, DateFilterModule } from "ag-grid-community";
-import { ContentItem } from "@/app/types/data-types/dataTypes";
+import { ContentItem } from "@/app/types/WhApiDataTypes";
 import MenuItem from "./menuItem";
 import LoadingCsgb from "./LoadingCsgb";
 import CustomPopupDialog, { sorguType } from "./CustomPopupDialog";

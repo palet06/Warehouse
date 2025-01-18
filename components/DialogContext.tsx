@@ -1,5 +1,5 @@
 "use client"
-import { ContentItem } from '@/app/types/data-types/dataTypes';
+import { ContentItem } from '@/app/types/WhApiDataTypes';
 import { createContext, useContext, useState } from 'react';
 
 const DialogContext = createContext({

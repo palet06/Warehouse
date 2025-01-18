@@ -1,4 +1,4 @@
-import { ContentItem } from "@/app/types/data-types/dataTypes";
+import { ContentItem } from "@/app/types/WhApiDataTypes";
 
 export const dummyData: ContentItem[] = [
   {

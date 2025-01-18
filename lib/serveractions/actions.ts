@@ -1,11 +1,11 @@
 "use server";
-import { ApiResponseType } from "@/app/types/data-types/dataTypes";
+import { ApiResponseType } from "@/app/types/WhApiDataTypes";
 
 import { z } from "zod";
 import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
-import { EgmDataTypes } from "@/app/types/data-types/EgmDataTypes";
+import { EgmDataTypes } from "@/app/types/EgmDataTypes";
 
 //import { dummyData } from "../dummy";
 
@@ -103,12 +103,7 @@ export const GetBorderInfoFromEgm = async (
   return response;
 };
 
-// export const GetSpesificDataFromWarehouse = async (
-//   basvuruNo: string
-// ): Promise<ContentItem[]> => {
-//   await new Promise((resolve) => setTimeout(resolve, 5000));
-//   return Promise.resolve(dummyData);
-// };
+
 
 const testUser = {
   id: "1",
