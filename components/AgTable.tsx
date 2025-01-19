@@ -26,6 +26,7 @@ import MenuItem from "./menuItem";
 import LoadingCsgb from "./LoadingCsgb";
 import CustomPopupDialog, { sorguType } from "./CustomPopupDialog";
 import { useDialog } from "./DialogContext";
+import MenuItemIzınDokum from "./MenuItemIzınDokum";
 
 ModuleRegistry.registerModules([
   AllEnterpriseModule,
@@ -70,6 +71,16 @@ const AgTable = ({ data, loading }: AgTableProps) => {
           menuItemParams: {
             buttonValue: "Sorgula",
             name: "Yurda Giriş / Çıkış Bilgileri",            
+            rowData: selectedRowData ? selectedRowData : null,
+          },
+        },
+        {
+          name: "Sure Dokum",
+          suppressCloseOnSelect: false,
+          menuItem: MenuItemIzınDokum,
+          menuItemParams: {
+            buttonValue: "Sorgula",
+            name: "Yurda İzin Süre Dökümü Sorgula",            
             rowData: selectedRowData ? selectedRowData : null,
           },
         },

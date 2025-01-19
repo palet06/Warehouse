@@ -38,7 +38,6 @@ export default async function RootLayout({
 }) {
   const cookie = (await cookies()).get("session")?.value;
   const session = await decrypt(cookie);
-  console.log("layouttan userinfoya yani mytimer a giden session.exp",session?.exp)
 
 
   return (

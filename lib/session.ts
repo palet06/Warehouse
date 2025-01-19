@@ -6,7 +6,6 @@ const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function createSession(userId: string,expires:number) {
-  console.log("loginden createsessiona aktarılan timestamp bilgisi",expires)
   
   
   const session = await encrypt({ userId,expires });  

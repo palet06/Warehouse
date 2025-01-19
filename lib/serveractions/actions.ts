@@ -175,7 +175,6 @@ export async function login(prevState: any, formData: FormData) {
 
   }
 
-  console.log("login fonksiyonu  token bilgisi timestamp i",token.responseTokenExpires)
 
   await createSession(email,token.responseTokenExpires);
 

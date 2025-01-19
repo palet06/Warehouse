@@ -29,18 +29,13 @@ import MyTimer from "./MyTimer"
           <Button className="outline-none  text-white focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-csgbBgRed focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0  dark:focus-visible:ring-slate-300 " variant="link"> <User className="text-white" /> {userName}</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>{label}</DropdownMenuLabel>
+          <DropdownMenuLabel className="flex gap-2">{label} - <MyTimer expTimestamp={sessionExpires} /></DropdownMenuLabel>
           
           
           <DropdownMenuSeparator />
 
-          <DropdownMenuSeparator />
-                   <DropdownMenuItem>
-            <MyTimer expTimestamp={sessionExpires} />
-            
-            
-            
-          </DropdownMenuItem>
+          
+                  
           <DropdownMenuSeparator />
                    <DropdownMenuItem>
             <LogOut />

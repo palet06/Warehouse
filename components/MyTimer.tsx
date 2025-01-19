@@ -3,10 +3,8 @@ import React from 'react';
 import { useTimer } from 'react-timer-hook';
 
 const MyTimer = ({ expTimestamp  }:{expTimestamp:number}) => {
-  console.log("mytimer",expTimestamp)
 
   const expiryTimestamp = new Date(expTimestamp * 1000);
-  console.log("date olarak mytimer",expiryTimestamp)
   
 
   const {  

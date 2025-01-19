@@ -10,6 +10,7 @@ import { GetSpesificDataFromWarehouse } from "@/lib/serveractions/actions";
 import { DialogProvider } from "./DialogContext";
 import { ContentItem } from "@/app/types/WhApiDataTypes";
 
+
 export function SearchableDataTable() {
   const [basvuruNo, setBasvuruNo] = useState("");
   const [tableData, setTableData] = useState<ContentItem[]>([]);
@@ -59,6 +60,7 @@ export function SearchableDataTable() {
     }
   };
 
+
   return (
     <DialogProvider>
       <>
@@ -73,6 +75,7 @@ export function SearchableDataTable() {
           <Button variant="csgb" onClick={handleSearch}>
             Sorgula
           </Button>
+          
           <p>Çoklu sorgu için başvuru numaraları arasına boşluk bırakın</p>
         </div>
 
