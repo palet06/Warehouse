@@ -19,8 +19,9 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { logout } from "@/lib/serveractions/actions"
+import MyTimer from "./MyTimer"
   
-  export function UserInfo({label,userName,}:{label:string,userName:string}) {
+  export function UserInfo({label,userName,sessionExpires}:{label:string,userName:string,sessionExpires:number}) {
     return (
       <DropdownMenu >
         <DropdownMenuTrigger  asChild>
@@ -31,6 +32,15 @@ import { logout } from "@/lib/serveractions/actions"
           <DropdownMenuLabel>{label}</DropdownMenuLabel>
           
           
+          <DropdownMenuSeparator />
+
+          <DropdownMenuSeparator />
+                   <DropdownMenuItem>
+            <MyTimer expTimestamp={sessionExpires} />
+            
+            
+            
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
                    <DropdownMenuItem>
             <LogOut />

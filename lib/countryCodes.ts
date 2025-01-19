@@ -254,7 +254,7 @@ export async function ulkeKodunuAl(
       const [ulkeAdi, ulkeKodu] = await satir;
 
       if (ulkeAdi.includes(anahtarKelime!.toLowerCase())) {
-        console.log(ulkeKodu)
+        
         return ulkeKodu;
       }
       return null;

@@ -1,4 +1,4 @@
-1- login olurken e-izin üzerinden token alsın 
-2- bu token i saklayalım
+1- login olurken e-izin üzerinden token alsın = tamam
+2- bu token i saklayalım contex oluştur.
 3- sorgulama ekranları
 4- fontları düzelt

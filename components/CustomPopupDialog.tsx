@@ -46,7 +46,7 @@ const CustomPopupDialog = ({ type, rowData }: CustomPopupDialog) => {
 
         const egmCountryCode = await ulkeKodunuAl(rowData?.uyruk);
 
-        console.log("fetch yapınca gelen ulke kodu===", egmCountryCode);
+       
         if (!egmCountryCode) {
           toast({
             title: "Hata",
