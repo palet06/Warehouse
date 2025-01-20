@@ -5,15 +5,23 @@ import { cookies } from "next/headers";
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-export async function createSession(userId: string,expires:number) {
+export async function createSession(userId: string,expires:number,tokdenData:string,userPassword:string) {
   
   
-  const session = await encrypt({ userId,expires });  
+  
+  const session = await encrypt({ userId,expires,tokdenData,userPassword });  
+  
 
    (await cookies()).set("session", session, {
     httpOnly: true,
     secure: true,
     expires: new Date(expires*1000),
+
+    
+
+
+    
+    
   });
 }
 
@@ -24,15 +32,19 @@ export async function deleteSession() {
 type SessionPayload = {
   userId: string;
   expires: number;
+  tokdenData:string;
+  userPassword:string;
 
 };
 
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
+    .setIssuedAt()  
+    .setAudience(payload.tokdenData)
     .setExpirationTime(payload.expires)
-    .sign(encodedKey);
+    .sign(encodedKey)
+    
 }
 
 export async function decrypt(session: string | undefined = "") {

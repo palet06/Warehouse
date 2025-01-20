@@ -11,7 +11,7 @@ import { DialogProvider } from "./DialogContext";
 import { ContentItem } from "@/app/types/WhApiDataTypes";
 
 
-export function SearchableDataTable() {
+export function SearchableDataTable({userName, userPassword, userToken} :{userName:string,userPassword:string,userToken:string}) {
   const [basvuruNo, setBasvuruNo] = useState("");
   const [tableData, setTableData] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -79,7 +79,7 @@ export function SearchableDataTable() {
           <p>Çoklu sorgu için başvuru numaraları arasına boşluk bırakın</p>
         </div>
 
-        {tableData && <AgTable data={tableData} loading={loading} />}
+        {tableData && <AgTable data={tableData} loading={loading} userName={userName} userPassword={userPassword} userToken={userToken} />}
       </>
     </DialogProvider>
   );

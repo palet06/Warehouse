@@ -1,5 +1,6 @@
 "use client";
 import React, { useCallback, useMemo } from "react";
+
 import { AgGridReact } from "ag-grid-react";
 import {
   ColDef,
@@ -24,7 +25,7 @@ import { ModuleRegistry, DateFilterModule } from "ag-grid-community";
 import { ContentItem } from "@/app/types/WhApiDataTypes";
 import MenuItem from "./menuItem";
 import LoadingCsgb from "./LoadingCsgb";
-import CustomPopupDialog, { sorguType } from "./CustomPopupDialog";
+import CustomPopupDialog from "./CustomPopupDialog";
 import { useDialog } from "./DialogContext";
 import MenuItemIzınDokum from "./MenuItemIzınDokum";
 
@@ -44,10 +45,19 @@ LicenseManager.setLicenseKey(
 export interface AgTableProps {
   data: ContentItem[];
   loading: boolean;
+  userName: string;
+  userPassword: string;
+  userToken: string;
 }
 
-const AgTable = ({ data, loading }: AgTableProps) => {
-  const { openDialog,rowData } = useDialog();
+const AgTable = ({
+  data,
+  loading,
+  userName,
+  userPassword,
+  userToken,
+}: AgTableProps) => {
+  const { openDialog, rowData } = useDialog();
 
   const localeText = AG_GRID_LOCALE_TR;
 
@@ -70,8 +80,9 @@ const AgTable = ({ data, loading }: AgTableProps) => {
           menuItem: MenuItem,
           menuItemParams: {
             buttonValue: "Sorgula",
-            name: "Yurda Giriş / Çıkış Bilgileri",            
+            name: "Yurda Giriş / Çıkış Bilgileri",
             rowData: selectedRowData ? selectedRowData : null,
+            userToken: userToken,
           },
         },
         {
@@ -80,11 +91,13 @@ const AgTable = ({ data, loading }: AgTableProps) => {
           menuItem: MenuItemIzınDokum,
           menuItemParams: {
             buttonValue: "Sorgula",
-            name: "Yurda İzin Süre Dökümü Sorgula",            
+            name: "İzin Süre Dökümü Sorgula",
             rowData: selectedRowData ? selectedRowData : null,
+            userName: userName,
+            userPassword: userPassword,
+            userToken: userToken,
           },
         },
-        
       ];
     },
     [openDialog]
@@ -98,9 +111,6 @@ const AgTable = ({ data, loading }: AgTableProps) => {
     enableRowGroup: true,
     enablePivot: true,
   };
-
-
-  
 
   return (
     <>
@@ -119,12 +129,9 @@ const AgTable = ({ data, loading }: AgTableProps) => {
         loadingOverlayComponent={LoadingCsgb}
         cellSelection={true}
         enableCharts={true}
-       
       />
 
-      
-
-      <CustomPopupDialog type={sorguType.EGM} rowData={rowData}  />
+      <CustomPopupDialog rowData={rowData} />
     </>
   );
 };

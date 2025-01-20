@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 
+
 import type { CustomMenuItemProps } from "ag-grid-react";
 import { useGridMenuItem } from "ag-grid-react";
 
@@ -10,6 +11,9 @@ import axios from "axios";
 
 export interface ButtonCustomMenuItemProps extends CustomMenuItemProps {
   buttonValue: string;
+  userName:string;
+  userPassword:string;
+  userToken:string;
 
   rowData: ContentItem;
 }
@@ -18,22 +22,27 @@ const MenuItemIzınDokum = ({
   name,
   subMenu,
   buttonValue,
-
+  //userName, 
+  //userPassword,
+  userToken,
   rowData,
 }: ButtonCustomMenuItemProps) => {
+  
   useGridMenuItem({
     configureDefaults: () => true,
   });
 
+
+  
   const downloadPDF = async () => {
     try {
       const response = await axios.get(
-        "https://eizin.csgb.gov.tr/api/ic/getCalismaIzinBelgesi?basvuruNo=3547896",
+        `https://eizin.csgb.gov.tr/api/ic/getCalismaIzinBelgesi?basvuruNo=${rowData.basvuruNo}`,
         {
           headers: {
+            
             //buraya contextten aldığın token i koy
-            Authorization:
-              "Bearer Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtdXJhdC5oYXlhbG9nbHUiLCJleHAiOjE3MzczMjYyMzMsInVzZXIiOnsiaWQiOjU3MTQwMSwidXNlcm5hbWUiOiJtdXJhdC5oYXlhbG9nbHUiLCJwYXNzd29yZCI6bnVsbCwic2VsZWN0ZWRTa3kiOm51bGwsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX1RFS05JS19ERVNURUsifSx7ImF1dGhvcml0eSI6IlJPTEVfRURLIn1dLCJ0Y2tObyI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiZW1haWwiOm51bGwsImVtYWlsVmVyaWZpZWQiOmZhbHNlLCJwaG9uZU51bWJlciI6bnVsbCwicGhvbmVOdW1iZXJWZXJpZmllZCI6ZmFsc2UsImVuYWJsZWQiOnRydWUsImFjY291bnROb25FeHBpcmVkIjp0cnVlLCJhY2NvdW50Tm9uTG9ja2VkIjp0cnVlLCJjcmVkZW50aWFsc05vbkV4cGlyZWQiOnRydWUsImxkYXBMb2dpbkVuYWJsZWQiOmZhbHNlLCJwYXNzd29yZExvZ2luRW5hYmxlZCI6ZmFsc2UsImVkZXZsZXRMb2dpbkVuYWJsZWQiOmZhbHNlLCJjcmVhdGlvbkRhdGUiOm51bGwsImxhc3RMb2dpbkRhdGUiOm51bGwsInVzZXJSb2xlcyI6bnVsbCwidXNlclByaXZpbGVnZXMiOm51bGwsImF0dHJpYnV0ZXMiOm51bGx9LCJpc3MiOiJlaXppbi5pYy1zZXJ2aWNlIn0.IcUsyo1cXkKNHC0DVngYZWYebdaYP7tyPpsL6uC1BmY",
+            Authorization:userToken,
             Accept: "application/json, text/plain, */*",
             "Accept-Encoding": "gzip, deflate, br, zstd",
             "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -46,7 +55,7 @@ const MenuItemIzınDokum = ({
 
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "35478096 İzin Döküm Belgesi.pdf";
+      link.download = `${rowData.basvuruNo} - İzin Döküm Belgesi.pdf`
       document.body.appendChild(link);
 
       link.click();
@@ -73,7 +82,7 @@ const MenuItemIzınDokum = ({
           <button
             disabled={!rowData.basvuruNo}
             className={`outline outline-1 p-2 outline-csgbBgRed hover:bg-white ${
-              !rowData.uyruk || !rowData.pasaportNumarasi
+              !rowData.basvuruNo
                 ? "cursor-not-allowed"
                 : ""
             }`}
