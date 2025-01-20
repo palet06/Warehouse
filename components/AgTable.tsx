@@ -7,7 +7,7 @@ import {
   ClientSideRowModelModule,
 } from "ag-grid-community";
 import { AG_GRID_LOCALE_TR } from "@ag-grid-community/locale";
-import { WareHouseColDefs } from "@/app/types/data-types/dataTypes";
+import { WareHouseColDefs } from "@/app/types/WhApiDataTypes";
 import { themeQuartz } from "ag-grid-community";
 
 import {
@@ -21,11 +21,12 @@ import {
 import { AgChartsEnterpriseModule } from "ag-charts-enterprise";
 
 import { ModuleRegistry, DateFilterModule } from "ag-grid-community";
-import { ContentItem } from "@/app/types/data-types/dataTypes";
+import { ContentItem } from "@/app/types/WhApiDataTypes";
 import MenuItem from "./menuItem";
 import LoadingCsgb from "./LoadingCsgb";
 import CustomPopupDialog, { sorguType } from "./CustomPopupDialog";
 import { useDialog } from "./DialogContext";
+import MenuItemIzınDokum from "./MenuItemIzınDokum";
 
 ModuleRegistry.registerModules([
   AllEnterpriseModule,
@@ -73,6 +74,16 @@ const AgTable = ({ data, loading }: AgTableProps) => {
             rowData: selectedRowData ? selectedRowData : null,
           },
         },
+        {
+          name: "Sure Dokum",
+          suppressCloseOnSelect: false,
+          menuItem: MenuItemIzınDokum,
+          menuItemParams: {
+            buttonValue: "Sorgula",
+            name: "Yurda İzin Süre Dökümü Sorgula",            
+            rowData: selectedRowData ? selectedRowData : null,
+          },
+        },
         
       ];
     },
@@ -108,6 +119,7 @@ const AgTable = ({ data, loading }: AgTableProps) => {
         loadingOverlayComponent={LoadingCsgb}
         cellSelection={true}
         enableCharts={true}
+       
       />
 
       

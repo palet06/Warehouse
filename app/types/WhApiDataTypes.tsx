@@ -2,7 +2,11 @@ import { format } from "date-fns";
 import { ColDef, IDateFilterParams } from "ag-grid-community";
 import { Check, X } from "lucide-react";
 
-const filterParams: IDateFilterParams = {
+const filterParams: IDateFilterParams = { 
+  // Tarih alanlarının filtre işlemlerinin çalışabilmesi için
+  // Ag-Grid'den gelen IDateFilterParams - comparator ile
+  // Ortak tarih formatına çeivirip karşılaştırmaları yapıyoruz.
+  // Filtreleme alanına her tarih girildiğinde burası otomatik olarak tetikleniyor.
   comparator: (filterLocalDateAtMidnight: Date, cellValue: string) => {
     const dateAsString = cellValue;
     if (dateAsString == null) return -1;
@@ -202,7 +206,7 @@ export interface ApiRequestType {
   notInTurkceSeviyesiList: string[] | null;
 }
 
-export const WareHouseColDefs: ColDef<ContentItem>[] = [
+export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekli kolon tanımlamaları
   {
     headerName: "Başvuru No",
     field: "basvuruNo",
@@ -218,7 +222,8 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [
     field: "izinAktifMi",
     useValueFormatterForExport: true,
     filter: "agTextColumnFilter",
-    cellRenderer: (cell) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cellRenderer: (cell: any) =>
       cell.value === true ? (
         <div className="flex items-center justify-center py-2">
           <Check className=" text-green-500" />
@@ -267,27 +272,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [
     filter: "agDateColumnFilter",
     filterParams: filterParams,
 
-    //   { comparator: function(filterLocalDate, cellValue) {
-    //     filterLocalDate = new Date(format(filterLocalDate,"dd.MM.yyyy"));
-    //     const cellDate = new Date(cellValue.slice(0,-1));
-    //     const filterBy = filterLocalDate.getTime();
-    //     const filterMe = cellDate.getTime();
-    //     if (filterBy === filterMe) {
-    //       return 0;
-    //     }
-
-    //     if (filterMe < filterBy) {
-    //       return -1;
-    //     }
-
-    //     if (filterMe > filterBy) {
-    //       return 1;
-    //     }
-    //   },
-    // }
-
-    // valueFormatter: (params: { value?: string }) =>
-    //   params.value ? format(params.value, "dd.MM.yyyy") : "",
+    
   },
 
   {
@@ -457,7 +442,8 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [
     headerName: "İşvereni Var Mı",
     field: "isvereniVarMi",
     filter: "agTextColumnFilter",
-    cellRenderer: (cell) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cellRenderer: (cell:any) =>
       cell.value === true ? (
         <div className="flex items-center justify-center py-2">
           <Check className=" text-green-500" />

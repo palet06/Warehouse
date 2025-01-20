@@ -11,11 +11,11 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useDialog } from "./DialogContext";
-import { ContentItem } from "@/app/types/data-types/dataTypes";
+import { ContentItem } from "@/app/types/WhApiDataTypes";
 import { useEffect, useState } from "react";
 import { GetBorderInfoFromEgm } from "@/lib/serveractions/actions";
 import { ulkeKodunuAl } from "@/lib/countryCodes";
-import { EgmDataTypes } from "@/app/types/data-types/EgmDataTypes";
+import { EgmDataTypes } from "@/app/types/EgmDataTypes";
 import { title } from "process";
 import { toast } from "@/hooks/use-toast";
 import { Rowdies } from "next/font/google";
@@ -46,7 +46,7 @@ const CustomPopupDialog = ({ type, rowData }: CustomPopupDialog) => {
 
         const egmCountryCode = await ulkeKodunuAl(rowData?.uyruk);
 
-        console.log("fetch yapınca gelen ulke kodu===", egmCountryCode);
+       
         if (!egmCountryCode) {
           toast({
             title: "Hata",

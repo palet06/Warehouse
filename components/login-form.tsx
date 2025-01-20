@@ -28,7 +28,7 @@ export function LoginFormClient({
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="email">E-Posta</Label>
-          <Input id="email" defaultValue="murath31@gmail.com" name="email" type="email" placeholder="m@csgb.gov.tr" required />
+          <Input id="email" name="email" type="text" placeholder="isim.soyisim" required />
           
           {state?.errors?.email && (
         <p className="text-red-500">{state.errors.email}</p>
@@ -39,7 +39,7 @@ export function LoginFormClient({
             <Label htmlFor="password">Şifre</Label>
             
           </div>
-          <Input id="password" name="password" defaultValue="123456789"  type="password" required />
+          <Input id="password" name="password"   type="password" required />
           {state?.errors?.password && (
         <p className="text-red-500">{state.errors.password}</p>
       )}
