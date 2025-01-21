@@ -4,11 +4,13 @@ import { createContext, useContext, useState } from "react";
 
 const DialogContext = createContext({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  openDialog: (rowData: ContentItem, tokenData: string) => {},
-  closeDialog: () => {},  
+  openDialog: (rowData: ContentItem,userToken:string) => {},
+  closeDialog: () => {},
+  userToken:"",
+ 
   rowData: {} as ContentItem,
-  tokenData: "",
-  isDialogOpen: false,
+  
+  isDialogOpen:false,
 });
 
 import { ReactNode } from "react";
@@ -19,30 +21,28 @@ interface DialogProviderProps {
 
 export const DialogProvider = ({ children }: DialogProviderProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  
+  const [userToken,setUserToken] = useState<string>("")
 
   const [rowData, setRowData] = useState<ContentItem>({});
-  const [tokenData,setTokenData] = useState<string>("")
 
-  const openDialog = (data: ContentItem,tokenData:string) => {
+  const openDialog = (data: ContentItem,userToken:string) => {
+    setUserToken(userToken)
     setRowData(data);
-    setTokenData(tokenData)
-
     setIsDialogOpen(true);
   };
 
   const closeDialog = () => setIsDialogOpen(false);
- 
-    
+  
 
   return (
     <DialogContext.Provider
       value={{
-        isDialogOpen,
+        userToken,
+        isDialogOpen,        
         rowData,
-        tokenData,
         openDialog,
         closeDialog,
+        
        
       }}
     >

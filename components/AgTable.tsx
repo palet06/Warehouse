@@ -58,6 +58,7 @@ const AgTable = ({
   userToken,
 }: AgTableProps) => {
   const { openDialog, rowData } = useDialog();
+  
 
   const localeText = AG_GRID_LOCALE_TR;
 

@@ -29,7 +29,7 @@ export enum sorguType {
 }
 
 const CustomPopupDialog = ({ rowData }: CustomPopupDialog) => {
-  const { isDialogOpen, closeDialog, tokenData } = useDialog();
+  const { isDialogOpen, closeDialog, userToken } = useDialog();
   const [data, setData] = useState<EgmDataTypes>();
 
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ const CustomPopupDialog = ({ rowData }: CustomPopupDialog) => {
 
         const response = await GetBorderInfoFromEgm(
           rowData?.basvuruNo!.toString(),
-          tokenData
+          userToken
         );
         toast({
           title: "Başarılı",
@@ -68,8 +68,8 @@ const CustomPopupDialog = ({ rowData }: CustomPopupDialog) => {
           </SheetHeader>
           {!loading ? (
             <>
-              <div className="flex justify-center overflow-y-scroll h-[250px] w-[50vh]">
-                <table className="w-full h-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+              <div className="flex flex-col justify-center items-center overflow-y-auto h-[300px] w-[50vh]">
+                <table className="w-full h-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
                   <thead className="border-b sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                       <th scope="col" className="px-6 py-3">

@@ -52,10 +52,9 @@ export const GetBorderInfoFromEgm = async (
   basvuruId: string,
   tokenData: string
 ): Promise<EgmDataTypes> => {
-  console.log("server methaoddan gelen token ", tokenData);
 
   if (!basvuruId) {
-    throw Error("ülke kodu ya da pasaport numarası boş");
+    throw Error("ülke kodu ya da pasaport numarası boş olamaz");
   }
 
   const url = `https://eizin.csgb.gov.tr/api/emniyetGirisCikisSorgula?basvuruId=${basvuruId}`;

@@ -38,6 +38,7 @@ export default async function RootLayout({
 }) {
   const cookie = (await cookies()).get("session")?.value;
   const session = await decrypt(cookie);
+  
 
 
   return (
