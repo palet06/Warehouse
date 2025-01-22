@@ -16,6 +16,8 @@ import { GetBorderInfoFromEgm } from "@/lib/serveractions/actions";
 import { EgmDataTypes } from "@/app/types/EgmDataTypes";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import LoadingCsgb from "./LoadingCsgb";
+
 
 interface CustomPopupDialog {
   rowData: ContentItem;
@@ -55,23 +57,37 @@ const CustomPopupDialog = ({ rowData }: CustomPopupDialog) => {
       fetchData();
     }
   }, [isDialogOpen]);
+  const renderData = {
+    isim: `${rowData.adi} ${rowData.soyadi}` || "Veri yok",
+    ykn: rowData.yabanciKimlikNumarasi || "Veri yok",
+    basvuruNo: rowData.basvuruNo || "Veri yok",
+    tarih: data?.body?.map((a) => a.tarih).flat() || ["Veri yok"],
+    girisCikis: data?.body?.map((a) => a.girisCikis).flat()||["Veri yok"],
+  };
 
   return (
     <>
-      <Sheet open={isDialogOpen}>
-        <SheetContent side={"top"} className="overflow-y-scroll">
+      <Sheet   open={isDialogOpen}>
+        <SheetContent
+          side={"top"}
+          className="flex flex-col gap-10 [&>button]:hidden"
+        >
           <SheetHeader>
-            <SheetTitle className="flex w-full justify-center items-center">
-              {rowData?.basvuruNo} - {rowData?.yabanciKimlikNumarasi} -{" "}
-              {rowData.adi} {rowData.soyadi}
-            </SheetTitle>
+            <SheetTitle></SheetTitle>
           </SheetHeader>
           {!loading ? (
-            <>
-              <div className="flex flex-col justify-center items-center overflow-y-auto h-[300px] w-[50vh]">
-                <table className="w-full h-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
+            <div className="flex flex-col px-12ç">
+              <div className="flex flex-col justify-center items-center overflow-y-auto">
+                <table className="w-full h-full text-sm border  rtl:text-right text-gray-500 dark:text-gray-400 ">
                   <thead className="border-b sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
+                    <tr className="text-center">
+                      <th scope="col" className="px-6 py-3">
+                        İsim
+                      </th>
+                      <th className="px-6 py-3">Başvuru No</th>
+                      <th scope="col" className="px-6 py-3">
+                        YKN
+                      </th>
                       <th scope="col" className="px-6 py-3">
                         Tarih
                       </th>
@@ -80,37 +96,67 @@ const CustomPopupDialog = ({ rowData }: CustomPopupDialog) => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {data?.body?.map((kayit, index) => (
-                      <tr
-                        key={index}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                  <tbody >
+                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center">
+                      {/* İsim */}
+                      <td
+                        scope="row"
+                        className="border px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        <td
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          <p>{format(kayit.tarih, "dd.MM.yyyy HH:mm:ss")}</p>
-                        </td>
-
-                        <td
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {kayit.girisCikis}
-                        </td>
-                      </tr>
-                    ))}
+                        {renderData.isim}
+                      </td>
+                      {/* Başvuru No */}
+                      <td
+                        scope="row"
+                        className="border px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {renderData.basvuruNo}
+                      </td>
+                      {/* YKN */}
+                      <td
+                        scope="row"
+                        className="border px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {renderData.ykn}
+                      </td>
+                      {/* Tarih */}
+                      <td
+                        scope="row"
+                        className="border px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white "
+                      >
+                        {renderData.tarih?.map((kayit, index) => (
+                          <p className="py-2" key={index}>
+                            {kayit!="Veri yok"?(format(kayit, "dd.MM.yyyy hh:mm:ss")):(kayit)}
+                          </p>
+                        ))}
+                      </td>
+                      {/* Giriş / Çıkış */}
+                      <td
+                        scope="row"
+                        className="border px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white "
+                      >
+                        {renderData.girisCikis?.map((kayit, index) => (
+                          <p className="py-2" key={index}>
+                            {kayit}
+                          </p>
+                        ))}
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
-            </>
+            </div>
           ) : (
-            "veriler getiriliyor"
+            <LoadingCsgb />
           )}
           <SheetFooter>
             <SheetClose asChild>
-              <Button onClick={closeDialog} type="submit">
+              <Button
+                variant={"csgb"}
+                className="hover:bg-csgbBgRed hover:text-white"
+                onClick={closeDialog}
+                type="submit"
+              >
                 Kapat
               </Button>
             </SheetClose>

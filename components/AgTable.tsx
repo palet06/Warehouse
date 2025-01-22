@@ -131,8 +131,10 @@ const AgTable = ({
         cellSelection={true}
         enableCharts={true}
       />
+     
 
       <CustomPopupDialog rowData={rowData} />
+     
     </>
   );
 };
