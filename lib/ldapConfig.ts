@@ -1,15 +1,22 @@
 import ldap, { Client, SearchOptions, SearchEntry } from 'ldapjs';
 
-const ldapUrl = 'ldap://calisma.local:389';
-const baseDN = 'OU=UluslarArasiIsgucuGM,OU=Merkez,OU=Kullanicilar,OU=CalismaBakanligi,DC=calisma,DC=local';
-const username = 'AdControlUser@calisma.local';
-const password = '123456!';
+
+const ldapUrl = process.env.NEXT_PUBLIC_LDAP_URL
+const baseDN = process.env.NEXT_PUBLIC_LDAP_BASE_DN
+const username = process.env.NEXT_PUBLIC_LDAP_USERNAME
+const password = process.env.NEXT_PUBLIC_LDAP_PASSWORD
+
+
+// const ldapUrl = "ldap://calisma.local:389" 
+// const baseDN = "OU=UluslarArasiIsgucuGM,OU=Merkez,OU=Kullanicilar,OU=CalismaBakanligi,DC=calisma,DC=local"
+// const username = "AdControlUser@calisma.local" 
+// const password = "123456!"
 
 export const authenticate = (): Promise<Client> => {
     return new Promise((resolve, reject) => {
-      const client: Client = ldap.createClient({ url: ldapUrl });
+      const client: Client = ldap.createClient({ url: ldapUrl! });
   
-      client.bind(username, password, (err) => {
+      client.bind(username!, password!, (err) => {
         if (err) {
           console.error('LDAP bind error:', err);
           return reject(err);
@@ -31,7 +38,7 @@ export const authenticate = (): Promise<Client> => {
         attributes: ['dn', 'sn', 'cn', 'mail'], // İstediğiniz özellikler
       };
   
-      client.search(baseDN, opts, (err, search) => {
+      client.search(baseDN!, opts, (err, search) => {
         if (err) {
           console.error('LDAP arama hatası:', err);
           return reject(err);
@@ -71,6 +78,7 @@ export const authenticate = (): Promise<Client> => {
 
 
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export const searchBySamAccountName = async (samAccountName: string): Promise<any[]> => {
     const client = await authenticate();
   
@@ -81,12 +89,13 @@ export const authenticate = (): Promise<Client> => {
         attributes: ['dn', 'sn', 'cn', 'mail'],
       };
   
-      client.search(baseDN, opts, (err, search) => {
+      client.search(baseDN!, opts, (err, search) => {
         if (err) {
           console.error('LDAP search error:', err);
           return reject(err);
         }
   
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const users: any[] = [];
   
         search.on('searchEntry', (entry: SearchEntry) => {
@@ -99,6 +108,7 @@ export const authenticate = (): Promise<Client> => {
           users.push(user);
         });
   
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         search.on('end', (result) => {
           client.unbind();
           resolve(users);

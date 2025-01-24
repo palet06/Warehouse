@@ -10,6 +10,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 
+
 export const GetSpesificDataFromWarehouse = async (
   basvuruNo: string
 ): Promise<ApiResponseType> => {
@@ -52,7 +53,6 @@ export const GetBorderInfoFromEgm = async (
   basvuruId: string,
   tokenData: string
 ): Promise<EgmDataTypes> => {
-
   if (!basvuruId) {
     throw Error("ülke kodu ya da pasaport numarası boş olamaz");
   }
@@ -142,3 +142,9 @@ export async function getToken(email: string, password: string) {
     return error.status;
   }
 }
+
+
+
+
+
+

@@ -51,6 +51,8 @@ const filterParams: IDateFilterParams = {
 };
 
 export interface ContentItem {
+  // isyeriIlKodu ve sirketOrtagiMi alanları yeni eklendi
+  // 21.01.2025
   basvuruNo?: number | null;
   yabanciKimlikNumarasi?: string | null;
   izinAktifMi?: boolean | null;
@@ -97,6 +99,8 @@ export interface ContentItem {
   isyeriSermayeYapisi?: string | null;
   isyeriFirmaTipi?: string | null;
   isyeriVergiNumarasi?: string | null;
+  isyeriIlKodu?: string |null;
+  sirketOrtagiMi?:boolean | null;
   calisacagiIl?: string | null;
   calisacagiIlKodu?: number | null;
   calisacagiIlce?: string | null;
@@ -211,17 +215,20 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     headerName: "Başvuru No",
     field: "basvuruNo",
     filter: "agNumberColumnFilter",
+    chartDataType:"series"
   },
   {
     headerName: "Yabancı Kimlik Numarası",
     field: "yabanciKimlikNumarasi",
     filter: "agTextColumnFilter",
+    chartDataType:"series"
   },
   {
     headerName: "İzin Aktif Mi",
     field: "izinAktifMi",
     useValueFormatterForExport: true,
     filter: "agTextColumnFilter",
+    chartDataType:"category",
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cellRenderer: (cell: any) =>
       cell.value === true ? (
@@ -240,37 +247,44 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     headerName: "İzin Durumu",
     field: "izinDurumu",
     filter: "agTextColumnFilter",
+    chartDataType:"series"
   },
   {
     headerName: "Başvuru Türü",
     field: "basvuruTuru",
     filter: "agTextColumnFilter",
+    chartDataType:"category"
   },
   {
     headerName: "Başvuru Tipi",
     field: "basvuruTipi",
     filter: "agTextColumnFilter",
+    chartDataType:"category"
   },
   {
     headerName: "Çalışma İzni Türü",
     field: "calismaIzniTuru",
     filter: "agTextColumnFilter",
+    chartDataType:"category"
   },
-  { headerName: "Adı", field: "adi", filter: "agTextColumnFilter" },
-  { headerName: "Soyadı", field: "soyadi", filter: "agTextColumnFilter" },
+  { headerName: "Adı", field: "adi", filter: "agTextColumnFilter", chartDataType:"category" },
+  { headerName: "Soyadı", field: "soyadi", filter: "agTextColumnFilter",chartDataType:"category" },
   {
     headerName: "İzin Verilen İl",
     field: "izinVerilenIl",
     filter: "agTextColumnFilter",
+    chartDataType:"category"
   },
   {
     headerName: "Başvuru Tarihi",
     field: "basvuruTarihi",
+  
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
 
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time"
 
     
   },
@@ -280,6 +294,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     field: "basvuruKararTarihi",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -298,6 +313,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     field: "onayVerilenBitisTarihi",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -307,6 +323,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     field: "aktiflesmeTarihi",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -316,6 +333,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     field: "onayTebligTarihi",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -325,6 +343,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     field: "iptalSonlandirmaTarihi",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -333,12 +352,15 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     headerName: "İptal Sonlandırma Gerekçesi",
     field: "iptalSonlandirmaGerekcesi",
     filter: "agTextColumnFilter",
+    chartDataType:"category",
+
   },
   {
     headerName: "Son Değişiklik Zamanı",
     field: "sonDegisiklikZamani",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -348,6 +370,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     field: "olusturulmaZamani",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -357,6 +380,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     field: "reddeItirazKararTarihi",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -366,6 +390,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     field: "reddeItirazTarihi",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -374,12 +399,14 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     headerName: "Uzatma Başvurusunun Yapıldığı Başvuru No",
     field: "uzatmaBasvurusununYapildigiBasvuruNo",
     filter: "agNumberColumnFilter",
+    chartDataType:"category",
   },
   {
     headerName: "Talep Edilen İzin Başlangıç Tarihi",
     field: "talepEdilenIzinBaslangicTarihi",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -389,6 +416,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     field: "talepEdilenIzinBitisTarihi",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -397,6 +425,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     headerName: "Ret Açıklaması",
     field: "retAciklamasi",
     filter: "agTextColumnFilter",
+    chartDataType:"category",
   },
   { headerName: "Şerhler", field: "serhler", filter: "agTextColumnFilter" },
   {
@@ -414,6 +443,7 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     field: "islemTarihi",
     filter: "agDateColumnFilter",
     filterParams: filterParams,
+    chartDataType:"time",
 
     valueFormatter: (params: { value?: string }) =>
       params.value ? format(params.value, "dd.MM.yyyy") : "",
@@ -422,11 +452,13 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     headerName: "Aylık Brüt Ücret",
     field: "aylikBrutUcret",
     filter: "agNumberColumnFilter",
+    chartDataType:"category",
   },
   {
     headerName: "Para Birimi",
     field: "paraBirimi",
     filter: "agTextColumnFilter",
+    chartDataType:"category",
   },
   {
     headerName: "Meslek Tanım",
@@ -442,6 +474,25 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
     headerName: "İşvereni Var Mı",
     field: "isvereniVarMi",
     filter: "agTextColumnFilter",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cellRenderer: (cell:any) =>
+      cell.value === true ? (
+        <div className="flex items-center justify-center py-2">
+          <Check className=" text-green-500" />
+        </div>
+      ) : cell.value === false ? (
+        <div className="flex items-center justify-center py-2">
+          <X className=" text-red-500" />
+        </div>
+      ) : (
+        ""
+      ),
+  },
+  {
+    headerName: "Şirket Ortağı Mı?",
+    field: "sirketOrtagiMi",
+    filter: "agTextColumnFilter",
+    chartDataType:"series",
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cellRenderer: (cell:any) =>
       cell.value === true ? (
@@ -490,6 +541,11 @@ export const WareHouseColDefs: ColDef<ContentItem>[] = [ // Ag-Grid için gerekl
   {
     headerName: "İşyeri NACE Kodu",
     field: "isyeriNaceKodu",
+    filter: "agTextColumnFilter",
+  },
+  {
+    headerName: "İşyeri İl Kodu",
+    field: "isyeriIlKodu",
     filter: "agTextColumnFilter",
   },
   {
