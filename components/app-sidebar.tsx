@@ -1,4 +1,6 @@
+"use client"
 import * as React from "react"
+import { usePathname } from "next/navigation";
 
 
 import {
@@ -20,13 +22,18 @@ import Image from "next/image"
 const data = {
   navMain: [
     {
-      title: "Sorgulamlar",
+      title: "Sorgulamalar",
       url: "#",
       items: [
         {
-          title: "Sorgulamalar",
+          title: "Warehouse",
           url: "/",
-          isActive: true,
+          
+        },
+        {
+          title: "İstatistikler",
+          url: "/statistics",
+          
         },
        
         
@@ -39,6 +46,8 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+const pathName = usePathname();
+  
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -64,7 +73,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             {data.navMain.map((item) => (
               <SidebarMenuItem  key={item.title}>
                 <SidebarMenuButton  asChild>
-                  {item.url == "#" ? (<div className="font-medium uppercase text-csgbBgRed">{item.title}</div>): (<a href={item.url} className="font-medium">
+                  {item.url == "#" ? (<div className="font-medium uppercase text-csgbBgRed cursor-pointer">{item.title}</div>): (<a href={item.url} className="font-medium cursor-pointer">
                     {item.title}
                   </a>)}
                   
@@ -73,7 +82,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <SidebarMenuSub >
                     {item.items.map((item) => (
                       <SidebarMenuSubItem  key={item.title}>
-                        <SidebarMenuSubButton  asChild isActive={item.isActive}>
+                        <SidebarMenuSubButton  asChild isActive={pathName === item.url}>
                           <a href={item.url}>{item.title}</a>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>

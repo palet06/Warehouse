@@ -1,8 +1,9 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import UserSearch from './UserSearch';
+
 
 const UserList = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +18,8 @@ const UserList = () => {
         }
         const data = await response.json();
         setUsers(data.data);
-      } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error:any) {
         setError(error.message);
       } finally {
         setLoading(false);
@@ -32,7 +34,7 @@ const UserList = () => {
 
   return (
     <div>
-      <UserSearch />
+   
       <h1>Kullanıcı Listesi</h1>
       <ul>
         {users.map((user, index) => (

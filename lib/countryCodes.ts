@@ -199,7 +199,7 @@ const ulkeKodlari = [
   ["ZİMBABVE CUMHURİYETİ", "ZWE"],
 ];
 
-export const toLowerCaseTurkish = async (str) => {
+export const toLowerCaseTurkish = async (str: string) => {
   const charMap = {
     I: "ı",
     İ: "i",
@@ -237,7 +237,7 @@ export const toLowerCaseTurkish = async (str) => {
 
   return str.replace(
     /[A-ZİIÜŞÇĞÖ]/g,
-    (char: keyof typeof charMap) => charMap[char] || char
+    (char: string) => charMap[char as keyof typeof charMap] || char
   );
 };
 

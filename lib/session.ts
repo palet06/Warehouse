@@ -13,9 +13,11 @@ export async function createSession(userId: string,expires:number,tokdenData:str
   
 
    (await cookies()).set("session", session, {
-    httpOnly: true,
-    secure: true,
+    
+    httpOnly:false,
+    secure: false,
     expires: new Date(expires*1000),
+   
 
     
 

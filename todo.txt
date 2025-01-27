@@ -2,3 +2,6 @@
 2- bu token i saklayalım contex oluştur.
 3- sorgulama ekranları
 4- fontları düzelt
+
+
+denemek için parametresi 1 olan bi sorgu at veriler geliyor mu
