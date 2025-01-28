@@ -42,6 +42,7 @@ const MenuItemIzınDokum = ({
   
   const downloadPDF = async (selectedRows:ContentItem[], userToken:string) => {
     const zip = new JSZip();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let response:AxiosResponse<any, any>
 
   try {

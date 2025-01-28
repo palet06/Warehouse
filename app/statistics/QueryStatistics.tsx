@@ -30,6 +30,10 @@ import { Separator } from "@radix-ui/react-separator";
 import Loading from "./Loading";
 
 const GetQueryResult = async (queryType: number) => {
+  if(queryType ==0) {
+    return
+  }
+
   try {
     const result = await GetStatistics(queryType);
     return result;
@@ -98,7 +102,8 @@ export function QueryStatistics() {
                 variant="csgb"
                 className="w-[80px]"
                 onClick={async () => {
-                  setisLoading(true);
+                  if(queryData>0) {
+                    setisLoading(true);
                   const sonuc = await GetQueryResult(queryData);
                   if (!sonuc.message) {
                     setisLoading(false);
@@ -107,6 +112,8 @@ export function QueryStatistics() {
                     setisLoading(false)
                     setErrorMessage(sonuc.message)
                   }
+                  }
+                  
                 }}
               >
                 Sorgula

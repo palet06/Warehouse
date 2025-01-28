@@ -8,10 +8,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+
 import ExcelExport from "./ExcelExport";
 import { format } from "date-fns";
+import { OctagonAlert } from "lucide-react";
 
 interface QueryTableProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,7 +32,9 @@ const QueryTable = ({ data, initialRowsPerPage }: QueryTableProps) => {
   if (!Array.isArray(data) || data.length === 0) {
     return (
       <div className="flex flex-col w-full h-[400px] items-center justify-center border">
-        <p className="text-2xl text-csgbBgRed">Gösterilecek herhangi bir veri bulunmamaktadır.</p>
+        <OctagonAlert height={250} width={250} className="text-csgbBgRed/20" />
+        
+        {/* <p className="text-2xl text-csgbBgRed">Gösterilecek herhangi bir veri bulunmamaktadır.</p> */}
       </div>
     );
   }
@@ -61,7 +63,8 @@ const QueryTable = ({ data, initialRowsPerPage }: QueryTableProps) => {
   const endIndex = startIndex + rowsPerPage;
   const currentData = sortedData.slice(startIndex, endIndex);
 
-  const handleSort = (key) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSort = (key:any) => {
     let direction = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
       direction = "desc";
@@ -70,14 +73,16 @@ const QueryTable = ({ data, initialRowsPerPage }: QueryTableProps) => {
   };
 
   // Sayfa değiştirme işlemleri
-  const goToPage = (page) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const goToPage = (page:any) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
 
   // Satır sayısını değiştirme
-  const handleRowsPerPageChange = (event) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleRowsPerPageChange = (event:any) => {
     setRowsPerPage(Number(event.target.value));
     setCurrentPage(1); // Yeni satır sayısına göre sayfa sıfırlanır
   };
@@ -105,10 +110,7 @@ const QueryTable = ({ data, initialRowsPerPage }: QueryTableProps) => {
           </select>
         </div>
         <div>
-          {/* <Button variant="csgb">
-           <Image src="/excel.svg" height={30} width={30} alt="Excel" />
-           Excel olarak indir
-            </Button> */}
+          
 
             
 <ExcelExport data={data} fileName={`${formatedDate} - Sorgu`} />
