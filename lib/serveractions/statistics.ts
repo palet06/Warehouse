@@ -21,6 +21,7 @@ export const GetStatistics = async (
       authorization: session?.aud as string,
       "Content-Type": "application/json",
     },
+    cache:"no-cache"
   })
     .then((resp) => resp.json())
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars

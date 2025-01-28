@@ -14,9 +14,9 @@ const LdapUsersList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/ldapusers');
+        const response = await fetch('http://localhost:3000/api/ldapusers',{cache:"no-cache"});
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Bağlantı hatası');
         }
         const data = await response.json();
         setUsers(data.data);
@@ -31,8 +31,8 @@ const LdapUsersList = () => {
     fetchUsers();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p>Veriler getiriliyor</p>;
+  if (error) return <p> {error}</p>;
 
   return (
     <div>

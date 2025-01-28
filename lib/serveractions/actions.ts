@@ -39,6 +39,7 @@ export const GetSpesificDataFromWarehouse = async (
       ApiKey: "d8994824-a876-458c-bae6-44g58c357aa9",
       "Content-Type": "application/json",
     },
+    cache:"no-cache",
     body: kriter,
   })
     .then((resp) => resp.json())
@@ -65,6 +66,7 @@ export const GetBorderInfoFromEgm = async (
       authorization: tokenData,
       "Content-Type": "application/json",
     },
+    cache: "no-cache",
   })
     .then((resp) => resp.json())
     .catch(function (error) {
@@ -159,7 +161,7 @@ export async function getToken(email: string, password: string) {
       {
         username: email,
         password: password,
-      }
+      },
     );
     
     if (response.headers["authorization"] === undefined) {

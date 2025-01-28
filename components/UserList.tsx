@@ -14,7 +14,7 @@ const UserList = () => {
         const response = await fetch('/api/ldapusers');
         
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Bağlantı hatası');
         }
         const data = await response.json();
         setUsers(data.data);
