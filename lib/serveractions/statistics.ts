@@ -23,8 +23,9 @@ export const GetStatistics = async (
     },
   })
     .then((resp) => resp.json())
-    .catch(function (error) {
-      console.log(error);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+    .catch(function (error:any) {
+      return{message:"Veriler getirilirken hata oluştu."}
     });
 
   return response;

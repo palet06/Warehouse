@@ -93,10 +93,16 @@ export async function login(prevState: any, formData: FormData) {
       errors: result.error.flatten().fieldErrors,
     };
   }
+  let token
+  
+  let tmpEmail,tmpPassword
+  try {
 
-  const { email, password } = result.data;
+    const { email, password } = result.data;
+    tmpEmail = email;
+    tmpPassword = password;
 
-  const token = await getToken(email, password);
+  token = await getToken(email, password);
 
   if (token == 401) {
     return {
@@ -104,14 +110,39 @@ export async function login(prevState: any, formData: FormData) {
         email: ["Kullanıcı adı ya da şifre hatalı!"],
       },
     };
+  } else if (token == 500) {
+    return {
+      errors: {
+        email: ["Bağlantı hatası!"],
+      },
+    };
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+  } catch (error:any) {
+    return {
+      errors: {
+        email: ["Bağlantı hatası! " ],
+      },
+    };
   }
 
+  
+ try {
   await createSession(
-    email,
+    tmpEmail,
     token.responseTokenExpires,
     token.responseToken,
-    password
+    tmpPassword
   );
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
+ } catch (error:any) {
+  return {
+    errors: {
+      email: ["Session hatası" + error ],
+    },
+  };
+ }
+  
 
   redirect("/");
 }
@@ -130,6 +161,11 @@ export async function getToken(email: string, password: string) {
         password: password,
       }
     );
+    
+    if (response.headers["authorization"] === undefined) {
+       return 500
+    }
+    
     const tokenExpires = jwtDecode(response.headers["authorization"]);
     const sonuc = {
       responseToken: response.headers["authorization"],

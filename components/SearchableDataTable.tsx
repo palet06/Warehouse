@@ -47,11 +47,12 @@ export function SearchableDataTable({userName, userPassword, userToken} :{userNa
             variant: "success",
           });
         }
-      } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+      } catch (error:any) {
         setTableData([]);
         toast({
           title: "Hata",
-          description: `Veri getirilirken hata oluştu. ${error} `,
+          description: `Veri getirilirken hata oluştu. `,
           variant: "destructive",
         });
       } finally {
