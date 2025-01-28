@@ -1,33 +1,43 @@
 "use client";
 import React from "react";
 
+
 import type { CustomMenuItemProps } from "ag-grid-react";
 import { useGridMenuItem } from "ag-grid-react";
-import { useDialog } from "./DialogContext";
+
 import { ContentItem } from "@/app/types/WhApiDataTypes";
-import { MessageCircleQuestion } from "lucide-react";
+import { List } from "lucide-react";
+import axios from "axios";
 
 export interface ButtonCustomMenuItemProps extends CustomMenuItemProps {
   buttonValue: string;
-  userToken: string;
+  userName:string;
+  userPassword:string;
+  userToken:string;
 
-  rowData: ContentItem[];
+  rowData: ContentItem;
 }
 
-const MenuItem = ({
+const MenuItemIkametTezkeresi = ({
   name,
   subMenu,
   buttonValue,
+  //userName, 
+  //userPassword,
   userToken,
-
   rowData,
 }: ButtonCustomMenuItemProps) => {
+  
   useGridMenuItem({
     configureDefaults: () => true,
   });
 
-  const { openDialog } = useDialog();
   
+
+
+  
+ 
+
   return (
     <>
       <div>
@@ -35,22 +45,18 @@ const MenuItem = ({
           className="ag-menu-option-part ag-menu-option-icon"
           role="presentation"
         >
-          <MessageCircleQuestion height={17} width={17} />{" "}
+          <List height={17} width={17} />{" "}
         </span>
         <span className="ag-menu-option-part ag-menu-option-text">{name}</span>
         <span className="ag-menu-option-part ag-menu-option-shortcut">
           <button
-            disabled={rowData?.length>1||!rowData[0]?.uyruk || !rowData[0]?.pasaportNumarasi}
+            disabled={!rowData.basvuruNo}
             className={`outline outline-1 p-2 outline-csgbBgRed hover:bg-white ${
-              rowData?.length>1||!rowData[0]?.uyruk || !rowData[0]?.pasaportNumarasi
+              !rowData.basvuruNo
                 ? "cursor-not-allowed"
                 : ""
             }`}
-            onClick={() =>
-              setTimeout(() => {
-                openDialog(rowData[0], userToken);
-              }, 300)
-            }
+        
           >
             {buttonValue}
           </button>
@@ -72,4 +78,4 @@ const MenuItem = ({
   );
 };
 
-export default MenuItem;
+export default MenuItemIkametTezkeresi;

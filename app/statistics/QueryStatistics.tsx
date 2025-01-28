@@ -26,7 +26,7 @@ import { GetStatistics } from "@/lib/serveractions/statistics";
 import QueryTable from "./QueryTable";
 
 import { Separator } from "@radix-ui/react-separator";
-import { SelectSeparator } from "@radix-ui/react-select";
+
 import Loading from "./Loading";
 
 const GetQueryResult = async (queryType: number) => {
@@ -94,6 +94,7 @@ export function QueryStatistics() {
                 </SelectContent>
               </Select>
               <Button
+              disabled={isLoading?true:false}
                 variant="csgb"
                 className="w-[80px]"
                 onClick={async () => {

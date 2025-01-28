@@ -68,10 +68,18 @@ const AgTable = ({
 
   const getContextMenuItems = useCallback(
     (params: GetContextMenuItemsParams) => {
-      const selectedRowData = params?.node?.data as ContentItem;
-      if (!params.node) {
+      const selectedRowData = params.api.getSelectedRows()
+      
+    
+      
+      
+      
+      if (!params.api.getSelectedRows().length) {
         return []; // boşuğa tıklanınca menü açılmasını engelliyoruz.
       }
+      // if (!params.node) {
+      //   return []; // boşuğa tıklanınca menü açılmasını engelliyoruz.
+      // }
 
       return [
         ...(params.defaultItems || []),
@@ -82,7 +90,7 @@ const AgTable = ({
           menuItemParams: {
             buttonValue: "Sorgula",
             name: "Yurda Giriş / Çıkış Bilgileri",
-            rowData: selectedRowData ? selectedRowData : null,
+            rowData: selectedRowData ? selectedRowData: null,
             userToken: userToken,
           },
         },
@@ -111,6 +119,8 @@ const AgTable = ({
     enableValue: true,
     enableRowGroup: true,
     enablePivot: true,
+    
+    
   };
 
   return (
@@ -130,6 +140,7 @@ const AgTable = ({
         loadingOverlayComponent={LoadingCsgb}
         cellSelection={true}
         enableCharts={true}
+        rowSelection={{mode:"multiRow"}}
       />
      
 

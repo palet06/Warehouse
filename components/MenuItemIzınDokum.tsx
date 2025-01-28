@@ -7,7 +7,13 @@ import { useGridMenuItem } from "ag-grid-react";
 
 import { ContentItem } from "@/app/types/WhApiDataTypes";
 import { List } from "lucide-react";
+
+
 import axios from "axios";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+import { format } from "date-fns";
+import { toast } from "@/hooks/use-toast";
 
 export interface ButtonCustomMenuItemProps extends CustomMenuItemProps {
   buttonValue: string;
@@ -15,7 +21,7 @@ export interface ButtonCustomMenuItemProps extends CustomMenuItemProps {
   userPassword:string;
   userToken:string;
 
-  rowData: ContentItem;
+  rowData: ContentItem[];
 }
 
 const MenuItemIzınDokum = ({
@@ -34,38 +40,43 @@ const MenuItemIzınDokum = ({
 
 
   
-  const downloadPDF = async () => {
-    try {
-      const response = await axios.get(
-        `https://eizin.csgb.gov.tr/api/ic/getCalismaIzinBelgesi?basvuruNo=${rowData.basvuruNo}`,
-        {
-          headers: {
-            
-            //buraya contextten aldığın token i koy
-            Authorization:userToken,
-            Accept: "application/json, text/plain, */*",
-            "Accept-Encoding": "gzip, deflate, br, zstd",
-            "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-          },
-          responseType: "blob",
-        }
-      );
+  const downloadPDF = async (selectedRows:ContentItem[], userToken:string) => {
+    const zip = new JSZip();
 
-      const blob = new Blob([response.data], { type: "application/pdf" });
+  try {
+    for (const rowData of selectedRows) {
+      try {
+        const response = await axios.get(
+          `https://eizin.csgb.gov.tr/api/ic/getCalismaIzinBelgesi?basvuruNo=${rowData.basvuruNo}`,
+          {
+            headers: {
+              Authorization: userToken,
+              Accept: "application/json, text/plain, */*",
+              "Accept-Encoding": "gzip, deflate, br, zstd",
+              "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+            },
+            responseType: "blob",
+          }
+        );
 
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `${rowData.basvuruNo} - İzin Döküm Belgesi.pdf`
-      document.body.appendChild(link);
-
-      link.click();
-
-      document.body.removeChild(link);
-      URL.revokeObjectURL(link.href);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error:any) {
-      console.error("PDF indirme hatası:", error.message);
+        // PDF dosyasını ZIP'e ekle
+        zip.file(`${rowData.basvuruNo}.pdf`, response.data, { binary: true });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error:any) {
+        toast({title:"PDF İndirme Hatası",description:`Seçilen başvuruların bazılarında ikamet izni süre dökümü belgeleri oluşturulamadığı için zip dosyasının içerisinde gözükmeyecektir. (Başvuru No= ${rowData.basvuruNo})`,variant:"destructive"})
+        console.error(`PDF indirme hatası (${rowData.basvuruNo}):`, error.message);
+      }
     }
+
+    // ZIP dosyasını oluştur ve indir
+    const content = await zip.generateAsync({ type: "blob" });
+    const fileDateName = new Date()
+    const formattedDateName = format(fileDateName,"dd.MM.yyyy HH mm")
+    saveAs(content, `${formattedDateName}.zip`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error:any) {
+    console.error("ZIP oluşturma hatası:", error.message);
+  }
   };
 
   return (
@@ -80,13 +91,13 @@ const MenuItemIzınDokum = ({
         <span className="ag-menu-option-part ag-menu-option-text">{name}</span>
         <span className="ag-menu-option-part ag-menu-option-shortcut">
           <button
-            disabled={!rowData.basvuruNo}
+            disabled={rowData.length<1}
             className={`outline outline-1 p-2 outline-csgbBgRed hover:bg-white ${
-              !rowData.basvuruNo
+              !rowData.length
                 ? "cursor-not-allowed"
                 : ""
             }`}
-            onClick={downloadPDF}
+            onClick={async ()=> await downloadPDF(rowData,userToken)}
           >
             {buttonValue}
           </button>

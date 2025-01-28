@@ -6,17 +6,31 @@ import Image from "next/image";
 
 const ExcelExport = ({ data, fileName }) => {
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: "xlsx",
-      type: "array",
-    });
-    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(blob, `${fileName}.xlsx`);
-  };
+    try {
+      // Verinin boş olup olmadığını kontrol et
+      if (!data || data.length === 0) {
+        throw new Error("Dışa aktarılacak veri bulunamadı.");
+      }
 
+      // Excel çalışma sayfası oluştur
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+      // Excel dosyasını oluştur
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+
+      // Blob oluştur ve dosyayı indir
+      const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+      saveAs(blob, `${fileName}.xlsx`);
+    } catch (error) {
+      console.error("Excel dışa aktarımı sırasında bir hata oluştu:", error);
+      alert(`Excel dışa aktarımı sırasında bir hata oluştu: ${error.message}`);
+    }
+  };
   return (
     <Button variant="csgb" onClick={exportToExcel}>
       <Image src="/excel.svg" height={30} width={30} alt="Excel" />
