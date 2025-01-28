@@ -31,8 +31,8 @@ const QueryTable = ({ data, initialRowsPerPage }: QueryTableProps) => {
 
   if (!Array.isArray(data) || data.length === 0) {
     return (
-      <div className="flex flex-col w-full h-[300px] items-center justify-center">
-        <p>Gösterilecek herhangi bir veri bulunmamaktadır.</p>
+      <div className="flex flex-col w-full h-[400px] items-center justify-center border">
+        <p className="text-2xl text-csgbBgRed">Gösterilecek herhangi bir veri bulunmamaktadır.</p>
       </div>
     );
   }
@@ -116,7 +116,7 @@ const QueryTable = ({ data, initialRowsPerPage }: QueryTableProps) => {
       </div>
 
       <Table>
-        <TableCaption>Liste</TableCaption>
+        <TableCaption></TableCaption>
         <TableHeader className="sticky top-0">
           <TableRow>
             {headers.map((header, i) => (

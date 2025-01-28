@@ -9,7 +9,7 @@ import { ContentItem } from "@/app/types/WhApiDataTypes";
 import { List } from "lucide-react";
 
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { format } from "date-fns";
@@ -42,11 +42,12 @@ const MenuItemIzınDokum = ({
   
   const downloadPDF = async (selectedRows:ContentItem[], userToken:string) => {
     const zip = new JSZip();
+    let response:AxiosResponse<any, any>
 
   try {
     for (const rowData of selectedRows) {
       try {
-        const response = await axios.get(
+        response = await axios.get(
           `https://eizin.csgb.gov.tr/api/ic/getCalismaIzinBelgesi?basvuruNo=${rowData.basvuruNo}`,
           {
             headers: {
@@ -60,22 +61,33 @@ const MenuItemIzınDokum = ({
         );
 
         // PDF dosyasını ZIP'e ekle
-        zip.file(`${rowData.basvuruNo}.pdf`, response.data, { binary: true });
+        if (response.data) {
+          zip.file(`${rowData.basvuruNo}.pdf`, response.data, { binary: true });
+        }
+          
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error:any) {
         toast({title:"PDF İndirme Hatası",description:`Seçilen başvuruların bazılarında ikamet izni süre dökümü belgeleri oluşturulamadığı için zip dosyasının içerisinde gözükmeyecektir. (Başvuru No= ${rowData.basvuruNo})`,variant:"destructive"})
         console.error(`PDF indirme hatası (${rowData.basvuruNo}):`, error.message);
       }
     }
-
-    // ZIP dosyasını oluştur ve indir
-    const content = await zip.generateAsync({ type: "blob" });
     const fileDateName = new Date()
     const formattedDateName = format(fileDateName,"dd.MM.yyyy HH mm")
-    saveAs(content, `${formattedDateName}.zip`);
+     console.log(Object.keys(zip.files).length)
+    // ZIP dosyasını oluştur ve indir
+    let content
+    if (Object.keys(zip.files).length>1) {
+
+      content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, `${formattedDateName}.zip`);
+    }else if (Object.keys(zip.files).length == 1) {
+      saveAs(response!.data, `${formattedDateName}.pdf`);
+    }
+    
+    
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error:any) {
-    console.error("ZIP oluşturma hatası:", error.message);
+    console.error("Dosya oluşturma hatası:", error.message);
   }
   };
 
