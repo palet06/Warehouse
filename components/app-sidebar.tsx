@@ -35,6 +35,11 @@ const data = {
           url: "/statistics",
           
         },
+        {
+          title: "LDAP Kullanıcıları",
+          url: "/authorized",
+          
+        },
        
         
       ],

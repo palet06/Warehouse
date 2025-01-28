@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "@/lib/session";
 
-const protectedRoutes = ["/","/statistics"];
+const protectedRoutes = ["/","/statistics","/authorized"];
 const publicRoutes = ["/login"];
 
 
