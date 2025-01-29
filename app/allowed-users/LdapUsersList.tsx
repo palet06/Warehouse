@@ -10,7 +10,7 @@ const LdapUsersList = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+ 
   useEffect(() => {
     const fetchUsers = async () => {
       try {

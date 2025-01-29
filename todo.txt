@@ -1,7 +1,2 @@
-1- login olurken e-izin üzerinden token alsın = tamam
-2- bu token i saklayalım contex oluştur.
-3- sorgulama ekranları
-4- fontları düzelt
-
-
-denemek için parametresi 1 olan bi sorgu at veriler geliyor mu
+1-kullanıcı işlemlerindeki listboxlar boyutlandırılırken birbirinden bağımsız olsun ve overflowlarını ayarla
+2- kullanıcı işlemleri sayfası loading ayarla ve error handlingleri yap

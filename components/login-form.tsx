@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { login } from "@/lib/serveractions/actions";
 import { cn } from "@/lib/utils"
@@ -14,7 +14,8 @@ export function LoginFormClient({
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
   const [state, loginAction] = useActionState(login, undefined);
-  
+  const [email,setEmail] = useState<string>("")
+const [password,setPassword] = useState<string>("")  
   
   
   
@@ -30,7 +31,7 @@ export function LoginFormClient({
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="email">E-Posta</Label>
-          <Input id="email" name="email" type="text" placeholder="isim.soyisim" required />
+          <Input id="email" name="email" type="text" placeholder="isim.soyisim" required value={email} onChange={(e)=> setEmail(e.target.value)} />
           
           {state?.errors?.email && (
         <p className="text-red-500">{state.errors.email}</p>
@@ -41,7 +42,7 @@ export function LoginFormClient({
             <Label htmlFor="password">Şifre</Label>
             
           </div>
-          <Input id="password" name="password"   type="password" required />
+          <Input id="password" name="password"   type="password" required value={password} onChange={(e)=> setPassword(e.target.value)}  />
           {state?.errors?.password && (
         <p className="text-red-500">{state.errors.password}</p>
       )}
