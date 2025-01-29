@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "@/lib/session";
 
-<<<<<<< HEAD
 const protectedRoutes = [
   "/",
   "/statistics",
@@ -10,9 +9,6 @@ const protectedRoutes = [
   "/allowed-users",
   "/api/ldapusers",
 ];
-=======
-const protectedRoutes = ["/","/statistics","/authorized","/api/ldapusers"];
->>>>>>> 77ed256316ea47c089c0176d6221b1f3d972c76f
 const publicRoutes = ["/login"];
 
 export default async function middleware(req: NextRequest) {
