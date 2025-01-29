@@ -52,10 +52,6 @@ const MenuItemIzınDokum = ({
               headers: {
                 Authorization: userToken,
                 Accept: "application/json, text/plain, */*",
-                "Cache-Control": "no-cache",
-                "Pragma": "no-cache",
-                "Expires": "0",
-
                 "Accept-Encoding": "gzip, deflate, br, zstd",
                 "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
               },
@@ -74,7 +70,7 @@ const MenuItemIzınDokum = ({
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
           toast({
-            title: "PDF İndirme Hatası",
+            title: "UYARI",
             description: `Seçilen başvuruların bazılarında ikamet izni süre dökümü belgeleri oluşturulamadığı için zip dosyasının içerisinde gözükmeyecektir. (Başvuru No= ${rowData.basvuruNo})`,
             variant: "destructive",
           });
@@ -92,8 +88,10 @@ const MenuItemIzınDokum = ({
       if (Object.keys(zip.files).length > 1) {
         content = await zip.generateAsync({ type: "blob" });
         saveAs(content, `${formattedDateName}.zip`);
+        toast({title:"Başarılı",description:"ZIP Dosyası oluşturuldu.",variant:"success"})
       } else if (Object.keys(zip.files).length == 1) {
         saveAs(response!.data, `${formattedDateName}.pdf`);
+        toast({title:"Başarılı",description:"PDF Dosyası oluşturuldu.",variant:"success"})
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -9,7 +9,7 @@ const page = async () => {
  
   return (
     <div>
-      {/* <UserList /> */}
+    
         <LdapUsersList  />
     </div>
   )

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { login } from "@/lib/serveractions/actions";
 import { cn } from "@/lib/utils"
@@ -14,7 +14,10 @@ export function LoginFormClient({
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
   const [state, loginAction] = useActionState(login, undefined);
-  
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("")
+
+
   
   
   
@@ -30,7 +33,7 @@ export function LoginFormClient({
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="email">E-Posta</Label>
-          <Input id="email" name="email" type="text" placeholder="isim.soyisim" required />
+          <Input id="email" name="email" type="text" placeholder="isim.soyisim" required value={email} onChange={(e) => setEmail(e.target.value)} />
           
           {state?.errors?.email && (
         <p className="text-red-500">{state.errors.email}</p>
@@ -41,7 +44,7 @@ export function LoginFormClient({
             <Label htmlFor="password">Şifre</Label>
             
           </div>
-          <Input id="password" name="password"   type="password" required />
+          <Input id="password" name="password"   type="password" required value={password} onChange={(e) => setPassword(e.target.value)}/>
           {state?.errors?.password && (
         <p className="text-red-500">{state.errors.password}</p>
       )}
@@ -62,7 +65,7 @@ function SubmitButton() {
   return (
     <div className="mb-5">
       <Button disabled={pending} type="submit" className="w-full bg-csgbBgRed hover:bg-csgbMenuBgRed hover:outline-black hover:outline hover:outline-1">
-    Giriş
+    {pending?"Giriş Yapılıyor...":"Giriş Yap"}
   </Button>
     </div>
     
