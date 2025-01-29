@@ -43,7 +43,7 @@ import MyTimer from "./MyTimer"
                    <DropdownMenuItem>
             <LogOut />
             
-            <span onClick={() => logout()}>Çıkış Yap</span>
+            <a onClick={() => logout()}>Çıkış Yap</a>
             
           </DropdownMenuItem>
         </DropdownMenuContent>

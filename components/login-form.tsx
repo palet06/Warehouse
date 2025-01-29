@@ -14,8 +14,15 @@ export function LoginFormClient({
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
   const [state, loginAction] = useActionState(login, undefined);
+<<<<<<< HEAD
   const [email,setEmail] = useState<string>("")
 const [password,setPassword] = useState<string>("")  
+=======
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("")
+
+
+>>>>>>> 77ed256316ea47c089c0176d6221b1f3d972c76f
   
   
   
@@ -31,7 +38,11 @@ const [password,setPassword] = useState<string>("")
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="email">E-Posta</Label>
+<<<<<<< HEAD
           <Input id="email" name="email" type="text" placeholder="isim.soyisim" required value={email} onChange={(e)=> setEmail(e.target.value)} />
+=======
+          <Input id="email" name="email" type="text" placeholder="isim.soyisim" required value={email} onChange={(e) => setEmail(e.target.value)} />
+>>>>>>> 77ed256316ea47c089c0176d6221b1f3d972c76f
           
           {state?.errors?.email && (
         <p className="text-red-500">{state.errors.email}</p>
@@ -42,7 +53,11 @@ const [password,setPassword] = useState<string>("")
             <Label htmlFor="password">Şifre</Label>
             
           </div>
+<<<<<<< HEAD
           <Input id="password" name="password"   type="password" required value={password} onChange={(e)=> setPassword(e.target.value)}  />
+=======
+          <Input id="password" name="password"   type="password" required value={password} onChange={(e) => setPassword(e.target.value)}/>
+>>>>>>> 77ed256316ea47c089c0176d6221b1f3d972c76f
           {state?.errors?.password && (
         <p className="text-red-500">{state.errors.password}</p>
       )}
@@ -63,7 +78,7 @@ function SubmitButton() {
   return (
     <div className="mb-5">
       <Button disabled={pending} type="submit" className="w-full bg-csgbBgRed hover:bg-csgbMenuBgRed hover:outline-black hover:outline hover:outline-1">
-    Giriş
+    {pending?"Giriş Yapılıyor...":"Giriş Yap"}
   </Button>
     </div>
     
