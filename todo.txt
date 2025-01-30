@@ -1,2 +1,2 @@
-1-kullanıcı işlemlerindeki listboxlar boyutlandırılırken birbirinden bağımsız olsun ve overflowlarını ayarla
-2- kullanıcı işlemleri sayfası loading ayarla ve error handlingleri yap
+1- Refactoring proje dosyaları.
+2- Veritabanının şifrele

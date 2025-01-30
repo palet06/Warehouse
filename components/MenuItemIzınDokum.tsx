@@ -16,7 +16,7 @@ import { toast } from "@/hooks/use-toast";
 export interface ButtonCustomMenuItemProps extends CustomMenuItemProps {
   buttonValue: string;
   userName: string;
-  userPassword: string;
+
   userToken: string;
 
   rowData: ContentItem[];
@@ -27,7 +27,7 @@ const MenuItemIzınDokum = ({
   subMenu,
   buttonValue,
   //userName,
-  //userPassword,
+ 
   userToken,
   rowData,
 }: ButtonCustomMenuItemProps) => {

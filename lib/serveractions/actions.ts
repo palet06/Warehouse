@@ -95,25 +95,15 @@ export async function login(prevState: any, formData: FormData) {
     };
   }
 
-  const isUserAuthorized = await getUserByLdapUserId(
-    formData.get("email")!.toString()
-  );
-
-  if (!isUserAuthorized) {
-    return {
-      errors: {
-        email: ["Warehouse'u kullanmaya yetkili değilsiniz."],
-      },
-    };
-  }
+  
 
   let token;
 
-  let tmpEmail, tmpPassword;
+  let tmpEmail;
   try {
     const { email, password } = result.data;
     tmpEmail = email;
-    tmpPassword = password;
+    
 
     token = await getToken(email, password);
 
@@ -127,6 +117,19 @@ export async function login(prevState: any, formData: FormData) {
       return {
         errors: {
           email: ["Bağlantı hatası!"],
+        },
+      };
+    }
+
+
+    const isUserAuthorized = await getUserByLdapUserId(
+      formData.get("email")!.toString()
+    );
+  
+    if (!isUserAuthorized) {
+      return {
+        errors: {
+          email: ["Warehouse'u kullanmaya yetkili değilsiniz."],
         },
       };
     }
@@ -144,7 +147,7 @@ export async function login(prevState: any, formData: FormData) {
       tmpEmail,
       token.responseTokenExpires,
       token.responseToken,
-      tmpPassword
+      
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {

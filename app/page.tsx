@@ -7,7 +7,7 @@ const Home = async () => {
   const session = await decrypt(cookie);
   
   
-  return <SearchableDataTable userName={session?.userId as string} userPassword={session?.userPassword as string} userToken={session?.aud as string} />;
+  return <SearchableDataTable userName={session?.userId as string}  userToken={session?.aud as string} />;
 };
 
 export default Home;

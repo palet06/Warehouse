@@ -5,48 +5,41 @@ import { cookies } from "next/headers";
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-export async function createSession(userId: string,expires:number,tokdenData:string,userPassword:string) {
+export async function createSession(
+  userId: string,
+  expires: number,
+  tokdenData: string,
   
-  
-  
-  const session = await encrypt({ userId,expires,tokdenData,userPassword });  
-  
+) {
+  const session = await encrypt({ userId, expires, tokdenData });
+  const isProduction = process.env.NODE_ENV === "production";
 
-   (await cookies()).set("session", session, {
-    
-    httpOnly:false,
-    secure: false,
-    expires: new Date(expires*1000),
-   
-
-    
-
-
-    
-    
+  (await cookies()).set("session", session, {
+    httpOnly: false,
+    secure: isProduction,
+    path:"/",
+    expires: new Date(expires * 1000),
   });
 }
 
 export async function deleteSession() {
-   (await cookies()).delete("session");
+  (await cookies()).delete("session");
 }
 
 type SessionPayload = {
   userId: string;
   expires: number;
-  tokdenData:string;
-  userPassword:string;
-
+  tokdenData: string;
+ 
 };
 
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()  
+    .setIssuedAt()
     .setAudience(payload.tokdenData)
     .setExpirationTime(payload.expires)
-    .sign(encodedKey)
-    
+    .sign(encodedKey);
 }
 
 export async function decrypt(session: string | undefined = "") {
@@ -55,7 +48,7 @@ export async function decrypt(session: string | undefined = "") {
       algorithms: ["HS256"],
     });
     return payload;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     console.log("Session doğrulanırken hata oluştu.");
   }

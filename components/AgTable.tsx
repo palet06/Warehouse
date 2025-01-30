@@ -45,16 +45,14 @@ LicenseManager.setLicenseKey(
 export interface AgTableProps {
   data: ContentItem[];
   loading: boolean;
-  userName: string;
-  userPassword: string;
+  userName: string; 
   userToken: string;
 }
 
 const AgTable = ({
   data,
   loading,
-  userName,
-  userPassword,
+  userName,  
   userToken,
 }: AgTableProps) => {
   const { openDialog, rowData } = useDialog();
@@ -97,8 +95,7 @@ const AgTable = ({
             buttonValue: "Sorgula",
             name: "İzin Süre Dökümü Sorgula",
             rowData: selectedRowData ? selectedRowData : null,
-            userName: userName,
-            userPassword: userPassword,
+            userName: userName,          
             userToken: userToken,
           },
         },
