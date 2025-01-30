@@ -40,7 +40,7 @@ const LdapUsersList = () => {
       <ul>
         {users.map((user, index) => (
           <li key={index}>
-            {user.cn} - {user.mail}
+            {user.cn} - {user.mail} - {user.userId} - {user.userPrincipalName}
           </li>
         ))}
       </ul>

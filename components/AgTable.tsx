@@ -58,7 +58,6 @@ const AgTable = ({
   userToken,
 }: AgTableProps) => {
   const { openDialog, rowData } = useDialog();
-  
 
   const localeText = AG_GRID_LOCALE_TR;
 
@@ -68,14 +67,10 @@ const AgTable = ({
 
   const getContextMenuItems = useCallback(
     (params: GetContextMenuItemsParams) => {
-      const selectedRowData = params.api.getSelectedRows()
-      
-    
-      
-      
-      
+      const selectedRowData = params.api.getSelectedRows();
+
       if (!params.api.getSelectedRows().length) {
-        return []; // boşuğa tıklanınca menü açılmasını engelliyoruz.
+        return []; //checkbox seçilmeden menü açılmasını engellilyoruz
       }
       // if (!params.node) {
       //   return []; // boşuğa tıklanınca menü açılmasını engelliyoruz.
@@ -90,7 +85,7 @@ const AgTable = ({
           menuItemParams: {
             buttonValue: "Sorgula",
             name: "Yurda Giriş / Çıkış Bilgileri",
-            rowData: selectedRowData ? selectedRowData: null,
+            rowData: selectedRowData ? selectedRowData : null,
             userToken: userToken,
           },
         },
@@ -119,8 +114,6 @@ const AgTable = ({
     enableValue: true,
     enableRowGroup: true,
     enablePivot: true,
-    
-    
   };
 
   return (
@@ -140,12 +133,10 @@ const AgTable = ({
         loadingOverlayComponent={LoadingCsgb}
         cellSelection={true}
         enableCharts={true}
-        rowSelection={{mode:"multiRow"}}
+        rowSelection={{ mode: "multiRow" }}
       />
-     
 
       <CustomPopupDialog rowData={rowData} />
-     
     </>
   );
 };

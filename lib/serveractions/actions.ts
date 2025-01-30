@@ -8,8 +8,7 @@ import { redirect } from "next/navigation";
 import { EgmDataTypes } from "@/app/types/EgmDataTypes";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-
-
+import { getUserByLdapUserId } from "./prismaActions";
 
 export const GetSpesificDataFromWarehouse = async (
   basvuruNo: string
@@ -39,7 +38,7 @@ export const GetSpesificDataFromWarehouse = async (
       ApiKey: "d8994824-a876-458c-bae6-44g58c357aa9",
       "Content-Type": "application/json",
     },
-    cache:"no-cache",
+    cache: "no-cache",
     body: kriter,
   })
     .then((resp) => resp.json())
@@ -95,56 +94,66 @@ export async function login(prevState: any, formData: FormData) {
       errors: result.error.flatten().fieldErrors,
     };
   }
-  let token
-  
-  let tmpEmail,tmpPassword
-  try {
 
+  const isUserAuthorized = await getUserByLdapUserId(
+    formData.get("email")!.toString()
+  );
+
+  if (!isUserAuthorized) {
+    return {
+      errors: {
+        email: ["Warehouse'u kullanmaya yetkili değilsiniz."],
+      },
+    };
+  }
+
+  let token;
+
+  let tmpEmail, tmpPassword;
+  try {
     const { email, password } = result.data;
     tmpEmail = email;
     tmpPassword = password;
 
-  token = await getToken(email, password);
+    token = await getToken(email, password);
 
-  if (token == 401) {
+    if (token == 401) {
+      return {
+        errors: {
+          email: ["Kullanıcı adı ya da şifre hatalı!"],
+        },
+      };
+    } else if (token == 500) {
+      return {
+        errors: {
+          email: ["Bağlantı hatası!"],
+        },
+      };
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+  } catch (error: any) {
     return {
       errors: {
-        email: ["Kullanıcı adı ya da şifre hatalı!"],
-      },
-    };
-  } else if (token == 500) {
-    return {
-      errors: {
-        email: ["Bağlantı hatası!"],
+        email: ["Bağlantı hatası! "],
       },
     };
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-  } catch (error:any) {
+
+  try {
+    await createSession(
+      tmpEmail,
+      token.responseTokenExpires,
+      token.responseToken,
+      tmpPassword
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     return {
       errors: {
-        email: ["Bağlantı hatası! " ],
+        email: ["Session hatası" + error],
       },
     };
   }
-
-  
- try {
-  await createSession(
-    tmpEmail,
-    token.responseTokenExpires,
-    token.responseToken,
-    tmpPassword
-  );
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
- } catch (error:any) {
-  return {
-    errors: {
-      email: ["Session hatası" + error ],
-    },
-  };
- }
-  
 
   redirect("/");
 }
@@ -161,13 +170,13 @@ export async function getToken(email: string, password: string) {
       {
         username: email,
         password: password,
-      },
+      }
     );
-    
+
     if (response.headers["authorization"] === undefined) {
-       return 500
+      return 500;
     }
-    
+
     const tokenExpires = jwtDecode(response.headers["authorization"]);
     const sonuc = {
       responseToken: response.headers["authorization"],
@@ -180,9 +189,3 @@ export async function getToken(email: string, password: string) {
     return error.status;
   }
 }
-
-
-
-
-
-

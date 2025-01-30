@@ -32,45 +32,36 @@ export const authenticate = (): Promise<Client> => {
   
     return new Promise((resolve, reject) => {
       const opts: SearchOptions = {
-        filter: '(objectClass=user)', // Kullanıcıları almak için filtre
-        // filter:"(samAccountName=murat.hayaloglu)",
-        scope: 'sub', // Alt düzeyde arama
-        attributes: ['dn', 'sn', 'cn', 'mail'], // İstediğiniz özellikler
+        filter: `(objectClass=user)`, // Kullanıcı adı ile arama
+        scope: 'sub',
+        attributes: ['sAMAccountName', 'userPrincipalName', 'dn', 'sn', 'cn', 'mail'],
       };
-  
+    
       client.search(baseDN!, opts, (err, search) => {
         if (err) {
-          console.error('LDAP arama hatası:', err);
+          console.error('LDAP search error:', err);
           return reject(err);
         }
-  
+    
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const users: any[] = [];
-  
+    
         search.on('searchEntry', (entry: SearchEntry) => {
           const user = {
-            //dn: entry.dn,
-            sn: entry.attributes.find(attr => attr.type === 'sn')?.values[0] || '', // soyadı
-            cn: entry.attributes.find(attr => attr.type === 'cn')?.values[0] || '', // ad
-            mail: entry.attributes.find(attr => attr.type === 'mail')?.values[0] || '', // e-posta
+            dn: entry.dn.toString(),
+            sn: entry.attributes.find(attr => attr.type === 'sn')?.values[0] || '',
+            cn: entry.attributes.find(attr => attr.type === 'cn')?.values[0] || '',
+            mail: entry.attributes.find(attr => attr.type === 'mail')?.values[0] || '',
+            userId: entry.attributes.find(attr => attr.type === 'sAMAccountName')?.values[0] || '',
+            userPrincipalName: entry.attributes.find(attr => attr.type === 'userPrincipalName')?.values[0] || '',
           };
-          users.push(user); // Kullanıcıyı listeye ekle
+          users.push(user);
         });
-  
-        search.on('searchReference', (referral) => {
-          console.log('Referral:', referral.uris.join());
-        });
-  
-        search.on('error', (err) => {
-          console.error('Arama hatası:', err);
-          return reject(err);
-        });
-  
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        search.on('end', (result:any) => {
-          console.log('Arama durumu:', result.status);
-          client.unbind(); // Bağlantıyı kapat
-          resolve(users); // Kullanıcı listesini döndür
+    
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        search.on('end', (result) => {
+          client.unbind();
+          resolve(users);
         });
       });
     });
@@ -86,7 +77,7 @@ export const authenticate = (): Promise<Client> => {
       const opts: SearchOptions = {
         filter: `(samAccountName=${samAccountName})`, // Kullanıcı adı ile arama
         scope: 'sub',
-        attributes: ['dn', 'sn', 'cn', 'mail'],
+        attributes: ['uid','dn', 'sn', 'cn', 'mail'],
       };
   
       client.search(baseDN!, opts, (err, search) => {
@@ -100,10 +91,11 @@ export const authenticate = (): Promise<Client> => {
   
         search.on('searchEntry', (entry: SearchEntry) => {
           const user = {
-            dn: entry.dn.toString(),
+            dn: entry.attributes.find(attr => attr.type === 'dn')?.values[0] || '',
             sn: entry.attributes.find(attr => attr.type === 'sn')?.values[0] || '',
             cn: entry.attributes.find(attr => attr.type === 'cn')?.values[0] || '',
             mail: entry.attributes.find(attr => attr.type === 'mail')?.values[0] || '',
+            uid: entry.attributes.find(attr => attr.type === 'objectGUID')?.values[0] || '',
           };
           users.push(user);
         });
