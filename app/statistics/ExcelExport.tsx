@@ -1,10 +1,17 @@
+
 import React from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-const ExcelExport = ({ data, fileName }) => {
+interface ExcelExportProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any[];
+  fileName: string;
+}
+
+const ExcelExport: React.FC<ExcelExportProps> = ({ data, fileName }) => {
   const exportToExcel = () => {
     try {
       // Verinin boş olup olmadığını kontrol et
@@ -26,7 +33,8 @@ const ExcelExport = ({ data, fileName }) => {
       // Blob oluştur ve dosyayı indir
       const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
       saveAs(blob, `${fileName}.xlsx`);
-    } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
       console.error("Excel dışa aktarımı sırasında bir hata oluştu:", error);
       alert(`Excel dışa aktarımı sırasında bir hata oluştu: ${error.message}`);
     }

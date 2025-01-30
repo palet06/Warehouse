@@ -15,7 +15,7 @@ export async function createSession(
   const isProduction = process.env.NODE_ENV === "production";
 
   (await cookies()).set("session", session, {
-    httpOnly: false,
+    httpOnly: false, //deploy ederken true yapabiliriz
     secure: isProduction,
     path:"/",
     expires: new Date(expires * 1000),
