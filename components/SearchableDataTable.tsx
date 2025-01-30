@@ -67,13 +67,18 @@ export function SearchableDataTable({userName, userPassword, userToken} :{userNa
       <>
         <div className="flex items-center flex-row gap-4 mb-4">
           <Input
+          onKeyDown={(e)=>{
+            if(e.key ==="Enter"){
+              handleSearch()
+            }
+          }}
             type="text"
             value={basvuruNo}
             onChange={(e) => setBasvuruNo(e.target.value)}
             placeholder="Başvuru / YKN giriniz"
             className="max-w-xs"
           />
-          <Button variant="csgb" onClick={handleSearch}>
+          <Button variant="csgb" onClick={handleSearch} >
             Sorgula
           </Button>
           
