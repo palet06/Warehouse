@@ -16,8 +16,8 @@ export async function createSession(
 
   (await cookies()).set("session", session, {
     httpOnly: false, //deploy ederken true yapabiliriz
-    secure: isProduction,
-    path:"/",
+    secure: false,
+   
     expires: new Date(expires * 1000),
   });
 }

@@ -26,8 +26,8 @@ export default function LdapUsersList2() {
     const fetchUsers = async () => {
       try {
         setLoadingAllUsers(true);
-        const response = await fetch("http://localhost:3000/api/ldapusers", {
-          cache: "no-cache",
+        const response = await fetch("/api/ldapusers", {
+          cache: "no-store",
         });
         if (!response.ok) {
           setError("Bağlantı Hatası");
