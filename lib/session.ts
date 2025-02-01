@@ -12,11 +12,11 @@ export async function createSession(
   
 ) {
   const session = await encrypt({ userId, expires, tokdenData });
-  const isProduction = process.env.NODE_ENV === "production";
+  //const isProduction = process.env.NODE_ENV === "production";
 
   (await cookies()).set("session", session, {
-    httpOnly: false, //deploy ederken true yapabiliriz
-    secure: false,
+    httpOnly: false, //deploy ederken true yapabiliriz (isProduction)
+    secure: false, // https olacaksa true yapacağız
    
     expires: new Date(expires * 1000),
   });

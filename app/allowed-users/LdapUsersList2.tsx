@@ -20,7 +20,11 @@ export default function LdapUsersList2() {
   const [users, setUsers] = useState<ldapUsersReturnType[]>([]);
   const [loadingAllUsers, setLoadingAllUsers] = useState(true);
   const [loadingAuthorizedUsers, setLoadingAuthorizedUsers] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errorAllUsers, setErrorAllUsers] = useState<string | null>(null);
+  const [errorAllAuthorizedUsers, setErrorAllAuthorizedUsers] = useState<string | null>(null);
+  const [saveButton,setSaveButton] = useState<boolean>(true)
+  
+  
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -30,14 +34,14 @@ export default function LdapUsersList2() {
           cache: "no-store",
         });
         if (!response.ok) {
-          setError("Bağlantı Hatası");
+          setErrorAllUsers("Bağlantı Hatası");
           throw Error("Bağlantı Hatası ")
         }
         const data = await response.json();
         setUsers(data.data);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
-        setError(error.message);
+        setErrorAllUsers(error.message);
       } finally {
         setLoadingAllUsers(false);
       }
@@ -56,7 +60,7 @@ export default function LdapUsersList2() {
         setLoadingAuthorizedUsers(false);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
-        setError(error);
+        setErrorAllAuthorizedUsers(error);
         setLoadingAuthorizedUsers(false);
       }
     };
@@ -67,10 +71,16 @@ export default function LdapUsersList2() {
 
   const addUser = (user: ldapUsersReturnType) => {
     setSelectedUsers((prev) => [...prev, user]);
+    setSaveButton(false)
   };
 
   const removeUser = (user: ldapUsersReturnType) => {
     setSelectedUsers((prev) => prev.filter((u) => u.cn !== user.cn));
+    setSaveButton(false)    
+    if(selectedUsers.length<=1) {
+      setSaveButton(true)
+      setErrorAllAuthorizedUsers("En az 1 yetkili kullanıcı olmalıdır.")
+    }
   };
 
   return (
@@ -80,8 +90,8 @@ export default function LdapUsersList2() {
         <h2 className="text-lg font-bold mb-2">Tüm UİGM Kullanıcıları</h2>
         {loadingAllUsers ? (
           <p className="text-csgbBgRed">Kullanıcılar getiriliyor</p>
-        ) : error ? (
-          <p className="text-csgbBgRed">{error}</p>
+        ) : errorAllUsers ? (
+          <p className="text-csgbBgRed">{errorAllUsers}</p>
         ) : (
           <div className="relative mb-2 ">
             <input
@@ -102,7 +112,7 @@ export default function LdapUsersList2() {
           </div>
         )}
 
-        <div className="h-[400px] overflow-y-scroll">
+        <div className="h-[400px] overflow-y-auto">
           <ul>
             {users
               .filter(
@@ -133,11 +143,11 @@ export default function LdapUsersList2() {
           Yetkili UİGM KullanıcılarI
           <button
             className={`px-4 text-base font-normal rounded ${
-              selectedUsers.length
+              !saveButton
                 ? "bg-green-500 text-white"
                 : "bg-gray-400 text-gray-200"
             }`}
-            disabled={!selectedUsers.length}
+            disabled={saveButton}
             onClick={async () => {
               try {
                 await saveAuthorizedPersonel(selectedUsers);
@@ -146,6 +156,7 @@ export default function LdapUsersList2() {
                   description: `Kullanıcı(lar) eklendi.`,
                   variant: "success",
                 });
+                setSaveButton(true)
               } catch (error) {
                 toast({
                   title: "Hata",
@@ -161,7 +172,7 @@ export default function LdapUsersList2() {
 
         {loadingAuthorizedUsers ? (
           <p className="text-csgbBgRed">Yetkili kullanıcılar getiriliyor</p>
-        ) : (
+        ) : (errorAllAuthorizedUsers?(<p className="text-csgbBgRed">{errorAllAuthorizedUsers}</p>):(
           <div className="relative mb-2 ">
             <input
               type="text"
@@ -181,8 +192,10 @@ export default function LdapUsersList2() {
               </button>
             )}
           </div>
+        )
+          
         )}
-        <div className="h-[400px] overflow-y-scroll">
+        <div className="h-[400px] overflow-y-auto">
           <ul>
             {selectedUsers
               .filter((user) =>
@@ -204,7 +217,7 @@ export default function LdapUsersList2() {
           </ul>
         </div>
       </div>
-      {error && error}
+     
     </div>
   );
 }
