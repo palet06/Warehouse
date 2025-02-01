@@ -1,16 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { ContentItem } from "@/app/types/WhApiDataTypes";
 import { createContext, useContext, useState } from "react";
 
 const DialogContext = createContext({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  openDialog: (rowData: ContentItem,userToken:string) => {},
+
+  openDialog: (rowData: ContentItem, userToken: string) => {}, //egm dialogu açıyor
+  openPTTDialog: (rowDataPTT: ContentItem, userTokenPTT: string) => {}, //PTT dialogu açıyor
   closeDialog: () => {},
-  userToken:"",
- 
+  closePTTDialog: () => {},
+  userToken: "",
+  userTokenPTT: "",
+
   rowData: {} as ContentItem,
-  
-  isDialogOpen:false,
+  rowDataPTT: {} as ContentItem,
+
+  isDialogOpen: false,
+  isPttDialogOpen: false,
 });
 
 import { ReactNode } from "react";
@@ -21,29 +27,40 @@ interface DialogProviderProps {
 
 export const DialogProvider = ({ children }: DialogProviderProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [userToken,setUserToken] = useState<string>("")
+  const [isPttDialogOpen, setIsPTTdialogOpen] = useState(false);
+  const [userToken, setUserToken] = useState<string>("");
+  const [userTokenPTT, setUserTokenPTT] = useState<string>("");
 
   const [rowData, setRowData] = useState<ContentItem>({});
+  const [rowDataPTT, setRowDataPTT] = useState<ContentItem>({});
 
-  const openDialog = (data: ContentItem,userToken:string) => {
-    setUserToken(userToken)
+  const openDialog = (data: ContentItem, userToken: string) => {
+    setUserToken(userToken);
     setRowData(data);
     setIsDialogOpen(true);
   };
+  const openPTTDialog = (data: ContentItem, userToken: string) => {
+    setUserTokenPTT(userToken);
+    setRowDataPTT(data);
+    setIsPTTdialogOpen(true);
+  };
 
   const closeDialog = () => setIsDialogOpen(false);
-  
+  const closePTTDialog = () => setIsPTTdialogOpen(false);
 
   return (
     <DialogContext.Provider
       value={{
         userToken,
-        isDialogOpen,        
+        userTokenPTT,
+        isDialogOpen,
+        isPttDialogOpen,
         rowData,
+        rowDataPTT,
         openDialog,
+        openPTTDialog,
         closeDialog,
-        
-       
+        closePTTDialog,
       }}
     >
       {children}

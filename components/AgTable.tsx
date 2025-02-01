@@ -28,6 +28,8 @@ import LoadingCsgb from "./LoadingCsgb";
 import CustomPopupDialog from "./CustomPopupDialog";
 import { useDialog } from "./DialogContext";
 import MenuItemIzınDokum from "./MenuItemIzınDokum";
+import MenuItemPTT from "./MenuItemPTT";
+import CustomDialogPTT from "./CustomDialogPTT";
 
 ModuleRegistry.registerModules([
   AllEnterpriseModule,
@@ -55,7 +57,7 @@ const AgTable = ({
   userName,  
   userToken,
 }: AgTableProps) => {
-  const { openDialog, rowData } = useDialog();
+  const { openDialog,openPTTDialog, rowData,rowDataPTT } = useDialog();
 
   const localeText = AG_GRID_LOCALE_TR;
 
@@ -93,7 +95,19 @@ const AgTable = ({
           menuItem: MenuItemIzınDokum,
           menuItemParams: {
             buttonValue: "Sorgula",
-            name: "İzin Süre Dökümü Sorgula",
+            name: "İzin Süre Dökümü ",
+            rowData: selectedRowData ? selectedRowData : null,
+            userName: userName,          
+            userToken: userToken,
+          },
+        },
+        {
+          name: "PTT",
+          suppressCloseOnSelect: false,
+          menuItem: MenuItemPTT,
+          menuItemParams: {
+            buttonValue: "Sorgula",
+            name: "Kargo Bilgileri",
             rowData: selectedRowData ? selectedRowData : null,
             userName: userName,          
             userToken: userToken,
@@ -101,7 +115,7 @@ const AgTable = ({
         },
       ];
     },
-    [openDialog]
+    [openDialog,openPTTDialog]
   );
 
   const defaultColDef: ColDef<ContentItem> = {
@@ -134,6 +148,7 @@ const AgTable = ({
       />
 
       <CustomPopupDialog rowData={rowData} />
+      <CustomDialogPTT rowData={rowDataPTT} />
     </>
   );
 };

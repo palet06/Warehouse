@@ -10,11 +10,18 @@ import { GetSpesificDataFromWarehouse } from "@/lib/serveractions/actions";
 import { DialogProvider } from "./DialogContext";
 import { ContentItem } from "@/app/types/WhApiDataTypes";
 
-
-export function SearchableDataTable({userName,  userToken} :{userName:string,userToken:string}) {
+export function SearchableDataTable({
+  userName,
+  userToken,
+}: {
+  userName: string;
+  userToken: string;
+}) {
   const [basvuruNo, setBasvuruNo] = useState("");
   const [tableData, setTableData] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(false);
+
+
 
   const handleSearch = async () => {
     if (basvuruNo.length > 0) {
@@ -47,8 +54,8 @@ export function SearchableDataTable({userName,  userToken} :{userName:string,use
             variant: "success",
           });
         }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-      } catch (error:any) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+      } catch (error: any) {
         setTableData([]);
         toast({
           title: "Hata",
@@ -60,32 +67,41 @@ export function SearchableDataTable({userName,  userToken} :{userName:string,use
       }
     }
   };
-
+ 
 
   return (
     <DialogProvider>
       <>
         <div className="flex items-center flex-row gap-4 mb-4">
           <Input
-          onKeyDown={(e)=>{
-            if(e.key ==="Enter"){
-              handleSearch()
-            }
-          }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
             type="text"
             value={basvuruNo}
             onChange={(e) => setBasvuruNo(e.target.value)}
             placeholder="Başvuru / YKN giriniz"
             className="max-w-xs"
           />
-          <Button variant="csgb" onClick={handleSearch} >
+          <Button variant="csgb" onClick={handleSearch}>
             Sorgula
           </Button>
-          
+
+         
+
           <p>Çoklu sorgu için başvuru numaraları arasına boşluk bırakın</p>
         </div>
 
-        {tableData && <AgTable data={tableData} loading={loading} userName={userName}  userToken={userToken} />}
+        {tableData && (
+          <AgTable
+            data={tableData}
+            loading={loading}
+            userName={userName}
+            userToken={userToken}
+          />
+        )}
       </>
     </DialogProvider>
   );

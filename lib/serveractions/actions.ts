@@ -9,6 +9,7 @@ import { EgmDataTypes } from "@/app/types/EgmDataTypes";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { getUserByLdapUserId } from "./prismaActions";
+import { PTTResponseType } from "@/app/types/PTTDataTypes";
 
 export const GetSpesificDataFromWarehouse = async (
   basvuruNo: string
@@ -48,6 +49,38 @@ export const GetSpesificDataFromWarehouse = async (
 
   return response;
 };
+
+
+
+export const GetPTTinformation = async (
+  basvuruId: string,
+  tokenData: string
+): Promise<PTTResponseType> => {
+  if (!basvuruId) {
+    throw Error("Başvuru numarası gereklidir");
+  }
+
+  const url = `https://eizin.csgb.gov.tr/api/kargoTakip1?basvuruId=${basvuruId}`;
+  const response = fetch(url, {
+    method: "GET",
+
+    headers: {
+      authorization: tokenData,
+      "Content-Type": "application/json",
+    },
+    cache: "no-cache",
+  })
+    .then((resp) => resp.json())
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  return response;
+};
+
+
+
+
 
 export const GetBorderInfoFromEgm = async (
   basvuruId: string,
