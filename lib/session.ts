@@ -10,13 +10,15 @@ export async function createSession(
   expires: number,
   tokdenData: string,
   
+  
 ) {
   const session = await encrypt({ userId, expires, tokdenData });
   //const isProduction = process.env.NODE_ENV === "production";
-
+ 
   (await cookies()).set("session", session, {
     httpOnly: false, //deploy ederken true yapabiliriz (isProduction)
     secure: false, // https olacaksa true yapacağız
+  
    
     expires: new Date(expires * 1000),
   });
@@ -30,6 +32,7 @@ type SessionPayload = {
   userId: string;
   expires: number;
   tokdenData: string;
+ 
  
 };
 

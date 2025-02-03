@@ -60,9 +60,14 @@ const AgTable = ({
   const { openDialog,openPTTDialog, rowData,rowDataPTT } = useDialog();
 
   const localeText = AG_GRID_LOCALE_TR;
-
+  
+  
   const paginationPageSizeSelector = useMemo<number[] | boolean>(() => {
-    return [10, 30, 50];
+    if (data.length>100) {
+      return [25, 50,100,data.length];
+    } else {
+      return [25, 50,100];
+    }
   }, []);
 
   const getContextMenuItems = useCallback(
@@ -137,7 +142,7 @@ const AgTable = ({
         localeText={localeText}
         getContextMenuItems={getContextMenuItems}
         pagination={true}
-        paginationPageSize={10}
+        paginationPageSize={25}
         paginationPageSizeSelector={paginationPageSizeSelector}
         sideBar
         loading={loading}

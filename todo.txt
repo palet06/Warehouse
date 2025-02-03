@@ -1,2 +1,3 @@
 1- Refactoring proje dosyaları.
-2- Veritabanının şifrele
+2 - Veritabanının şifrele
+3- Docker image olarak projeyi build et
