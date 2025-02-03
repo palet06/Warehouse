@@ -1,0 +1,7 @@
+SESSION_SECRET=123
+NEXT_PUBLIC_LDAP_URL = "ldap://calisma.local:389" 
+NEXT_PUBLIC_LDAP_BASE_DN = "OU=UluslarArasiIsgucuGM,OU=Merkez,OU=Kullanicilar,OU=CalismaBakanligi,DC=calisma,DC=local"
+NEXT_PUBLIC_LDAP_USERNAME = "AdControlUser@calisma.local" 
+NEXT_PUBLIC_LDAP_PASSWORD = "123456!"
+DATABASE_URL="file:./WH.db"
+NEXT_PUBLIC_API_URL=http://10.0.80.194:3000

@@ -38,6 +38,7 @@ export default function LdapUsersList2() {
           throw Error("Bağlantı Hatası ")
         }
         const data = await response.json();
+        console.log("ldapuserslist componentinden yapılan fetch request cevabı",data)
         setUsers(data.data);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
@@ -72,6 +73,7 @@ export default function LdapUsersList2() {
   const addUser = (user: ldapUsersReturnType) => {
     setSelectedUsers((prev) => [...prev, user]);
     setSaveButton(false)
+    setErrorAllAuthorizedUsers(null)
   };
 
   const removeUser = (user: ldapUsersReturnType) => {
