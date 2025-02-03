@@ -5,16 +5,7 @@ const baseDN = process.env.LDAP_BASE_DN;
 const username = process.env.LDAP_USERNAME;
 const password = process.env.LDAP_PASSWORD;
 
-// const ldapUrl = "ldap://calisma.local:389"
-// const baseDN = "OU=UluslarArasiIsgucuGM,OU=Merkez,OU=Kullanicilar,OU=CalismaBakanligi,DC=calisma,DC=local"
-// const username = "AdControlUser@calisma.local"
-// const password = "123456!"
-
 export const authenticate = (): Promise<Client> => {
-  console.log(ldapUrl,baseDN,username,password)
-
-
-
   return new Promise((resolve, reject) => {
     const client: Client = ldap.createClient({ url: ldapUrl! });
 
@@ -34,7 +25,7 @@ export const searchAllUsers = async (): Promise<any[]> => {
 
   return new Promise((resolve, reject) => {
     const opts: SearchOptions = {
-      filter: `(objectClass=user)`, 
+      filter: `(objectClass=user)`,
       scope: "sub",
       attributes: [
         "sAMAccountName",
@@ -76,7 +67,6 @@ export const searchAllUsers = async (): Promise<any[]> => {
         };
         users.push(user);
       });
-      console.log("ldapconfig deki users değeri",users)
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       search.on("end", (result) => {

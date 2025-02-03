@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./WH.db"
 }
 
 model User {
@@ -15,5 +15,6 @@ model User {
   ldapUserId  String   @unique
   name        String?
   email       String   @unique
+  role        String   @default("Regular")
   createdDate DateTime
 }

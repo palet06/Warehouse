@@ -4,12 +4,7 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   serverExternalPackages:["ldapjs"],
   
-  // env:{
-  //   LDAP_URL: process.env.LDAP_URL,
-  //   LDAP_BASE_DN: process.env.LDAP_BASE_DN,
-  //   LDAP_USERNAME: process.env.LDAP_USERNAME,
-  //   LDAP_PASSWORD: process.env.LDAP_PASSWORD,
-  // },
+ 
   typescript:{
     ignoreBuildErrors:true,
   },

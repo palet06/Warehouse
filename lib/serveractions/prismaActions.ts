@@ -1,5 +1,5 @@
 "use server";
-import { ldapUsersReturnType } from "@/app/allowed-users/LdapUsersList2";
+import { ldapUsersReturnType } from "@/app/allowed-users/LdapUsersList";
 import { prisma } from "../prisma";
 
 export const saveAuthorizedPersonel = async (users: ldapUsersReturnType[]) => {

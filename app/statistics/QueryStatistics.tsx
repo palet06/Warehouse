@@ -23,11 +23,13 @@ import {
 import { useState } from "react";
 import { GetStatistics } from "@/lib/serveractions/statistics";
 
-import QueryTable from "./QueryTable";
+
 
 import { Separator } from "@radix-ui/react-separator";
 
 import Loading from "./Loading";
+import { PTTtable } from "@/components/PTTtable";
+import { ColumnDef } from "@tanstack/react-table";
 
 const GetQueryResult = async (queryType: number) => {
   if (queryType == 0) {
@@ -50,6 +52,19 @@ export function QueryStatistics() {
   const [errorMessage, setErrorMessage] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any[]>([]);
+
+// Dinamik sütun oluşturma fonksiyonu
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const generateColumns = (data: any[]): ColumnDef<any>[] => {
+  if (!data || data.length === 0) return [];
+
+  return Object.keys(data[0]).map((key) => ({
+    accessorKey: key,
+    header: key.charAt(0).toUpperCase() + key.slice(1), // İlk harfi büyük yap
+  }));
+};
+
+const columnsGenerated = generateColumns(data)
 
   return (
     <>
@@ -135,7 +150,8 @@ export function QueryStatistics() {
 
           <div className="flex min-w-full pt-3">
             {!errorMessage ? (
-              <QueryTable data={data} initialRowsPerPage={25} />
+              // <QueryTable data={data} initialRowsPerPage={25} />
+              <PTTtable data={data} columns={columnsGenerated}/>
             ) : (
               <div className="flex w-full h-[400px] items-center justify-center">
                 <p>{errorMessage}</p>

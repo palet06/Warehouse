@@ -1,11 +1,11 @@
 import React from "react";
-import LdapUsersList2 from "./LdapUsersList2";
+import LdapUsersList from "./LdapUsersList";
 
 const AllowedUsers = async () => {
   return (
     <div>
-      {/* <LdapUsersList  /> */}
-      <LdapUsersList2 />
+      
+      <LdapUsersList />
     </div>
   );
 };

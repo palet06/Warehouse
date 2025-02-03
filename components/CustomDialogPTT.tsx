@@ -19,6 +19,7 @@ import LoadingCsgb from "./LoadingCsgb";
 import { PTTResponseType } from "@/app/types/PTTDataTypes";
 import { GetPTTinformation } from "@/lib/serveractions/actions";
 
+
 interface CustomPopupDialog {
   rowData: ContentItem;
 }
@@ -64,18 +65,19 @@ const CustomDialogPTT = ({ rowData }: CustomPopupDialog) => {
           </SheetHeader>
           {!loading ? (
             <div className="flex flex-col px-12ç">
-              <div className="flex flex-col justify-center items-center overflow-y-auto w-[85%] mx-auto gap-10 ">
-                <table className="w-full h-full text-sm border  rtl:text-right text-gray-500 dark:text-gray-400 ">
-                  <thead className="border-b sticky top-0 text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+              <div className="flex flex-col justify-center items-center overflow-y-auto w-[85%]  mx-auto gap-10 ">
+                {/* <PTTtable data={data ? [data] : []} columns={columnsPTT}/> */}
+                <table className=" w-full h-full text-sm border  rtl:text-right text-gray-500 dark:text-gray-400 ">
+                  <thead className="border-b sticky top-0 text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 ">
                     <tr className="text-center">
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 ">
                         Alıcı
                       </th>
 
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 ">
                         Teslim Alan
                       </th>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 ">
                         Barkod No
                       </th>
                     </tr>
@@ -86,27 +88,27 @@ const CustomDialogPTT = ({ rowData }: CustomPopupDialog) => {
                         scope="row"
                         className="border px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {data?.alici}
+                        {data?.alici || "Veri Yok"}
                       </td>
 
                       <td
                         scope="row"
                         className="border px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {data?.tesalan}
+                        {data?.tesalan || "Veri Yok"}
                       </td>
-                      {/* YKN */}
+                      
                       <td
                         scope="row"
                         className="border px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {data?.barno}
+                        {data?.barno || "Veri Yok"}
                       </td>
                     </tr>
                   </tbody>
                 </table>
-
-                <table className="w-full h-full text-sm border  rtl:text-right text-gray-500 dark:text-gray-400  ">
+                <div className="h-[400px] overflow-y-auto w-full">
+                  <table className="w-full  text-sm border  rtl:text-right text-gray-500 dark:text-gray-400  ">
                   <thead className="border-b sticky top-0 text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-center">
                       <th scope="col" className="px-6 py-3">
@@ -121,7 +123,7 @@ const CustomDialogPTT = ({ rowData }: CustomPopupDialog) => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody >
                     {data?.dongu?.map((a, b) => (
                       <tr
                         key={b}
@@ -134,7 +136,7 @@ const CustomDialogPTT = ({ rowData }: CustomPopupDialog) => {
 
                          
                             <p className="py-2" >
-                              {a.imerk}
+                              {a.imerk || "Veri Yok" }
                             </p>
                           
                         </td>
@@ -145,7 +147,7 @@ const CustomDialogPTT = ({ rowData }: CustomPopupDialog) => {
                         >
                          
                             <p className="py-2" >
-                              {a.islem}
+                              {a.islem?a.islem:"Veri Yok" }
                             </p>
                         
                         </td>
@@ -154,16 +156,17 @@ const CustomDialogPTT = ({ rowData }: CustomPopupDialog) => {
                           scope="row"
                           className="border px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white "
                         >
-                          
-                            <p className="py-2" >
-                              {a.itarih}
-                            </p>
-                          
+                          {a.itarih?(<p className="py-2">{a.itarih}</p>):("Veri Yok")}
+
+                         
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+                </div>
+                                  
+                
               </div>
             </div>
           ) : (
