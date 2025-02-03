@@ -1,5 +1,6 @@
 "use server";
 import { ApiResponseType } from "@/app/types/WhApiDataTypes";
+import { Prisma } from '@prisma/client'
 
 import { z } from "zod";
 import { createSession, deleteSession } from "@/lib/session";
@@ -10,6 +11,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { getUserByLdapUserId } from "./prismaActions";
 import { PTTResponseType } from "@/app/types/PTTDataTypes";
+
 
 export const GetSpesificDataFromWarehouse = async (
   basvuruNo: string
@@ -133,6 +135,7 @@ export async function login(prevState: any, formData: FormData) {
   let token;
 
   let tmpEmail;
+  let isUserAuthorized
   try {
     const { email, password } = result.data;
     tmpEmail = email;
@@ -155,9 +158,11 @@ export async function login(prevState: any, formData: FormData) {
     }
 
 
-    const isUserAuthorized = await getUserByLdapUserId(
+    isUserAuthorized = await getUserByLdapUserId(
       formData.get("email")!.toString()
-    );
+    ) as Prisma.UserCreateInput
+    
+    
   
     if (!isUserAuthorized) {
       return {
@@ -179,7 +184,11 @@ export async function login(prevState: any, formData: FormData) {
     await createSession(
       tmpEmail,
       token.responseTokenExpires,
-      token.responseToken,
+      token.responseToken,isUserAuthorized!.role!
+      
+     
+    
+      
       
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

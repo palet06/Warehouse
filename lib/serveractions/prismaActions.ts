@@ -42,6 +42,8 @@ export const getUserByLdapUserId = async (ldapUserId: string) => {
       where: {
         ldapUserId: ldapUserId,
       },
+     
+      
     });    
     return user
   } catch (error) {

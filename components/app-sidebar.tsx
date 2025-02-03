@@ -27,10 +27,12 @@ const data = {
         {
           title: "Warehouse",
           url: "/",
+          role:["Regular","Admin"],
         },
         {
           title: "İstatistikler",
           url: "/statistics",
+          role:["Regular","Admin"],
         },
       ],
     },
@@ -41,6 +43,7 @@ const data = {
         {
           title: "Erişim İzinleri",
           url: "/allowed-users",
+          role:["Admin"],
         },
       ],
     },
@@ -48,6 +51,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  
   const pathName = usePathname();
 
   return (
@@ -72,8 +76,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarMenu>
             {data.navMain.map((item) => (
-              <SidebarMenuItem key={item.title}>
+              
+              <SidebarMenuItem key={item.title} hidden={!item.items[0].role.includes(props.userrole!)}>
                 <SidebarMenuButton asChild>
+                  
                   {item.url == "#" ? (
                     <div className="font-medium uppercase text-csgbBgRed cursor-pointer">
                       {item.title}
