@@ -71,7 +71,7 @@ const columnsGenerated = generateColumns(data)
       <div className=" flex min-w-full justify-center ">
         <Card className={cn("w-[580px]")}>
           <CardHeader>
-            <CardTitle className="text-lg">
+            <CardTitle className="text-lg text-csgbBgRed/60">
               Çalışma İzni İstatistikleri
             </CardTitle>
             <CardDescription>İstatistik türünü seçiniz</CardDescription>
@@ -148,7 +148,7 @@ const columnsGenerated = generateColumns(data)
         <>
           <Separator className="w-full" />
 
-          <div className="flex min-w-full pt-3">
+          <div className="flex min-w-full">
             {!errorMessage ? (
               // <QueryTable data={data} initialRowsPerPage={25} />
               <PTTtable data={data} columns={columnsGenerated}/>

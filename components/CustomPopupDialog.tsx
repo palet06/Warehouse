@@ -79,7 +79,7 @@ const CustomPopupDialog = ({ rowData }: CustomPopupDialog) => {
             <div className="flex flex-col px-12ç">
               <div className="flex flex-col justify-center items-center overflow-y-auto">
                 <table className="w-full h-full text-sm border  rtl:text-right text-gray-500 dark:text-gray-400 ">
-                  <thead className="border-b sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <thead className="border-b sticky top-0 text-xs bg-slate-400 text-white uppercase  dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-center">
                       <th scope="col" className="px-6 py-3">
                         İsim

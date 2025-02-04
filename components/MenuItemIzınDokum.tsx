@@ -47,7 +47,8 @@ const MenuItemIzınDokum = ({
       for (const rowData of selectedRows) {
         try {
           response = await axios.get(
-            `https://eizin.csgb.gov.tr/api/ic/getCalismaIzinBelgesi?basvuruNo=${rowData.basvuruNo}`,
+             
+            `https://eizin.csgb.gov.tr/api/ic/getCalismaIzinBelgesi?basvuruNo=${rowData.yabanciKimlikNumarasi}`,
             {
               headers: {
                 Authorization: userToken,

@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { decrypt } from "@/lib/session";
 import type { Metadata } from "next";
-import { Nunito, Rubik } from "next/font/google";
+
 import "./globals.css";
 
 import {
@@ -16,15 +16,15 @@ import { Toaster } from "@/components/ui/toaster";
 
 import { UserInfo } from "@/components/UserInfo";
 
-const fontRubik = Rubik({
-  variable: "--font-rubik-sans",
-  subsets: ["latin"],
-});
+// const fontRubik = Rubik({
+//   variable: "--font-rubik-sans",
+//   subsets: ["latin"],
+// });
 
-const fontNunito = Nunito({
-  variable: "--font-nunito-sans",
-  subsets: ["latin"],
-});
+// const fontNunito = Nunito({
+//   variable: "--font-nunito-sans",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "Warehouse",
@@ -44,7 +44,8 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fontRubik.className} ${fontNunito.variable} antialiased`}
+        // className={`${fontRubik.className} ${fontNunito.variable} antialiased`}
+        className={`antialiased`}
       >
         {!session?.userId ? (
           <>{children}</>

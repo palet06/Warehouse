@@ -25,7 +25,7 @@ export function LoginFormClient({
       {...props}
     >
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold font-rubik">Giriş Yapın</h1>
+        <h1 className="text-2xl font-bold">Giriş Yapın</h1>
         <p className="text-balance text-sm text-slate-500 dark:text-slate-400">
           E-posta ve şifrenizle giriş yapın
         </p>

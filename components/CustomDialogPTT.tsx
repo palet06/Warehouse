@@ -68,7 +68,7 @@ const CustomDialogPTT = ({ rowData }: CustomPopupDialog) => {
               <div className="flex flex-col justify-center items-center overflow-y-auto w-[85%]  mx-auto gap-10 ">
                 {/* <PTTtable data={data ? [data] : []} columns={columnsPTT}/> */}
                 <table className=" w-full h-full text-sm border  rtl:text-right text-gray-500 dark:text-gray-400 ">
-                  <thead className="border-b sticky top-0 text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 ">
+                  <thead className="border-b sticky top-0 text-xs text-white bg-slate-400 uppercase  dark:bg-gray-700 dark:text-gray-400 ">
                     <tr className="text-center">
                       <th scope="col" className="px-6 py-3 ">
                         Alıcı
@@ -109,7 +109,7 @@ const CustomDialogPTT = ({ rowData }: CustomPopupDialog) => {
                 </table>
                 <div className="h-[400px] overflow-y-auto w-full">
                   <table className="w-full  text-sm border  rtl:text-right text-gray-500 dark:text-gray-400  ">
-                  <thead className="border-b sticky top-0 text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+                  <thead className="border-b sticky top-0 text-xs text-white uppercase bg-slate-400 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-center">
                       <th scope="col" className="px-6 py-3">
                         İşlem Merkezi
