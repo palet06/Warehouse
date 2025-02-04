@@ -45,8 +45,8 @@ export function PTTtable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       pagination: {
-        pageIndex: 0, //custom initial page index
-        pageSize: 25, //custom default page size
+        pageIndex: 0, 
+        pageSize: 10, 
       },
     },
   });
@@ -59,9 +59,9 @@ export function PTTtable<TData, TValue>({
           <div className="flex w-[580px] h-[50px] border mx-auto items-center px-2 justify-between rounded-md">
             <div className="flex flex-row items-center">
              <p className="w-[200px]">Satır sayısı:</p>
-              <Select defaultValue="25" onValueChange={(value)=> table.setPageSize(Number(value))}>
+              <Select defaultValue="10" onValueChange={(value)=> table.setPageSize(Number(value))}>
                 <SelectTrigger>
-                  <SelectValue defaultValue="25"  />
+                  <SelectValue defaultValue="10"  />
                 </SelectTrigger>
 
                 <SelectContent>
