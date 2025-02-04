@@ -5,12 +5,14 @@ import {
   getAuthorizedUsers,
   saveAuthorizedPersonel,
 } from "@/lib/serveractions/prismaActions";
+import { ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export interface ldapUsersReturnType {
   cn: string; // kullanıcı tam adı
   mail: string; //email adresi
   userId: string; // kullanıcı adı örn: murat.hayaloglu
+  userRole:string;
 }
 
 export default function LdapUsersList() {
@@ -55,6 +57,7 @@ export default function LdapUsersList() {
           cn: user.name,
           mail: user.email,
           userId: user.ldapUserId,
+          userRole:user.role
         }));
         setSelectedUsers(formattedUsers as ldapUsersReturnType[]);
         setLoadingAuthorizedUsers(false);
@@ -152,6 +155,7 @@ export default function LdapUsersList() {
             onClick={async () => {
               try {
                 await saveAuthorizedPersonel(selectedUsers);
+                
                 toast({
                   title: "Başarılı",
                   description: `Kullanıcı(lar) eklendi.`,
@@ -204,20 +208,17 @@ export default function LdapUsersList() {
               )
               .map((user) => (
                 <li key={user.userId} className="flex justify-between p-2">
-                  <div>
-                    <b>{user.cn}</b> - {user.mail}
+                  <div className="flex">
+                    <b>{user.cn}</b> - {user.mail} {user.userRole==="Admin"&&" - "}  {user.userRole==="Admin"&&<ShieldCheck className="text-green-500"/>
+                    }
                   </div>
-                  <button
-                    className="bg-red-500 text-white px-2 py-1 rounded"
-                    onClick={() => removeUser(user)}
-                  >
-                    Çıkar
-                  </button>
+                  <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => removeUser(user)}>Çıkar</button>
                 </li>
               ))}
           </ul>
         </div>
       </div>
+      
     </div>
   );
 }

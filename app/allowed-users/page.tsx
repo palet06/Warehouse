@@ -8,17 +8,16 @@ import { redirect } from "next/navigation";
 
 const AllowedUsers = async () => {
   const cookie = (await cookies()).get("session")?.value;
-    
-    const session = await decrypt(cookie);
+
+  const session = await decrypt(cookie);
   const user = (await getUserByLdapUserId(
     session?.userId!.toString()
   )) as Prisma.UserCreateInput;
-  if (user.role!="Admin") {
-    redirect("/")
+  if (user.role != "Admin") {
+    redirect("/");
   }
   return (
     <div>
-      
       <LdapUsersList />
     </div>
   );

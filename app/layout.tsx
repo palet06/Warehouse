@@ -37,12 +37,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const cookie = (await cookies()).get("session")?.value;
-  
+
   const session = await decrypt(cookie);
   const userRoleData = session?.sub;
-  
-  
-
 
   return (
     <html lang="en">
@@ -53,7 +50,7 @@ export default async function RootLayout({
           <>{children}</>
         ) : (
           <SidebarProvider>
-            <AppSidebar userrole={userRoleData}/>
+            <AppSidebar userrole={userRoleData} />
             <SidebarInset>
               <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-csgbBgRed">
                 <div className="flex items-center gap-2 px-3 ">
@@ -62,16 +59,13 @@ export default async function RootLayout({
 
                 <UserInfo
                   label="Hesabım"
-                  userName={session.userId.toString() }
+                  userName={session.userId.toString()}
                   sessionExpires={session.exp!}
-                  
                 />
               </header>
 
               <div className="flex flex-1 flex-col gap-4 p-4 ">
-                <div className="grid auto-rows-min ">
-                  {children}
-                </div>
+                <div className="grid auto-rows-min ">{children}</div>
                 <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
               </div>
             </SidebarInset>

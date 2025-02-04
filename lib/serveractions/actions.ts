@@ -1,6 +1,6 @@
 "use server";
 import { ApiResponseType } from "@/app/types/WhApiDataTypes";
-import { Prisma } from '@prisma/client'
+import { Prisma } from "@prisma/client";
 
 import { z } from "zod";
 import { createSession, deleteSession } from "@/lib/session";
@@ -11,7 +11,6 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { getUserByLdapUserId } from "./prismaActions";
 import { PTTResponseType } from "@/app/types/PTTDataTypes";
-
 
 export const GetSpesificDataFromWarehouse = async (
   basvuruNo: string
@@ -52,8 +51,6 @@ export const GetSpesificDataFromWarehouse = async (
   return response;
 };
 
-
-
 export const GetPTTinformation = async (
   basvuruId: string,
   tokenData: string
@@ -79,10 +76,6 @@ export const GetPTTinformation = async (
 
   return response;
 };
-
-
-
-
 
 export const GetBorderInfoFromEgm = async (
   basvuruId: string,
@@ -130,16 +123,13 @@ export async function login(prevState: any, formData: FormData) {
     };
   }
 
-  
-
   let token;
 
   let tmpEmail;
-  let isUserAuthorized
+  let isUserAuthorized;
   try {
     const { email, password } = result.data;
     tmpEmail = email;
-    
 
     token = await getToken(email, password);
 
@@ -157,13 +147,10 @@ export async function login(prevState: any, formData: FormData) {
       };
     }
 
-
-    isUserAuthorized = await getUserByLdapUserId(
+    isUserAuthorized = (await getUserByLdapUserId(
       formData.get("email")!.toString()
-    ) as Prisma.UserCreateInput
-    
-    
-  
+    )) as Prisma.UserCreateInput;
+
     if (!isUserAuthorized) {
       return {
         errors: {
@@ -184,12 +171,8 @@ export async function login(prevState: any, formData: FormData) {
     await createSession(
       tmpEmail,
       token.responseTokenExpires,
-      token.responseToken,isUserAuthorized!.role!
-      
-     
-    
-      
-      
+      token.responseToken,
+      isUserAuthorized!.role!
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {

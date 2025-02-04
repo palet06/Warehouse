@@ -4,13 +4,14 @@ import { ContentItem } from "@/app/types/WhApiDataTypes";
 import { createContext, useContext, useState } from "react";
 
 const DialogContext = createContext({
-
   openDialog: (rowData: ContentItem, userToken: string) => {}, //egm dialogu açıyor
   openPTTDialog: (rowDataPTT: ContentItem, userTokenPTT: string) => {}, //PTT dialogu açıyor
+  updateUserAdminInfo: (isAdminValue: string) => {},
   closeDialog: () => {},
   closePTTDialog: () => {},
   userToken: "",
   userTokenPTT: "",
+  realTimeisAdminInfo: "",
 
   rowData: {} as ContentItem,
   rowDataPTT: {} as ContentItem,
@@ -26,6 +27,7 @@ interface DialogProviderProps {
 }
 
 export const DialogProvider = ({ children }: DialogProviderProps) => {
+  const [realTimeisAdminInfo, setRealTimeisAdminInfo] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isPttDialogOpen, setIsPTTdialogOpen] = useState(false);
   const [userToken, setUserToken] = useState<string>("");
@@ -33,6 +35,10 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
 
   const [rowData, setRowData] = useState<ContentItem>({});
   const [rowDataPTT, setRowDataPTT] = useState<ContentItem>({});
+
+  const updateUserAdminInfo = (isAdminValue: string) => {
+    setRealTimeisAdminInfo(isAdminValue);
+  };
 
   const openDialog = (data: ContentItem, userToken: string) => {
     setUserToken(userToken);
@@ -55,8 +61,10 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
         userTokenPTT,
         isDialogOpen,
         isPttDialogOpen,
+        realTimeisAdminInfo,
         rowData,
         rowDataPTT,
+        updateUserAdminInfo,
         openDialog,
         openPTTDialog,
         closeDialog,

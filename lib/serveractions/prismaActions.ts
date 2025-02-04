@@ -11,6 +11,7 @@ export const saveAuthorizedPersonel = async (users: ldapUsersReturnType[]) => {
           ldapUserId: users[0].userId,
           email: users[0].mail,
           name: users[0].cn,
+          role:users[0].userRole,
           createdDate: new Date(Date.now()),
         },
       });
@@ -23,6 +24,8 @@ export const saveAuthorizedPersonel = async (users: ldapUsersReturnType[]) => {
           ldapUserId: user.userId,
           email: user.mail,
           name: user.cn,
+          role:user.userRole,         
+          
           createdDate: new Date(Date.now()),
         })),
       });

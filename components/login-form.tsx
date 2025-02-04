@@ -19,6 +19,7 @@ export function LoginFormClient({
 
   return (
     <form
+    
       action={loginAction}
       className={cn("flex flex-col gap-6", className)}
       {...props}
@@ -63,6 +64,7 @@ export function LoginFormClient({
           )}
         </div>
         <SubmitButton />
+        
       </div>
     </form>
   );
@@ -74,6 +76,7 @@ function SubmitButton() {
   return (
     <div className="mb-5">
       <Button
+    
         disabled={pending}
         type="submit"
         className="w-full bg-csgbBgRed hover:bg-csgbMenuBgRed hover:outline-black hover:outline hover:outline-1"
