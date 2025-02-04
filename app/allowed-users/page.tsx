@@ -18,7 +18,7 @@ const AllowedUsers = async () => {
   }
   return (
     <div>
-      <LdapUsersList />
+      <LdapUsersList userName={session?.userId!.toString()} />
     </div>
   );
 };

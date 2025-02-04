@@ -15,7 +15,9 @@ export interface ldapUsersReturnType {
   userRole:string;
 }
 
-export default function LdapUsersList() {
+export default function LdapUsersList({userName}:{userName:string}) {
+  
+  
   const [selectedUsers, setSelectedUsers] = useState<ldapUsersReturnType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
@@ -86,6 +88,8 @@ export default function LdapUsersList() {
       setErrorAllAuthorizedUsers("En az 1 yetkili kullanıcı olmalıdır.");
     }
   };
+
+  console.log("gelen kullanıcı adı",userName)
 
   return (
     <div className="flex gap-4 p-6 ">
@@ -207,12 +211,20 @@ export default function LdapUsersList() {
                 user.cn.toLowerCase().includes(selectedSearchTerm)
               )
               .map((user) => (
+
+
+
                 <li key={user.userId} className="flex justify-between p-2">
                   <div className="flex">
                     <b>{user.cn}</b> - {user.mail} {user.userRole==="Admin"&&" - "}  {user.userRole==="Admin"&&<ShieldCheck className="text-green-500"/>
                     }
                   </div>
+
+                  {user.userId != userName&&
                   <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => removeUser(user)}>Çıkar</button>
+                  }
+                  
+                  
                 </li>
               ))}
           </ul>
