@@ -8,7 +8,7 @@ export async function GET() {
     return NextResponse.json({ success: true, data: users },{status:200});
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error:any) {
-    console.error("Kullanıc verileri geitirlirken hata oluştu.", error);
+    console.error("UIGM Kullanıcıları getirilirken hata oluştu.");
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 }

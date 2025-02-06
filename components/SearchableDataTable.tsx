@@ -7,8 +7,9 @@ import AgTable from "./AgTable";
 import { toast } from "@/hooks/use-toast";
 import { GetSpesificDataFromWarehouse } from "@/lib/serveractions/actions";
 
-import { DialogProvider } from "./DialogContext";
+import {  useDialog } from "./DialogContext";
 import { ContentItem } from "@/app/types/WhApiDataTypes";
+import { DetailedQueryDialog } from "./DetailedQuery/DetailedQueryDialog";
 
 export function SearchableDataTable({
   userName,
@@ -17,12 +18,11 @@ export function SearchableDataTable({
   userName: string;
   userToken: string;
 }) {
+  const { openDetailedQueryDialog } = useDialog();
   const [basvuruNo, setBasvuruNo] = useState("");
   const [tableData, setTableData] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(false);
-
-
-
+  
   const handleSearch = async () => {
     if (basvuruNo.length > 0) {
       const isValid = /^[0-9\s]+$/.test(basvuruNo);
@@ -67,12 +67,12 @@ export function SearchableDataTable({
       }
     }
   };
- 
 
   return (
-    <DialogProvider>
+  
       <>
         <div className="flex items-center flex-row gap-4 mb-4">
+       
           <Input
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -82,17 +82,24 @@ export function SearchableDataTable({
             type="text"
             value={basvuruNo}
             onChange={(e) => setBasvuruNo(e.target.value)}
-            placeholder="Başvuru / YKN giriniz"
+            placeholder="Başvuru No / YKN giriniz"
             className="max-w-xs"
           />
           <Button variant="csgb" onClick={handleSearch}>
             Sorgula
           </Button>
-
-         
+          <Button
+          
+          variant="csgb"
+          onClick={()=>openDetailedQueryDialog(userToken)}
+        >
+          Ayrıntılı Sorgu
+        </Button>
+          
 
           <p>Çoklu sorgu için başvuru numaraları arasına boşluk bırakın</p>
         </div>
+        <DetailedQueryDialog  />
 
         {tableData && (
           <AgTable
@@ -103,6 +110,6 @@ export function SearchableDataTable({
           />
         )}
       </>
-    </DialogProvider>
+   
   );
 }

@@ -154,6 +154,7 @@ const AgTable = ({
 
       <CustomPopupDialog rowData={rowData} />
       <CustomDialogPTT rowData={rowDataPTT} />
+      
     </>
   );
 };

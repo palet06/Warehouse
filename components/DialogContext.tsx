@@ -6,11 +6,14 @@ import { createContext, useContext, useState } from "react";
 const DialogContext = createContext({
   openDialog: (rowData: ContentItem, userToken: string) => {}, //egm dialogu açıyor
   openPTTDialog: (rowDataPTT: ContentItem, userTokenPTT: string) => {}, //PTT dialogu açıyor
+  openDetailedQueryDialog: (userTokenDQD: string) => {},
   updateUserAdminInfo: (isAdminValue: string) => {},
   closeDialog: () => {},
   closePTTDialog: () => {},
+  closeDQDDialog: () => {},
   userToken: "",
   userTokenPTT: "",
+  userTokenDQD: "",
   realTimeisAdminInfo: "",
 
   rowData: {} as ContentItem,
@@ -18,6 +21,7 @@ const DialogContext = createContext({
 
   isDialogOpen: false,
   isPttDialogOpen: false,
+  isDQDDialogOpen: false,
 });
 
 import { ReactNode } from "react";
@@ -30,8 +34,11 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
   const [realTimeisAdminInfo, setRealTimeisAdminInfo] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isPttDialogOpen, setIsPTTdialogOpen] = useState(false);
+  const [isDQDDialogOpen, setIsdDQDDialogOpen] = useState(false);
+
   const [userToken, setUserToken] = useState<string>("");
   const [userTokenPTT, setUserTokenPTT] = useState<string>("");
+  const [userTokenDQD, setUserTokenDQD] = useState<string>("");
 
   const [rowData, setRowData] = useState<ContentItem>({});
   const [rowDataPTT, setRowDataPTT] = useState<ContentItem>({});
@@ -50,25 +57,36 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
     setRowDataPTT(data);
     setIsPTTdialogOpen(true);
   };
+  const openDetailedQueryDialog = (userTokenDQD: string) => {
+   
+    setUserTokenDQD(userTokenDQD);
+
+    setIsdDQDDialogOpen(true);
+  };
 
   const closeDialog = () => setIsDialogOpen(false);
   const closePTTDialog = () => setIsPTTdialogOpen(false);
+  const closeDQDDialog = () => setIsdDQDDialogOpen(false);
 
   return (
     <DialogContext.Provider
       value={{
         userToken,
         userTokenPTT,
+        userTokenDQD,
         isDialogOpen,
         isPttDialogOpen,
+        isDQDDialogOpen,
         realTimeisAdminInfo,
         rowData,
         rowDataPTT,
         updateUserAdminInfo,
         openDialog,
         openPTTDialog,
+        openDetailedQueryDialog,
         closeDialog,
         closePTTDialog,
+        closeDQDDialog,
       }}
     >
       {children}

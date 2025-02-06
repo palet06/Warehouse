@@ -15,6 +15,8 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/toaster";
 
 import { UserInfo } from "@/components/UserInfo";
+import { DialogProvider } from "@/components/DialogContext";
+
 
 // const fontRubik = Rubik({
 //   variable: "--font-rubik-sans",
@@ -50,6 +52,8 @@ export default async function RootLayout({
         {!session?.userId ? (
           <>{children}</>
         ) : (
+          <DialogProvider>
+
           <SidebarProvider>
             <AppSidebar userrole={userRoleData} />
             <SidebarInset>
@@ -71,9 +75,13 @@ export default async function RootLayout({
               </div>
             </SidebarInset>
           </SidebarProvider>
+          </DialogProvider>
         )}
 
         <Toaster />
+       
+
+
       </body>
     </html>
   );

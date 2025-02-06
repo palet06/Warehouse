@@ -87,7 +87,6 @@ export default function LdapUsersList({ userName }: { userName: string }) {
     }
   };
 
-  console.log("gelen kullanıcı adı", userName);
 
   return (
     <div className="flex gap-4 p-6 ">
