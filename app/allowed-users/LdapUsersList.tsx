@@ -12,12 +12,10 @@ export interface ldapUsersReturnType {
   cn: string; // kullanıcı tam adı
   mail: string; //email adresi
   userId: string; // kullanıcı adı örn: murat.hayaloglu
-  userRole:string;
+  userRole: string;
 }
 
-export default function LdapUsersList({userName}:{userName:string}) {
-  
-  
+export default function LdapUsersList({ userName }: { userName: string }) {
   const [selectedUsers, setSelectedUsers] = useState<ldapUsersReturnType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
@@ -59,7 +57,7 @@ export default function LdapUsersList({userName}:{userName:string}) {
           cn: user.name,
           mail: user.email,
           userId: user.ldapUserId,
-          userRole:user.role
+          userRole: user.role,
         }));
         setSelectedUsers(formattedUsers as ldapUsersReturnType[]);
         setLoadingAuthorizedUsers(false);
@@ -89,7 +87,7 @@ export default function LdapUsersList({userName}:{userName:string}) {
     }
   };
 
-  console.log("gelen kullanıcı adı",userName)
+  console.log("gelen kullanıcı adı", userName);
 
   return (
     <div className="flex gap-4 p-6 ">
@@ -129,16 +127,21 @@ export default function LdapUsersList({userName}:{userName:string}) {
                   user.cn.toLowerCase().includes(searchTerm)
               )
               .map((user) => (
-                <li key={user.userId} className="flex justify-between p-2">
-                  <div>
+                <li
+                  key={user.userId}
+                  className="flex justify-between p-2 border-b"
+                >
+                  <div className="flex items-center">
                     <b>{user.cn}</b> - {user.mail}
                   </div>
-                  <button
-                    className="bg-blue-500 text-white px-2 py-1 rounded"
-                    onClick={() => addUser(user)}
-                  >
-                    Ekle
-                  </button>
+                  <div className="flex items-center">
+                    <button
+                      className="bg-blue-500 text-white px-2 py-1 rounded"
+                      onClick={() => addUser(user)}
+                    >
+                      Ekle
+                    </button>
+                  </div>
                 </li>
               ))}
           </ul>
@@ -159,7 +162,7 @@ export default function LdapUsersList({userName}:{userName:string}) {
             onClick={async () => {
               try {
                 await saveAuthorizedPersonel(selectedUsers);
-                
+
                 toast({
                   title: "Başarılı",
                   description: `Kullanıcı(lar) eklendi.`,
@@ -211,26 +214,36 @@ export default function LdapUsersList({userName}:{userName:string}) {
                 user.cn.toLowerCase().includes(selectedSearchTerm)
               )
               .map((user) => (
-
-
-
-                <li key={user.userId} className="flex justify-between p-2">
-                  <div className="flex">
-                    <b>{user.cn}</b> - {user.mail} {user.userRole==="Admin"&&" - "}  {user.userRole==="Admin"&&<ShieldCheck className="text-green-500"/>
-                    }
+                <li
+                  key={user.userId}
+                  className="flex justify-between p-2 border-b"
+                >
+                  <div className="flex items-center">
+                    <b>{user.cn}</b> - {user.mail}{" "}
+                    {user.userRole === "Admin" && " - "}{" "}
+                    {user.userRole === "Admin" && (
+                      <div className="relative flex items-center justify-center">
+                        <div className="group cursor-pointer relative flex items-center justify-center ">
+                          <ShieldCheck className="text-green-500" />
+                          <span className="opacity-0 group-hover:opacity-100 absolute top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded py-1 px-2 after:content-['Admin'] "></span>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
-                  {user.userId != userName&&
-                  <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => removeUser(user)}>Çıkar</button>
-                  }
-                  
-                  
+                  {user.userId != userName && (
+                    <button
+                      className="bg-red-500 text-white px-2 py-1 rounded"
+                      onClick={() => removeUser(user)}
+                    >
+                      Çıkar
+                    </button>
+                  )}
                 </li>
               ))}
           </ul>
         </div>
       </div>
-      
     </div>
   );
 }
