@@ -20,13 +20,14 @@ export function DetailedQueryDialog() {
     <Sheet  open={isDQDDialogOpen} >
       <SheetContent className="[&>button]:hidden"  side="bottom" >
         <SheetHeader >
-          <SheetTitle>Edit profile</SheetTitle>
+          <SheetTitle>Ayrıntılı Sorgulama</SheetTitle>
           <SheetDescription>
-            Make changes to your profile here. Click save when youre done.
+           Aşağıda belirtilen kriterlere göre sorgulama yapabilirsiniz
           </SheetDescription>
         </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
+        <div className="grid gap-4 py-4 h-[350px]">
+            Başvuru tipi, Başvuru türü, çalışma izni türü, cinsiyet, geçici koruma statüsü, işlem tipi, firma tipi, izin durumu, pasaport type, uyruk 
+          {/* <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
@@ -37,7 +38,7 @@ export function DetailedQueryDialog() {
               Username
             </Label>
             <Input id="username"  className="col-span-3" />
-          </div>
+          </div> */}
         </div>
         <SheetFooter>
           <SheetClose asChild>
