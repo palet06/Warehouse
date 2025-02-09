@@ -45,6 +45,11 @@ const data = {
           url: "/allowed-users",
           role:["Admin"],
         },
+        {
+          title: "Zamanlanmış Görevler",
+          url: "/jobs",
+          role:["Admin"],
+        },
       ],
     },
   ],
