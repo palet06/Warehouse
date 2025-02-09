@@ -18,3 +18,11 @@ model User {
   role        String   @default("Regular")
   createdDate DateTime
 }
+model Photos {
+  id          Int      @id @default(autoincrement())
+  albumId Int
+  title        String?
+  url       String   
+  thumbnailUrl        String   
+  
+}

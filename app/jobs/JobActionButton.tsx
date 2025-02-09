@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -5,6 +6,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { ChevronDown, Pause, Play, X } from "lucide-react";
 
 const JobActionButton = () => {
@@ -19,7 +21,7 @@ const JobActionButton = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-52">
           
-          <DropdownMenuItem><Play className="text-green-500"/> Başlat</DropdownMenuItem>
+          <DropdownMenuItem onClick={()=>fetch("/api/fetch/startjob")}><Play className="text-green-500"/> Başlat</DropdownMenuItem>
           <DropdownMenuItem><Pause className="text-yellow-500" /> Durdur</DropdownMenuItem>
           <DropdownMenuItem><X className="text-csgbBgRed"/>Sil</DropdownMenuItem>
          

@@ -1,3 +1,4 @@
+"use client"
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -37,7 +38,7 @@ export default function CardWithBackground() {
       </CardContent>
       <CardFooter className="flex w-full justify-between p-2">
         
-        <Button className=" w-full" >Oluştur</Button>
+        <Button className=" w-full" onClick={()=>fetch("/api/fetch")} >Oluştur</Button>
       </CardFooter>
     </Card>
   );
