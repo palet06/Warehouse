@@ -2,12 +2,10 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuItem, 
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Pause, Play, Plus, Star, X } from "lucide-react";
+import { ChevronDown, Pause, Play, X } from "lucide-react";
 
 const JobActionButton = () => {
   return (

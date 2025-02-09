@@ -10,14 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import TimePicker from "./TimePicker";
+
 
 export default function CardWithBackground() {
   return (
@@ -32,28 +26,18 @@ export default function CardWithBackground() {
         <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Görev İsmi</Label>
-              <Input id="name" placeholder="Name of your project" />
+              <Input id="name"  placeholder="Görev ismi belirtin" />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">Priority</Label>
-              <Select>
-                <SelectTrigger id="framework">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="low">Low</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
-                </SelectContent>
-              </Select>
+              
+              <TimePicker />
             </div>
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Create</Button>
+      <CardFooter className="flex w-full justify-between p-2">
+        
+        <Button className=" w-full" >Oluştur</Button>
       </CardFooter>
     </Card>
   );

@@ -10,6 +10,7 @@ const protectedRoutes = [
   "/allowed-users",
   "/api",
   "/api/ldapusers",
+  "/jobs",
 ];
 const publicRoutes = ["/login"];
 

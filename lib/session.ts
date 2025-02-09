@@ -9,21 +9,17 @@ export async function createSession(
   userId: string,
   expires: number,
   tokdenData: string,
-  userRole:string,
-  
-  
+  userRole: string
 ) {
-  const session = await encrypt({ userId, expires, tokdenData,userRole });
+  const session = await encrypt({ userId, expires, tokdenData, userRole });
   //const isProduction = process.env.NODE_ENV === "production";
- 
+
   (await cookies()).set("session", session, {
     httpOnly: false, //deploy ederken true yapabiliriz (isProduction)
     secure: false, // https olacaksa true yapacağız
-    
-   
+
     expires: new Date(expires * 1000),
-    
-  },);
+  });
 }
 
 export async function deleteSession() {
@@ -34,9 +30,7 @@ type SessionPayload = {
   userId: string;
   expires: number;
   tokdenData: string;
-  userRole:string;
- 
- 
+  userRole: string;
 };
 
 export async function encrypt(payload: SessionPayload) {
@@ -47,8 +41,6 @@ export async function encrypt(payload: SessionPayload) {
     .setExpirationTime(payload.expires)
     .setSubject(payload.userRole)
     .sign(encodedKey);
-    
-  
 }
 
 export async function decrypt(session: string | undefined = "") {
