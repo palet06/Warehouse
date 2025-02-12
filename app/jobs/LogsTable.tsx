@@ -8,17 +8,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const getLogsLan = async () => {
-  const data = await fetch("http://localhost:3000/api/getlogs")
-  const sonuc = await data.json()
-  return sonuc
-}
 
 export default async function LogsTable() {
-  const jobLogs =await getLogsLan()
   
   
-  console.log("joblogs",jobLogs)
   return (
     <div className="w-full border rounded-md overflow-hidden">
       <Table>

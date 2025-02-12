@@ -21,7 +21,7 @@ const JobActionButton = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-52">
           
-          <DropdownMenuItem onClick={()=>fetch("/api/fetch/startjob")}><Play className="text-green-500"/> Başlat</DropdownMenuItem>
+          <DropdownMenuItem ><Play className="text-green-500"/> Başlat</DropdownMenuItem>
           <DropdownMenuItem><Pause className="text-yellow-500" /> Durdur</DropdownMenuItem>
           <DropdownMenuItem><X className="text-csgbBgRed"/>Sil</DropdownMenuItem>
          

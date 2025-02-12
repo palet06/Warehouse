@@ -1,6 +1,7 @@
+
 import axios from "axios";
 import { batchInsert } from "@/lib/batchInsert";
-import { getLogs, setLogs } from "@/cron/cronservice";
+
 
 
 export async function fetchDataAndStore() {
@@ -16,8 +17,6 @@ export async function fetchDataAndStore() {
     await batchInsert(data);
     
     console.log("Tüm veri başarıyla kaydedildi!");
-    setLogs("tüm veriler başarı ile kaydedild");
-    console.log("logtaki verilerssssssssssssssssssssssssssssssssss",getLogs());
 
   } catch (error) {
     console.error("Veri çekme/kaydetme hatası:", error);
