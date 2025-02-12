@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import cron from "node-cron";
 
 type Log = {
   id: number;
@@ -12,6 +11,7 @@ type Job = {
   name: string;
   time: string;
   active: boolean;
+ 
 };
 
 type LogStore = {
@@ -21,10 +21,10 @@ type LogStore = {
 
 type JobStore = {
   jobs: Job[];
-  createJob: (name:string, schedule:string, task:()=>void) => cron.ScheduledTask;
-  startJob: (id: number) => void;
-  stopJob: (id: number) => void;
-  deleteJob: (id: number) => void;
+  createJob: (name:string,time:string,active:boolean) => void;
+  removeJob: (id: number) => void;
+  // stopJob: (id: number) => void;
+  // deleteJob: (id: number) => void;
 };
 
 
@@ -48,30 +48,22 @@ export const useLogStore = create<LogStore>((set) => ({
 }));
 
 export const useJobStore = create<JobStore>((set, get) => ({
-  jobs: [],
-
+  jobs: [], 
   
-  
-  createJob: (name, schedule, task) => {
-   
+  createJob: (name, time, active) => {   
     const id = get().jobs.length + 1;
-    const cronItself = cron.schedule(schedule, task,{scheduled:false,name:name,timezone:"Turkey"});
-    const job = { id, name, time: schedule, active: false, cronItself};
+    const job = { id, name, time, active};
     set((state) => ({
       jobs: [...state.jobs, job],
     }));
 
     useLogStore.getState().addLog(`✅ Job oluşturuldu: ${name}`);
-    return cronItself
   },
 
-
-
-
-  startJob: (id) => {
-    const jobToStart = get().jobs.find((job) => job.id === id);
-    if (jobToStart) {
-      jobToStart.cronItself.start();
+  removeJob: (id:number) => {
+    const jobToRemove = get().jobs.find((job) => job.id === id);
+    if (jobToRemove) {
+     
       set((state) => ({
         jobs: state.jobs.map((job) => (job.id === id ? { ...job, active: true } : job)),
       }));
@@ -80,36 +72,7 @@ export const useJobStore = create<JobStore>((set, get) => ({
     //useLogStore.getState().addLog(`🚀 Job başlatıldı: ${id}`);
   },
 
-  stopJob: (id) => {
-
-    const jobToStop = get().jobs.find((job) => job.id === id);
-    if (jobToStop) {
-      jobToStop.cronItself.stop();
-      set((state) => ({
-        jobs: state.jobs.map((job) => (job.id === id ? { ...job, active: false } : job)),
-      }));
-      useLogStore.getState().addLog(`🚀 Job Durduruldu: ${id}`);
-    }
-    //useLogStore.getState().addLog(`🚀 Job Durduruldu: ${id}`);
-    
-  },
-
-  deleteJob: (id) => {
-
-    const jobToDelete = get().jobs.find((job) => job.id === id);
-    if (jobToDelete) {
-      jobToDelete.cronItself.stop();
-
-      
-      
-      
-      useLogStore.getState().addLog(`🚀 Job silinemedi ama durduruldu: ${id}`);
-    }
-
-
-    
-    
-  },
+  
 }));
 
 
