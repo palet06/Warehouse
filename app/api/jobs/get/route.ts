@@ -1,17 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest, NextResponse } from "next/server";
-
 import cron from "node-cron";
 
 export async function GET() {
-  console.log("api de get requeste girdi");
   const anyJobinMemory = cron.getTasks().entries();
-  console.log("anyjobinmemory deişkeni", anyJobinMemory);
   const nedir = anyJobinMemory.toArray();
   if (anyJobinMemory) {
     return NextResponse.json(nedir);
   }
-  //return NextResponse.json({message:"Hafızada oluşturulmuş bir cron yok."})
+  return NextResponse.json({message:"Job bulunamadı."})
 }
 
 export async function POST(req: NextRequest) {
@@ -37,4 +34,4 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function PUT() {}
+

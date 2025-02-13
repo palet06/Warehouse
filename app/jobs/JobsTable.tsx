@@ -1,58 +1,66 @@
+"use client";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "@/components/ui/table";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import JobActionButton from "./JobActionButton";
-  
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const products:any[] | null = [
-    {
-        id: 1,
-        name: "WhDataFetch",
-        category: "00:00",
-        price: "Evet",
-        rating: "Button",
-      },
+import { useEffect, useState } from "react";
+import { JobList } from "../types/JobType";
+import { useJobStore } from "@/store/store";
+
+export default function JobsTable() {  
+  const [ourJobs, setOurJobs] = useState<JobList>();  
+  const {jobs} = useJobStore()
+  useEffect(() => {
+    const fetchJobs = async () => {
+      const response = await fetch("/api/jobs/get", { method: "GET" });
+      const jobList: JobList = await response.json();
+      setOurJobs(jobList);
+    }
+    fetchJobs()
     
-  ];
-  
-  export default function JobsTable() {
-    return (
-      <div className="w-full border rounded-md overflow-hidden">
-        <Table>
-          <TableHeader >
-            <TableRow >
-              <TableHead className="pl-4 text-center">ID</TableHead>
-              <TableHead className="text-center">Görev İsmi</TableHead>
-              <TableHead className="text-center">Çalışacağı Zaman</TableHead>
-              <TableHead className="text-center">Aktif Mi</TableHead>
-              <TableHead className="text-center">İşlem</TableHead>
+  },[jobs]);
+  return (
+    <div className="w-full h-[300px] border rounded-md overflow-y-auto">
+      <Table className="table-fixed">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="pl-4 text-center ">ID</TableHead>
+            <TableHead className="text-center">Görev İsmi</TableHead>
+            <TableHead className="text-center">Çalışacağı Zaman</TableHead>
+            <TableHead className="text-center">Aktif Mi</TableHead>
+            <TableHead className="text-center">İşlem</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {!ourJobs?.length && (
+            <TableRow className="odd:bg-muted/50 text-center">
+              <TableCell className="pl-4">-</TableCell>
+              <TableCell className="font-medium">Görev Yok</TableCell>
+              <TableCell>-</TableCell>
+              <TableCell>-</TableCell>
+              <TableCell>-</TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-          {!products?.length&&<TableRow className="odd:bg-muted/50 text-center">
-                <TableCell className="pl-4">-</TableCell>
-                <TableCell className="font-medium">Görev Yok</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell>-</TableCell>
-              </TableRow>}
-            {products?.map((product) => (
-              <TableRow key={product.id} className="odd:bg-muted/50 text-center">
-                <TableCell className="pl-4">{product.id}</TableCell>
-                <TableCell className="font-medium">{product.name}</TableCell>
-                <TableCell>{product.category}</TableCell>
-                <TableCell>{product.price}</TableCell>
-                <TableCell><JobActionButton /></TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    );
-  }
-  
+          )}
+          {ourJobs?.map((job,i) => (
+            <TableRow key={job[0]} className="odd:bg-muted/50 text-center">
+              <TableCell className="pl-4">{(i+1).toString()}</TableCell>
+              <TableCell className="pl-4">{job[1].options.name}</TableCell>
+              <TableCell className="font-medium">{`${job[1]._scheduler.timeMatcher.pattern.split(" ")[0].padStart(2, "0")}:${job[1]._scheduler.timeMatcher.pattern.split(" ")[1].padStart(2, "0")}`}
+              </TableCell>
+              <TableCell>{job[1].options.scheduled?"Evet":"Hayır"}</TableCell>
+              
+              <TableCell>
+                <JobActionButton />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
