@@ -3,8 +3,7 @@ import { fetchDataAndStore } from "@/lib/fetchAndStore";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import cron from "node-cron";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const { action, schedule, name } = await req.json();
@@ -44,7 +43,8 @@ export async function POST(req: NextRequest) {
           cron.schedule(
             jobToStart.schedule,
             () => {
-              fetchDataAndStore();
+              //fetchDataAndStore();
+              console.log(`${name} isimli job tetiklendi `)
             },
             { name: jobToStart.name, timezone: "Turkey" }
           );
@@ -96,6 +96,7 @@ export async function POST(req: NextRequest) {
             const cronJob = cron.getTasks().get(`job_${name}`);
             if (cronJob) {
               cronJob.stop();
+              cron.getTasks().delete(`job_${name}`);
             }
           }
           await prisma.job.delete({ where: { name } });
