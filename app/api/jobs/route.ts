@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { fetchDataAndStore } from "@/lib/fetchAndStore";
-import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import cron from "node-cron";
 import { prisma } from "@/lib/prisma";
@@ -24,7 +23,8 @@ export async function POST(req: NextRequest) {
 
         await prisma.job.create({
           data: { schedule, name, isRunning: false },
-        });
+        }); //Veritabanında jobu oluşturuyoruz. Henüz hafızada yok. Start edilince hafızada oluşturulacak. 
+
         return NextResponse.json({
           success: true,
           message: `${name} isimli Job oluşturuldu.`,
@@ -44,7 +44,8 @@ export async function POST(req: NextRequest) {
             jobToStart.schedule,
             () => {
               //fetchDataAndStore();
-              console.log(`${name} isimli job tetiklendi `)
+              console.log(`${name} isimli job tetiklendi `);
+             
             },
             { name: jobToStart.name, timezone: "Turkey" }
           );
@@ -68,7 +69,7 @@ export async function POST(req: NextRequest) {
       try {
         const jobToStop = await prisma.job.findUnique({ where: { name } });
         if (jobToStop && jobToStop.isRunning) {
-          const cronJob = cron.getTasks().get(`job_${name}`);
+          const cronJob = cron.getTasks().get(name);
           if (cronJob) {
             cronJob.stop();
           }
@@ -93,10 +94,10 @@ export async function POST(req: NextRequest) {
         const jobToDelete = await prisma.job.findUnique({ where: { name } });
         if (jobToDelete) {
           if (jobToDelete.isRunning) {
-            const cronJob = cron.getTasks().get(`job_${name}`);
+            const cronJob = cron.getTasks().get(name);
             if (cronJob) {
               cronJob.stop();
-              cron.getTasks().delete(`job_${name}`);
+              cron.getTasks().delete(name);
             }
           }
           await prisma.job.delete({ where: { name } });
@@ -109,6 +110,21 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
           success: false,
           message: `${name} isimli Job silinirken hata oluştu. Hata: ${error}`,
+        });
+      }
+
+    case "getall":
+      try {
+        const allJobs = await prisma.job.findMany();
+
+        return NextResponse.json({
+          success: true,
+          allJobs: allJobs,
+        });
+      } catch (error) {
+        return NextResponse.json({
+          success: false,
+          message: `Job'lar alınırken hata oluştu`,
         });
       }
 

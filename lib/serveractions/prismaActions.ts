@@ -2,6 +2,7 @@
 import { ldapUsersReturnType } from "@/app/allowed-users/LdapUsersList";
 import { prisma } from "../prisma";
 
+
 export const saveAuthorizedPersonel = async (users: ldapUsersReturnType[]) => {
   const deletedRecords = await prisma.user.deleteMany({});
   if (deletedRecords) {
@@ -53,3 +54,15 @@ export const getUserByLdapUserId = async (ldapUserId: string) => {
     return {message:"Veritabanı hatası" + error }
   }
 };
+
+
+export const createJob = async (schedule:string, name:string, isRunning:boolean)=> {
+  const jobToSave = await prisma.job.create({
+    data: { schedule:schedule,name:name,isRunning:isRunning },
+  });
+  if (jobToSave) {
+   return 1
+  }else {
+    return 0
+  }
+}

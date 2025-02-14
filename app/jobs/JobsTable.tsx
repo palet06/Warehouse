@@ -9,21 +9,48 @@ import {
 } from "@/components/ui/table";
 import JobActionButton from "./JobActionButton";
 import { useEffect, useState } from "react";
-import { JobList } from "../types/JobType";
-import { useJobStore } from "@/store/store";
+import { toast } from "@/hooks/use-toast";
+type prismaJobType = {
+  id:number;   
+  schedule:string;  
+  name:string;      
+  isRunning:boolean;
+  createdAt:Date; 
+  updatedAt:Date; 
+}
+
 
 export default function JobsTable() {  
-  const [ourJobs, setOurJobs] = useState<JobList>();  
-  const {jobs} = useJobStore()
+  const [currentCreatedJobs, setCurrentCreatedJobs] = useState<prismaJobType[]>([]);
+  
+
   useEffect(() => {
     const fetchJobs = async () => {
-      const response = await fetch("/api/jobs/get", { method: "GET" });
-      const jobList: JobList = await response.json();
-      setOurJobs(jobList);
-    }
-    fetchJobs()
-    
-  },[jobs]);
+      const getCreatedJobs = await fetch("/api/jobs", { method: "POST" ,body:JSON.stringify({action:"getall"})});
+      const getCreatedJobsJson = await getCreatedJobs.json();
+      if (getCreatedJobsJson.success){
+        setCurrentCreatedJobs(getCreatedJobsJson.allJobs);
+      }
+      if (!getCreatedJobsJson.success) {
+        setCurrentCreatedJobs([])
+        toast({title:"Hata",description:getCreatedJobsJson.message,variant:"destructive"})
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+
+
+ 
+
+
+
+
+
+
+
+
   return (
     <div className="w-full h-[300px] border rounded-md overflow-y-auto">
       <Table className="table-fixed">
@@ -37,7 +64,7 @@ export default function JobsTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {!ourJobs?.length && (
+          {!currentCreatedJobs?.length && (
             <TableRow className="odd:bg-muted/50 text-center">
               <TableCell className="pl-4">-</TableCell>
               <TableCell className="font-medium">Görev Yok</TableCell>
@@ -46,16 +73,15 @@ export default function JobsTable() {
               <TableCell>-</TableCell>
             </TableRow>
           )}
-          {ourJobs?.map((job,i) => (
-            <TableRow key={job[0]} className="odd:bg-muted/50 text-center">
+          {currentCreatedJobs?.map((job,i) => (
+            <TableRow key={job.id} className="odd:bg-muted/50 text-center">
               <TableCell className="pl-4">{(i+1).toString()}</TableCell>
-              <TableCell className="pl-4">{job[1].options.name}</TableCell>
-              <TableCell className="font-medium">{`${job[1]._scheduler.timeMatcher.pattern.split(" ")[0].padStart(2, "0")}:${job[1]._scheduler.timeMatcher.pattern.split(" ")[1].padStart(2, "0")}`}
-              </TableCell>
-              <TableCell>{job[1].options.scheduled?"Evet":"Hayır"}</TableCell>
+              <TableCell className="pl-4">{job.name}</TableCell>
+              <TableCell className="font-medium">{job.schedule.split(" ")[1]}:{job.schedule.split(" ")[0]}</TableCell>
+              <TableCell>{job.isRunning?"Evet":"Hayır"}</TableCell>
               
               <TableCell>
-                <JobActionButton />
+                <JobActionButton name={job.name} />
               </TableCell>
             </TableRow>
           ))}

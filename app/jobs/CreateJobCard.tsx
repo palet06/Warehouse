@@ -11,82 +11,38 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
-import { JobList } from "../types/JobType";
 
-import { useJobStore } from "@/store/store";
 export default function CreateJobCard() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [inputTime, setInputTime] = useState<string>("");
   const [inputName, setInputName] = useState<string>("");
-  const [currentCreatedJobs, setCurrentCreatedJobs] = useState<JobList>();
-  const { addJob, jobs } = useJobStore();
-
-  useEffect(() => {
-    const fetchJobs = async () => {
-      const response = await fetch("/api/jobs/get", { method: "GET" });
-      const getJobs: JobList = await response.json();
-
-      setCurrentCreatedJobs(getJobs);
-    };
-
-    fetchJobs();
-    console.log(jobs);
-  }, [jobs]);
+  console.log(inputTime)
 
   const handleCreateJob = async () => {
     try {
-      const foundCreatedJob = currentCreatedJobs?.find(
-        ([name]) => name === inputName
-      );
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const foundSameTimeJob = currentCreatedJobs?.find(([name, job]) => {
-        const [minute, hour] = job._scheduler.timeMatcher.pattern
-          .split(" ")
-          .map((val) => val.padStart(2, "0")); // Tek haneli saat ve dakikaları 2 haneli yap
 
-        const jobTime = `${minute}:${hour}`; // Job'un zamanını HH:mm formatına çevir
-        console.log("jobtime", jobTime);
-        console.log("inputtime", inputTime);
-
-        return jobTime === inputTime;
+      const formattedTime = `${inputTime.split(":")[1]} ${inputTime.split(":")[0]} * * *`
+      const jobToCreate =await fetch("/api/jobs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action: "create",
+          schedule: "*/5 * * * * *",
+          name: inputName
+        }),
       });
-
-      if (foundCreatedJob) {
-        toast({
-          title: "UYARI",
-          description: `${foundCreatedJob[1].options.name} isminde bir görev zaten mevcut. Lütfen başka bir isim belirtin`,
-          variant: "warning",
-        });
-      }
-
-      if (foundSameTimeJob) {
-        toast({
-          title: "UYARI",
-          description: `${foundSameTimeJob[1].options.name} ismindeki görev aynı çalışma zamanına sahip. ${inputTime} Zamanı değiştirin`,
-          variant: "warning",
-        });
-      }
-      if (!foundCreatedJob && !foundSameTimeJob) {
-        const response = await fetch("/api/jobs/get", {
-          method: "POST",
-          body: JSON.stringify({
-            name: inputName,
-            time: `${inputTime.split(":")[0]} ${
-              inputTime.split(":")[1]
-            } * * * *`,
-          }),
-        });
-        const jobToCreate = await response.json();
-        addJob(inputName, inputTime, false);
-        toast({
-          title: "Başarılı",
-          description: jobToCreate.message,
-          variant: "success",
-        });
+      const jobToCreateJson = await jobToCreate.json();
+      if (jobToCreateJson.success) {
+        toast({title:"Başarılı",description:jobToCreateJson.message,variant:"success"})
+      } else {
+        toast({title:"Uyarı",description:jobToCreateJson.message,variant:"warning"})
       }
     } catch (error) {
-      console.error("Job oluşturma hatası:", error);
+      toast({title:"Hata",description:`Job oluşturma hatası ${error}`,variant:"destructive"})
     }
   };
   return (
