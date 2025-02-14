@@ -50,6 +50,9 @@ export const GetSpesificDataFromWarehouse = async (
 
   return response;
 };
+export const getGoc = async () => {
+  
+}
 
 export const GetPTTinformation = async (
   basvuruId: string,

@@ -26,3 +26,23 @@ model Photos {
   thumbnailUrl        String   
   
 }
+
+
+model Job {
+  id        Int      @id @default(autoincrement())
+  schedule  String   // Cron zamanlama ifadesi (örn: "* * * * *")
+  name      String   @unique
+  isRunning Boolean  @default(false) // Job'un çalışıp çalışmadığını belirtir
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  job       String
+  message   String   // Cron zamanlama ifadesi (örn: "* * * * *")
+  dataCount Int
+  time      String   // Job'un yapacağı işin açıklaması  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
