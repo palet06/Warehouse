@@ -100,7 +100,9 @@ export const creageLog = async (
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {}
+  } catch (error) {
+    
+  }
 };
 
 export const getLogs = async () => {
