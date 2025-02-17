@@ -3,7 +3,6 @@ import { cookies } from "next/headers";
 import { decrypt } from "@/lib/session";
 import type { Metadata } from "next";
 
-
 import "./globals.css";
 
 import {
@@ -17,7 +16,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 import { UserInfo } from "@/components/UserInfo";
 import { DialogProvider } from "@/components/DialogContext";
-
+import { GlobalStateProvider } from "@/lib/globalState";
 
 // const fontRubik = Rubik({
 //   variable: "--font-rubik-sans",
@@ -53,36 +52,34 @@ export default async function RootLayout({
         {!session?.userId ? (
           <>{children}</>
         ) : (
-          <DialogProvider>
+          <GlobalStateProvider>
+            <DialogProvider>
+              <SidebarProvider>
+                <AppSidebar userrole={userRoleData} />
+                <SidebarInset>
+                  <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-csgbBgRed">
+                    <div className="flex items-center gap-2 px-3 ">
+                      <SidebarTrigger className="text-white " />
+                    </div>
 
-          <SidebarProvider>
-            <AppSidebar userrole={userRoleData} />
-            <SidebarInset>
-              <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-csgbBgRed">
-                <div className="flex items-center gap-2 px-3 ">
-                  <SidebarTrigger className="text-white " />
-                </div>
+                    <UserInfo
+                      label="Hesabım"
+                      userName={session.userId.toString()}
+                      sessionExpires={session.exp!}
+                    />
+                  </header>
 
-                <UserInfo
-                  label="Hesabım"
-                  userName={session.userId.toString()}
-                  sessionExpires={session.exp!}
-                />
-              </header>
-
-              <div className="flex flex-1 flex-col gap-4 p-4 ">
-                <div className="grid auto-rows-min ">{children}</div>
-                <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-              </div>
-            </SidebarInset>
-          </SidebarProvider>
-          </DialogProvider>
+                  <div className="flex flex-1 flex-col gap-4 p-4 ">
+                    <div className="grid auto-rows-min ">{children}</div>
+                    <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+                  </div>
+                </SidebarInset>
+              </SidebarProvider>
+            </DialogProvider>
+          </GlobalStateProvider>
         )}
 
         <Toaster />
-       
-
-
       </body>
     </html>
   );

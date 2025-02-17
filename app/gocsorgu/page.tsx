@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { Divide } from "lucide-react";
+
+
 
 export async function verileriAl() {
   const numbersArray = [
@@ -638,20 +639,24 @@ export async function verileriAl() {
     "99468269722",
     "99810011504",
   ];
-
+ 
   const fetchPromises = numbersArray.map((number) =>
+    
     fetch(
       `https://eizin.csgb.gov.tr/api/kisiBilgiStatuSorgula?tckNo=${number}`,
       {
         method: "GET",
         headers: {
           Authorization:
-            "Bearer Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtdXJhdC5oYXlhbG9nbHUiLCJleHAiOjE3Mzk1NTE0OTgsInVzZXIiOnsiaWQiOjU3MTQwMSwidXNlcm5hbWUiOiJtdXJhdC5oYXlhbG9nbHUiLCJwYXNzd29yZCI6bnVsbCwic2VsZWN0ZWRTa3kiOm51bGwsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX1BUVF9TRVJWSUNFIn0seyJhdXRob3JpdHkiOiJST0xFX1RFS05JS19ERVNURUsifSx7ImF1dGhvcml0eSI6IlJPTEVfRURLIn1dLCJ0Y2tObyI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiZW1haWwiOm51bGwsImVtYWlsVmVyaWZpZWQiOmZhbHNlLCJwaG9uZU51bWJlciI6bnVsbCwicGhvbmVOdW1iZXJWZXJpZmllZCI6ZmFsc2UsImVuYWJsZWQiOnRydWUsImFjY291bnROb25FeHBpcmVkIjp0cnVlLCJhY2NvdW50Tm9uTG9ja2VkIjp0cnVlLCJjcmVkZW50aWFsc05vbkV4cGlyZWQiOnRydWUsImxkYXBMb2dpbkVuYWJsZWQiOmZhbHNlLCJwYXNzd29yZExvZ2luRW5hYmxlZCI6ZmFsc2UsImVkZXZsZXRMb2dpbkVuYWJsZWQiOmZhbHNlLCJjcmVhdGlvbkRhdGUiOm51bGwsImxhc3RMb2dpbkRhdGUiOm51bGwsInVzZXJSb2xlcyI6bnVsbCwidXNlclByaXZpbGVnZXMiOm51bGwsImF0dHJpYnV0ZXMiOm51bGx9LCJpc3MiOiJlaXppbi5pYy1zZXJ2aWNlIn0.TtCsX_sDKzEXwYfdyBONjyE-oYVLYmJnHQG6yIQUrJI",
+            "Bearer Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtdXJhdC5oYXlhbG9nbHUiLCJleHAiOjE3Mzk3NTc5NDUsInVzZXIiOnsiaWQiOjU3MTQwMSwidXNlcm5hbWUiOiJtdXJhdC5oYXlhbG9nbHUiLCJwYXNzd29yZCI6bnVsbCwic2VsZWN0ZWRTa3kiOm51bGwsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX1BUVF9TRVJWSUNFIn0seyJhdXRob3JpdHkiOiJST0xFX1RFS05JS19ERVNURUsifSx7ImF1dGhvcml0eSI6IlJPTEVfRURLIn1dLCJ0Y2tObyI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiZW1haWwiOm51bGwsImVtYWlsVmVyaWZpZWQiOmZhbHNlLCJwaG9uZU51bWJlciI6bnVsbCwicGhvbmVOdW1iZXJWZXJpZmllZCI6ZmFsc2UsImVuYWJsZWQiOnRydWUsImFjY291bnROb25FeHBpcmVkIjp0cnVlLCJhY2NvdW50Tm9uTG9ja2VkIjp0cnVlLCJjcmVkZW50aWFsc05vbkV4cGlyZWQiOnRydWUsImxkYXBMb2dpbkVuYWJsZWQiOmZhbHNlLCJwYXNzd29yZExvZ2luRW5hYmxlZCI6ZmFsc2UsImVkZXZsZXRMb2dpbkVuYWJsZWQiOmZhbHNlLCJjcmVhdGlvbkRhdGUiOm51bGwsImxhc3RMb2dpbkRhdGUiOm51bGwsInVzZXJSb2xlcyI6bnVsbCwidXNlclByaXZpbGVnZXMiOm51bGwsImF0dHJpYnV0ZXMiOm51bGx9LCJpc3MiOiJlaXppbi5pYy1zZXJ2aWNlIn0.PmnBzj86gUN3Iy7wu2ZyYHSasPPOM4EMmDupD5J6biI",
           "Content-Type": "application/json",
         },
       }
     )
       .then((response) => response.json())
+
+
+
       .catch((error) => {
         console.error(`Fetch error for post ${number}:`, error);
         return null;
@@ -659,6 +664,9 @@ export async function verileriAl() {
   );
 
   const results = await Promise.all(fetchPromises);
+  
+
+  
 
   return results;
 }

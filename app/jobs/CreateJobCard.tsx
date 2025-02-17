@@ -13,36 +13,51 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
+import { useGlobalState } from "@/lib/globalState";
 
 export default function CreateJobCard() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { isActive, toggleActive } = useGlobalState();
   const [inputTime, setInputTime] = useState<string>("");
   const [inputName, setInputName] = useState<string>("");
-  console.log(inputTime)
 
   const handleCreateJob = async () => {
     try {
-
-      const formattedTime = `${inputTime.split(":")[1]} ${inputTime.split(":")[0]} * * *`
-      const jobToCreate =await fetch("/api/jobs", {
+      const formattedTime = `${inputTime.split(":")[1]} ${
+        inputTime.split(":")[0]
+      } * * *`;
+      const jobToCreate = await fetch("/api/jobs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           action: "create",
-          schedule: "*/5 * * * * *",
-          name: inputName
+          schedule: formattedTime,
+          name: inputName,
         }),
       });
       const jobToCreateJson = await jobToCreate.json();
       if (jobToCreateJson.success) {
-        toast({title:"Başarılı",description:jobToCreateJson.message,variant:"success"})
+        toast({
+          title: "Başarılı",
+          description: jobToCreateJson.message,
+          variant: "success",
+        });
+        toggleActive();
       } else {
-        toast({title:"Uyarı",description:jobToCreateJson.message,variant:"warning"})
+        toast({
+          title: "Uyarı",
+          description: jobToCreateJson.message,
+          variant: "warning",
+        });
       }
     } catch (error) {
-      toast({title:"Hata",description:`Job oluşturma hatası ${error}`,variant:"destructive"})
+      toast({
+        title: "Hata",
+        description: `Job oluşturma hatası ${error}`,
+        variant: "destructive",
+      });
     }
   };
   return (
@@ -76,7 +91,11 @@ export default function CreateJobCard() {
         </form>
       </CardContent>
       <CardFooter className="flex w-full justify-between p-2">
-        <Button onClick={handleCreateJob} className=" w-full">
+        <Button
+          disabled={!inputName || !inputTime}
+          onClick={handleCreateJob}
+          className=" w-full"
+        >
           Oluştur
         </Button>
       </CardFooter>

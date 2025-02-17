@@ -7,10 +7,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "@/hooks/use-toast";
+import { useGlobalState } from "@/lib/globalState";
 
 import { ChevronDown, Pause, Play, X } from "lucide-react";
 
 const JobActionButton = ({name}:{name:string}) => {
+   const { toggleActive } = useGlobalState();
   const handleActions = async (action:string,jobName:string)=> {
     switch (action) {
       case "start":
@@ -19,6 +21,7 @@ const JobActionButton = ({name}:{name:string}) => {
         if (jobToStartJson.success)
         {
           toast({title:"Başarılı",description:jobToStartJson.message,variant:"success"})
+          toggleActive()
         } else {
           toast({title:"Hata",description:jobToStartJson.message,variant:"destructive"})
         }        
@@ -30,6 +33,7 @@ const JobActionButton = ({name}:{name:string}) => {
         if (jobToStopJson.success)
         {
           toast({title:"Başarılı",description:jobToStopJson.message,variant:"success"})
+          toggleActive()
         } else {
           toast({title:"Hata",description:jobToStopJson.message,variant:"destructive"})
         }        
@@ -41,6 +45,7 @@ const JobActionButton = ({name}:{name:string}) => {
         if (jobToDeleteJson.success)
         {
           toast({title:"Başarılı",description:jobToDeleteJson.message,variant:"success"})
+          toggleActive()
         } else {
           toast({title:"Hata",description:jobToDeleteJson.message,variant:"destructive"})
         }        
@@ -63,8 +68,8 @@ const JobActionButton = ({name}:{name:string}) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-52">
           
-          <DropdownMenuItem onClick={()=>handleActions("start",name)} ><Play className="text-green-500"/> Başlat</DropdownMenuItem>
-          <DropdownMenuItem onClick={()=>handleActions("stop",name)} ><Pause className="text-yellow-500" /> Durdur</DropdownMenuItem>
+          <DropdownMenuItem onClick={()=>handleActions("start",name)} ><Play className="text-green-500"/>Başlat</DropdownMenuItem>
+          <DropdownMenuItem onClick={()=>handleActions("stop",name)} ><Pause className="text-yellow-500" />Durdur</DropdownMenuItem>
           <DropdownMenuItem onClick={()=>handleActions("delete",name)}><X className="text-csgbBgRed"/>Sil</DropdownMenuItem>
          
         </DropdownMenuContent>

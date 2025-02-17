@@ -3,6 +3,8 @@ import { fetchDataAndStore } from "@/lib/fetchAndStore";
 import { NextRequest, NextResponse } from "next/server";
 import cron from "node-cron";
 import { prisma } from "@/lib/prisma";
+import { creageLog } from "@/lib/serveractions/prismaActions";
+import { verileriAl } from "@/app/gocsorgu/page";
 
 export async function POST(req: NextRequest) {
   const { action, schedule, name } = await req.json();
@@ -13,6 +15,9 @@ export async function POST(req: NextRequest) {
         const existingJob = await prisma.job.findFirst({
           where: { name },
         });
+        const existingTime = await prisma.job.findFirst({
+          where: { schedule },
+        });
 
         if (existingJob) {
           return NextResponse.json({
@@ -20,11 +25,18 @@ export async function POST(req: NextRequest) {
             message: `${name} isimli Job zaten mevcut. Lütfen başka bir isim seçin`,
           });
         }
+        if (existingTime) {
+          return NextResponse.json({
+            success: false,
+            message: `Aynı çalışma saatine sahip başka bir Job var. Lütfen başka bir saat seçin`,
+          });
+        }
 
         await prisma.job.create({
           data: { schedule, name, isRunning: false },
-        }); //Veritabanında jobu oluşturuyoruz. Henüz hafızada yok. Start edilince hafızada oluşturulacak. 
+        }); //Veritabanında jobu oluşturuyoruz. Henüz hafızada yok. Start edilince hafızada oluşturulacak.
 
+        creageLog(name, "Job Oluşturuldu", 0);
         return NextResponse.json({
           success: true,
           message: `${name} isimli Job oluşturuldu.`,
@@ -42,9 +54,10 @@ export async function POST(req: NextRequest) {
         if (jobToStart && !jobToStart.isRunning) {
           cron.schedule(
             jobToStart.schedule,
-            () => {
-              //fetchDataAndStore();
-              console.log(`${name} isimli job tetiklendi `);
+            async () => {
+              await fetchDataAndStore(name);
+              
+              //console.log(`${name} isimli job tetiklendi `);
              
             },
             { name: jobToStart.name, timezone: "Turkey" }
@@ -53,15 +66,16 @@ export async function POST(req: NextRequest) {
             where: { name },
             data: { isRunning: true },
           });
+          creageLog(name, "Job Aktif Hale Getirildi", 0);
           return NextResponse.json({
             success: true,
-            message: `${name} isimli Job başlatıldı.`,
+            message: `${name} isimli Job aktif hale getirildi.`,
           });
         }
       } catch (error) {
         return NextResponse.json({
           success: false,
-          message: `${name} isimli Job başlatılırken hata oluştu. Hata: ${error}`,
+          message: `${name} isimli Job aktif hale getirilirken hata oluştu. Hata: ${error}`,
         });
       }
 
@@ -77,9 +91,10 @@ export async function POST(req: NextRequest) {
             where: { name },
             data: { isRunning: false },
           });
+          creageLog(name, "Job pasif hale getirildi.", 0);
           return NextResponse.json({
             success: true,
-            message: `${name} isimli Job durduruldu.`,
+            message: `${name} isimli Job durduruldu ve pasif hale getirildi.`,
           });
         }
       } catch (error) {
@@ -101,9 +116,10 @@ export async function POST(req: NextRequest) {
             }
           }
           await prisma.job.delete({ where: { name } });
+          creageLog(name, "Job durduruldu ve silindi.", 0);
           return NextResponse.json({
             success: true,
-            message: `${name} islimli Job silindi.`,
+            message: `${name} islimli Job durduruldu ve silindi.`,
           });
         }
       } catch (error) {
