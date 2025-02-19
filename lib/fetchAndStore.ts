@@ -9,6 +9,7 @@ export async function fetchDataAndStore(jobName:string) {
   try {
     console.log("Veri çekme işlemi başladı...");
     await creageLog(jobName,"Verileri çekme işlemi başladı",0)
+   
     
     
     
@@ -22,10 +23,10 @@ export async function fetchDataAndStore(jobName:string) {
     
     
     await batchInsert(data);
-    
     console.log("Tüm veri başarıyla kaydedildi!");
-    
     await creageLog(jobName,"Tüm veri başarıyla kaydedildi!",data.length)
+    
+    
 
   
 

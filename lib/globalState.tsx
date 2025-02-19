@@ -16,8 +16,9 @@ export function GlobalStateProvider({ children }: { children: React.ReactNode })
   // API'den state'i güncelle
   useEffect(() => {
     async function fetchState() {
-      const res = await fetch("/api/globalstate");
+      const res = await fetch("/api/globalstate",{ cache: "no-store" });
       const data = await res.json();
+    
       setIsActive(data.isActive);
     }
 
@@ -32,7 +33,7 @@ export function GlobalStateProvider({ children }: { children: React.ReactNode })
 
   // API'yi çağırarak state değiştir
   const toggleActive = async () => {
-    const res = await fetch("/api/globalstate", { method: "POST" });
+    const res = await fetch("/api/globalstate", { method: "POST" ,cache:"no-store"});
     const data = await res.json();
     setIsActive(data.isActive);
   };

@@ -32,11 +32,13 @@ export async function POST(req: NextRequest) {
           });
         }
 
+        
+
         await prisma.job.create({
           data: { schedule, name, isRunning: false },
         }); //Veritabanında jobu oluşturuyoruz. Henüz hafızada yok. Start edilince hafızada oluşturulacak.
 
-        creageLog(name, "Job Oluşturuldu", 0);
+        await creageLog(name, "Job Oluşturuldu", 0);
         return NextResponse.json({
           success: true,
           message: `${name} isimli Job oluşturuldu.`,
@@ -66,7 +68,7 @@ export async function POST(req: NextRequest) {
             where: { name },
             data: { isRunning: true },
           });
-          creageLog(name, "Job Aktif Hale Getirildi", 0);
+          await creageLog(name, "Job Aktif Hale Getirildi", 0);
           return NextResponse.json({
             success: true,
             message: `${name} isimli Job aktif hale getirildi.`,
@@ -91,7 +93,7 @@ export async function POST(req: NextRequest) {
             where: { name },
             data: { isRunning: false },
           });
-          creageLog(name, "Job pasif hale getirildi.", 0);
+          await creageLog(name, "Job pasif hale getirildi.", 0);
           return NextResponse.json({
             success: true,
             message: `${name} isimli Job durduruldu ve pasif hale getirildi.`,
@@ -116,7 +118,7 @@ export async function POST(req: NextRequest) {
             }
           }
           await prisma.job.delete({ where: { name } });
-          creageLog(name, "Job durduruldu ve silindi.", 0);
+          await creageLog(name, "Job durduruldu ve silindi.", 0);
           return NextResponse.json({
             success: true,
             message: `${name} islimli Job durduruldu ve silindi.`,

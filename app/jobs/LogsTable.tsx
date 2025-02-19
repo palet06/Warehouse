@@ -24,7 +24,7 @@ type LogPrpos = {
 
 export default function LogsTable() {
   const { isActive } = useGlobalState();
-  console.log(isActive)
+  
  
   const [ourLogs, setOurLogs] = useState<LogPrpos>();
   useEffect(() => {
