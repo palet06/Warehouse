@@ -1,6 +1,8 @@
 "use server";
 import { ldapUsersReturnType } from "@/app/allowed-users/LdapUsersList";
 import { prisma } from "../prisma";
+import cron from "node-cron";
+import { fetchDataAndStore } from "../fetchAndStore";
 
 export const saveAuthorizedPersonel = async (users: ldapUsersReturnType[]) => {
   const deletedRecords = await prisma.user.deleteMany({});
@@ -67,7 +69,7 @@ export const createJob = async (
   }
 };
 
-export const creageLog = async (
+export const createLog = async (
   jobName: string,
   message: string,
   dataCount: number
@@ -92,17 +94,13 @@ export const creageLog = async (
       },
     });
 
-    
-
     await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/globalstate`, {
       method: "POST",
       cache: "no-store",
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 };
 
 export const getLogs = async () => {
@@ -117,4 +115,31 @@ export const getLogs = async () => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {}
+};
+
+export const syncJobsAtStartup = async () => {
+  const anyCronJobInMemory = cron.getTasks();
+  console.log("hafızadaki joblar",anyCronJobInMemory.size)
+  if (anyCronJobInMemory.size <= 0) {
+    try {
+      const dbJobsisRunning = await prisma.job.findMany({
+        where: {
+          isRunning: true,
+        },
+      });
+      if (dbJobsisRunning.length > 0) {
+        dbJobsisRunning.map(async (job) => {
+          cron.schedule(
+            job.schedule,
+            async () => {
+              await fetchDataAndStore(job.name);
+            },
+            { name: job.name, timezone: "Turkey" }
+          );
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 };

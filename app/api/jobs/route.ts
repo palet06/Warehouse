@@ -3,8 +3,8 @@ import { fetchDataAndStore } from "@/lib/fetchAndStore";
 import { NextRequest, NextResponse } from "next/server";
 import cron from "node-cron";
 import { prisma } from "@/lib/prisma";
-import { creageLog } from "@/lib/serveractions/prismaActions";
-import { verileriAl } from "@/app/gocsorgu/page";
+import { createLog } from "@/lib/serveractions/prismaActions";
+
 
 export async function POST(req: NextRequest) {
   const { action, schedule, name } = await req.json();
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
           data: { schedule, name, isRunning: false },
         }); //Veritabanında jobu oluşturuyoruz. Henüz hafızada yok. Start edilince hafızada oluşturulacak.
 
-        await creageLog(name, "Job Oluşturuldu", 0);
+        await createLog(name, "Job Oluşturuldu", 0);
         return NextResponse.json({
           success: true,
           message: `${name} isimli Job oluşturuldu.`,
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
             where: { name },
             data: { isRunning: true },
           });
-          await creageLog(name, "Job Aktif Hale Getirildi", 0);
+          await createLog(name, "Job Aktif Hale Getirildi", 0);
           return NextResponse.json({
             success: true,
             message: `${name} isimli Job aktif hale getirildi.`,
@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
             where: { name },
             data: { isRunning: false },
           });
-          await creageLog(name, "Job pasif hale getirildi.", 0);
+          await createLog(name, "Job pasif hale getirildi.", 0);
           return NextResponse.json({
             success: true,
             message: `${name} isimli Job durduruldu ve pasif hale getirildi.`,
@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
             }
           }
           await prisma.job.delete({ where: { name } });
-          await creageLog(name, "Job durduruldu ve silindi.", 0);
+          await createLog(name, "Job durduruldu ve silindi.", 0);
           return NextResponse.json({
             success: true,
             message: `${name} islimli Job durduruldu ve silindi.`,
