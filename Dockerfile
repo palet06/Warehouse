@@ -5,10 +5,11 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # 3. package.json ve lock dosyalarını kopyala
-COPY package.json package-lock.json* ./
+COPY package.json package-lock.json ./
 
 # 4. Bağımlılıkları yükle
 RUN npm install --omit=dev
+
 
 # 5. Uygulama dosyalarını kopyala
 COPY . .
@@ -16,11 +17,13 @@ COPY . .
 # 6. Prisma generate
 RUN npx prisma generate
 
+
 # 7. Next.js projesini build et
 RUN npm run build
 
 # 8. Çalışma ortamı için hafif bir Node.js imajı kullan
 FROM node:20-alpine AS runner
+
 WORKDIR /app
 
 # 9. Node_modules ve build dosyalarını kopyala

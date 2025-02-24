@@ -1,10 +1,16 @@
+version: '3.8'
 
 services:
   app:
-    image: whdocker:latest
+    image: ghcr.io/palet06/whdocker:latest
+    build:
+      context: .  # Bulunduğu dizinden Dockerfile kullanarak imaj oluşturur
+      dockerfile: Dockerfile  # Dockerfile'ın adını belirt
+    container_name: whdockercontainer  # Konteyner ismi
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Uygulamayı dışa aç
     env_file:
-      - .env.production
+      - .env.production  # Ortam değişkenlerini yükle
     environment:
       - NODE_ENV=production
+    
