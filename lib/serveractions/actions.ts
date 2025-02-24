@@ -15,13 +15,15 @@ import { PTTResponseType } from "@/app/types/PTTDataTypes";
 export const GetSpesificDataFromWarehouse = async (
   basvuruNo: string
 ): Promise<ApiResponseType> => {
+  const splitBasvuruNo = basvuruNo.split(" ");
+
   let kriter;
-  if (basvuruNo.length == 11) {
+  if (splitBasvuruNo[0].length == 11) {
     kriter = JSON.stringify({
       pageSize: 1000,
       pageNumber: 1,
       allHistories: false,
-      yabanciKimlikNo: basvuruNo,
+      inYabanciKimlikNoList: [...splitBasvuruNo],
     });
   } else {
     kriter = JSON.stringify({
@@ -31,6 +33,7 @@ export const GetSpesificDataFromWarehouse = async (
       inBasvuruNoList: [...basvuruNo.split(" ")],
     });
   }
+
   const url =
     "https://services.csgb.gov.tr/workpernet/get-filtered-work-permit-data";
   const response = fetch(url, {
@@ -50,9 +53,6 @@ export const GetSpesificDataFromWarehouse = async (
 
   return response;
 };
-export const getGoc = async () => {
-  
-}
 
 export const GetPTTinformation = async (
   basvuruId: string,

@@ -119,7 +119,7 @@ export const getLogs = async () => {
 
 export const syncJobsAtStartup = async () => {
   const anyCronJobInMemory = cron.getTasks();
-  console.log("hafızadaki joblar",anyCronJobInMemory.size)
+
   if (anyCronJobInMemory.size <= 0) {
     try {
       const dbJobsisRunning = await prisma.job.findMany({

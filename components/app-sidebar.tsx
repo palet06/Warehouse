@@ -86,7 +86,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuButton asChild>
                   
                   {item.url == "#" ? (
-                    <div className="font-medium uppercase text-csgbBgRed cursor-pointer">
+                    <div className="font-bold uppercase text-csgbBgRed cursor-pointer">
                       {item.title}
                     </div>
                   ) : (

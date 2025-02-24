@@ -169,13 +169,13 @@ export interface ApiResponseType {
       nullHandling: string,
       ascending: boolean,
       descending: boolean
-    ];
+    ] | null;
     offset: number;
     pageNumber: number;
     pageSize: number;
     paged: boolean;
     unpaged: false;
-  };
+  } 
   totalPages: number;
   totalElements: number;
   last: boolean;
@@ -188,11 +188,11 @@ export interface ApiResponseType {
     nullHandling: string,
     ascending: boolean,
     descending: boolean
-  ];
+  ]|null;
   numberOfElements: number;
   first: boolean;
   empty: boolean;
-}
+} 
 
 export interface ApiRequestType {
   pageSize: number;
@@ -200,7 +200,7 @@ export interface ApiRequestType {
   allHistories: boolean;
   izinAktifMi: boolean | null;
   referansNo: string | null;
-  yabanciKimlikNo: string | null;
+  inYabanciKimlikNoList: string[] | null;
   inBasvuruNoList: string[] | null;
   ad: string | null;
   soyad: string | null;
