@@ -1,7 +1,7 @@
 
 services:
   app:
-    image: whdocker
+    image: whdocker:latest
     ports:
       - "3000:3000"
     env_file:
